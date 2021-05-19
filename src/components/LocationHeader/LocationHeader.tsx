@@ -1,13 +1,14 @@
 import React from 'react';
-import './LocationHeader.scoped.scss';
+import styles from './LocationHeader.module.scss';
+import { gameManager } from "../../services/GameManager";
 
 export class LocationHeader extends React.Component {
     public render() {
         return (
-            <React.Fragment>
+            <div className="boundaries">
                 <img src="plank.png" width="400px" height="200px"></img>
-                <div className="title">Location Header</div>
-            </React.Fragment>
+                <div className={styles.title}>{gameManager.getSceneLocation()}</div>
+            </div>
         );
     }
 }

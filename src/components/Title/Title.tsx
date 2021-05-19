@@ -1,13 +1,13 @@
 import React from 'react';
-import './Title.scoped.scss';
+import styles from './Title.module.scss';
 
 export class Title extends React.Component {
     public render() {
         return (
-            <React.Fragment>
+            <div className="boundaries">
                 <img src="pirate-flag.png" width="400px" height="200px"></img>
-                <div className="title">Pirates Incorporated</div>
-            </React.Fragment>
+                <div className={styles.title}>Pirates Incorporated</div>
+            </div>
         );
     }
 }
