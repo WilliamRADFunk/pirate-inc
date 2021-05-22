@@ -4,3 +4,4 @@ export enum SceneLocation {
     Port = "Port",
     StartMenu = "Menu"
 }
+

@@ -1,109 +1,132 @@
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
 import { SceneLocation } from '../Types/SceneLocation';
 
 class GameManager {
     /**
      * The amount of money the player has at their disposal.
      */
-    private balance: number = 10000;
+    private balance: BehaviorSubject<number> = new BehaviorSubject(10000);
     /**
      * The bounty placed on player's head.
      */
-    private bounty: number = 500;
+    private bounty: BehaviorSubject<number> = new BehaviorSubject(500);
     /**
      * The salary paid per turn to your fleet's carpenter.
      */
-    private carpenterSalary: number = 200;
+    private carpenterSalary: BehaviorSubject<number> = new BehaviorSubject(200);
     /**
      * The cost per turn of a single crew member.
      */
-    private crewWage: number = 100;
+    private crewWage: BehaviorSubject<number> = new BehaviorSubject(100);
+    /**
+     * The combined total of the crew's wages.
+     */
+    private crewWages: Subject<number> = new Subject();
     /**
      * The number of crew members on player's payroll.
      */
-    private currentCrewCount: number = 12;
+    private currentCrewCount: BehaviorSubject<number> = new BehaviorSubject(12);
     /**
      * The salary paid per turn to your fleet's doctor.
      */
-    private doctorSalary: number = 400;
+    private doctorSalary: BehaviorSubject<number> = new BehaviorSubject(400);
     /**
      * The infamy associated with player.
      */
-    private infamy: number = 37;
+    private infamy: BehaviorSubject<number> = new BehaviorSubject(37);
     /**
      * The maximum number of crew members on player can employee (limited by size and number of ships owned).
      */
-    private maxCrewCount: number = 25;
+    private maxCrewCount: BehaviorSubject<number> = new BehaviorSubject(25);
     /**
      * The salary paid per turn to your fleet's quartermaster.
      */
-     private quartermasterSalary: number = 300;
+     private quartermasterSalary: BehaviorSubject<number> = new BehaviorSubject(300);
     /**
      * The number of action points player has left for their turn.
      */
-    private remainingActionPoints: number = 5;
+    private remainingActionPoints: BehaviorSubject<number> = new BehaviorSubject(5);
+    /**
+     * The combined total of the officer's salaries.
+     */
+    private officerSalaries: BehaviorSubject<number> = new BehaviorSubject(
+        this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
     /**
      * Tracks user's scene location, mostly for identifying which controls to make available on screen.
      */
-    private sceneLocation: SceneLocation = SceneLocation.StartMenu;
+    private sceneLocation: BehaviorSubject<string> = new BehaviorSubject(SceneLocation.StartMenu.toString());
     /**
      * The number of ships the player owns.
      */
-    private shipCount: number = 3;
+    private shipCount: BehaviorSubject<number> = new BehaviorSubject(3);
     /**
      * The number of total action points player is capable of having in a given turn.
      */
-    private totalActionPoints: number = 5;
+    private totalActionPoints: BehaviorSubject<number> = new BehaviorSubject(5);
     /**
      * The number of total food units of each category that player owns.
      */
-    private totalProvisions: [number, number, number] = [132, 74, 13];
+    private totalProvisions: BehaviorSubject<[number, number, number]> = new BehaviorSubject([132, 74, 13]);
 
-    public getBalance(): number {
-        return this.balance;
+    constructor() {
+        this.crewWages.next(this.crewWage.value * this.currentCrewCount.value);
     }
 
-    public getCrewWages(): number {
-        return this.crewWage * this.getCurrentCrewCount();
+    private updateCrewWages(): void {
+        this.crewWages.next(this.crewWage.value * this.currentCrewCount.value);
     }
 
-    public getCurrentCrewCount(): number {
-        return this.currentCrewCount;
+    private updateOfficerSalaries(): void {
+        this.officerSalaries.next(this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
     }
 
-    public getInfamy(): number {
-        return this.infamy;
+    public getBalance(): Observable<number> {
+        return this.balance.asObservable();
     }
 
-    public getMaxCrewCount(): number {
-        return this.maxCrewCount;
+    public getCrewWages(): Observable<number> {
+        return this.crewWages.asObservable();
     }
 
-    public getOfficerSalaries(): number {
-        return this.carpenterSalary + this.doctorSalary + this.quartermasterSalary;
+    public getCurrentCrewCount(): Observable<number> {
+        return this.currentCrewCount.asObservable();
     }
 
-    public getPlayerBounty(): number {
-        return this.bounty;
+    public getInfamy(): Observable<number> {
+        return this.infamy.asObservable();
     }
 
-    public getProvisions(): [number, number, number] {
-        return this.totalProvisions.slice() as [number, number, number];
+    public getMaxCrewCount(): Observable<number> {
+        return this.maxCrewCount.asObservable();
     }
 
-    public getRemainingActionPoints(): number {
-        return this.remainingActionPoints;
+    public getOfficerSalaries(): Observable<number> {
+        return this.officerSalaries.asObservable();
     }
 
-    public getSceneLocation(): SceneLocation {
-        return this.sceneLocation;
+    public getPlayerBounty(): Observable<number> {
+        return this.bounty.asObservable();
     }
 
-    public getShipCount(): number {
-        return this.shipCount;
+    public getProvisions(): Observable<[number, number, number]> {
+        return this.totalProvisions.asObservable();
     }
 
-    public getTotalActionPoints(): number {
-        return this.totalActionPoints;
+    public getRemainingActionPoints(): Observable<number> {
+        return this.remainingActionPoints.asObservable();
+    }
+
+    public getSceneLocation(): Observable<string> {
+        return this.sceneLocation.asObservable();
+    }
+
+    public getShipCount(): Observable<number> {
+        return this.shipCount.asObservable();
+    }
+
+    public getTotalActionPoints(): Observable<number> {
+        return this.totalActionPoints.asObservable();
     }
 }
 
