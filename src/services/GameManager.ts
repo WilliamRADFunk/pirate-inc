@@ -32,6 +32,10 @@ class GameManager {
      */
     private doctorSalary: BehaviorSubject<number> = new BehaviorSubject(400);
     /**
+     * The overall health of the player's fleet (ship damage) in percentage.
+     */
+    private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
+    /**
      * The infamy associated with player.
      */
     private infamy: BehaviorSubject<number> = new BehaviorSubject(37);
@@ -61,6 +65,10 @@ class GameManager {
      */
     private shipCount: BehaviorSubject<number> = new BehaviorSubject(3);
     /**
+     * The number of ships the player owns.
+     */
+    private ships: { health: number; }[] = [];
+    /**
      * The number of total action points player is capable of having in a given turn.
      */
     private totalActionPoints: BehaviorSubject<number> = new BehaviorSubject(5);
@@ -81,6 +89,10 @@ class GameManager {
         this.officerSalaries.next(this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
     }
 
+    private updateFleetHealth(): void {
+        this.fleetHealth.next(this.ships.filter(ship => !!ship).map(ship => ship.health).reduce((accum, val) => accum + val, 0) || 100);
+    }
+
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
     }
@@ -91,6 +103,10 @@ class GameManager {
 
     public getCurrentCrewCount(): Observable<number> {
         return this.currentCrewCount.asObservable();
+    }
+
+    public getFleetHealth(): Observable<number> {
+        return this.fleetHealth.asObservable();
     }
 
     public getInfamy(): Observable<number> {

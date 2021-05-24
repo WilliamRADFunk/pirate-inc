@@ -10,6 +10,7 @@ interface State {
     balance: string;
     crewWages: string;
     currentCrew: number;
+    fleetHealth: number;
     infamy: number;
     maxCrew: number;
     officerSalaries: string;
@@ -36,6 +37,7 @@ export class HUD extends React.Component<Props, State> {
             balance: '$0',
             crewWages: '$0',
             currentCrew: 0,
+            fleetHealth: 100,
             infamy: 0,
             maxCrew: 0,
             officerSalaries: '$0',
@@ -115,6 +117,12 @@ export class HUD extends React.Component<Props, State> {
                     // add player bounty to local state if number
                     this.setState({ playerBounty: formatter.format(bounty) });
                 }
+            }),
+            gameManager.getFleetHealth().subscribe(health => {
+                if (!isNaN(health)) {
+                    // add player's fleet health to local state if number
+                    this.setState({ fleetHealth: health });
+                }
             })
         );
     }
@@ -131,6 +139,7 @@ export class HUD extends React.Component<Props, State> {
             crewWages,
             currentCrew,
             infamy,
+            fleetHealth,
             maxCrew,
             officerSalaries,
             playerBounty,
@@ -178,8 +187,8 @@ export class HUD extends React.Component<Props, State> {
                     {/* Right side of HUD */}
                     <div className="col-6">
                         <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Action Points:</div>
-                            <div className={styles.itemValue + " col-6"}>{remActionPoints}/{totalActionPoints}</div>
+                            <div className={styles.itemLabel + " col-6"}>Fleet Health:</div>
+                            <div className={styles.itemValue + " col-6"}>{fleetHealth}%</div>
                         </div>
                         <div className="row">
                             <div className={styles.itemLabel + " col-6"}>Crew Wages:</div>
