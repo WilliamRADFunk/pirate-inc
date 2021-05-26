@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import styles from './HUD.module.scss';
 import { gameManager } from "../../services/GameManager";
+import { SceneLocation } from '../../Types/SceneLocation';
 
 interface Props {}
 
@@ -17,6 +18,7 @@ interface State {
     playerBounty: string;
     provisions: [number, number, number];
     remActionPoints: number;
+    sceneLocation: string;
     shipCount: number;
     totalActionPoints: number;
 }
@@ -44,6 +46,7 @@ export class HUD extends React.Component<Props, State> {
             playerBounty: '$0',
             provisions: [0, 0, 0],
             remActionPoints: 0,
+            sceneLocation: SceneLocation.StartMenu.toString(),
             shipCount: 1,
             totalActionPoints: 0,
         };
@@ -123,6 +126,12 @@ export class HUD extends React.Component<Props, State> {
                     // add player's fleet health to local state if number
                     this.setState({ fleetHealth: health });
                 }
+            }),
+            gameManager.getSceneLocation().subscribe(location => {
+                if (location) {
+                    // add scene location to local state if truthy
+                    this.setState({ sceneLocation: location });
+                }
             })
         );
     }
@@ -145,70 +154,72 @@ export class HUD extends React.Component<Props, State> {
             playerBounty,
             provisions,
             remActionPoints,
+            sceneLocation,
             shipCount,
             totalActionPoints
         } = this.state;
 
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2 text-left">
-                <div className="row">
-                    <div className="col-6">
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Action Points:</div>
-                            <div className={styles.itemValue + " col-6"}>{remActionPoints}/{totalActionPoints}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Treasury:</div>
-                            <div className={styles.itemValue + " col-6"}>{balance}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Crew:</div>
-                            <div className={styles.itemValue + " col-6"}>{currentCrew}/{maxCrew}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Provisions:</div>
-                            <div className={styles.itemValue + " col-6"}>
-                                <span className="text-red mr-3">
-                                    {provisions[0]}
-                                </span>
-                                <span className="text-red mr-3">
-                                    {provisions[1]}
-                                </span>
-                                <span className="text-red">
-                                    {provisions[2]}
-                                </span>
+            sceneLocation == SceneLocation.StartMenu || sceneLocation == SceneLocation.Intro ? null :
+                <div className="boundaries col-12 col-lg-8 offset-lg-2 text-left">
+                    <div className="row">
+                        <div className="col-6">
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Action Points:</div>
+                                <div className={styles.itemValue + " col-6"}>{remActionPoints}/{totalActionPoints}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Treasury:</div>
+                                <div className={styles.itemValue + " col-6"}>{balance}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Crew:</div>
+                                <div className={styles.itemValue + " col-6"}>{currentCrew}/{maxCrew}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Provisions:</div>
+                                <div className={styles.itemValue + " col-6"}>
+                                    <span className="text-red mr-3">
+                                        {provisions[0]}
+                                    </span>
+                                    <span className="text-red mr-3">
+                                        {provisions[1]}
+                                    </span>
+                                    <span className="text-red">
+                                        {provisions[2]}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Ships:</div>
+                                <div className={styles.itemValue + " col-6"}>{shipCount}</div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Ships:</div>
-                            <div className={styles.itemValue + " col-6"}>{shipCount}</div>
-                        </div>
-                    </div>
-                    {/* Right side of HUD */}
-                    <div className="col-6">
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Fleet Health:</div>
-                            <div className={styles.itemValue + " col-6"}>{fleetHealth}%</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Crew Wages:</div>
-                            <div className={styles.itemValue + " col-6"}>{crewWages}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Officer Salaries:</div>
-                            <div className={styles.itemValue + " col-6"}>{officerSalaries}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Infamy:</div>
-                            <div className={styles.itemValue + " col-6"}>{infamy}</div>
-                        </div>
-                        <div className="row">
-                            <div className={styles.itemLabel + " col-6"}>Bounty:</div>
-                            <div className={styles.itemValue + " col-6"}>{playerBounty}</div>
+                        {/* Right side of HUD */}
+                        <div className="col-6">
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Fleet Health:</div>
+                                <div className={styles.itemValue + " col-6"}>{fleetHealth}%</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Crew Wages:</div>
+                                <div className={styles.itemValue + " col-6"}>{crewWages}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Officer Salaries:</div>
+                                <div className={styles.itemValue + " col-6"}>{officerSalaries}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Infamy:</div>
+                                <div className={styles.itemValue + " col-6"}>{infamy}</div>
+                            </div>
+                            <div className="row">
+                                <div className={styles.itemLabel + " col-6"}>Bounty:</div>
+                                <div className={styles.itemValue + " col-6"}>{playerBounty}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         );
     }
 }

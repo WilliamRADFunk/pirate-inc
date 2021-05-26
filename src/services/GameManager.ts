@@ -28,6 +28,10 @@ class GameManager {
      */
     private currentCrewCount: BehaviorSubject<number> = new BehaviorSubject(12);
     /**
+     * The player's choice of game difficulty.
+     */
+    private difficulty: BehaviorSubject<number> = new BehaviorSubject(0);
+    /**
      * The salary paid per turn to your fleet's doctor.
      */
     private doctorSalary: BehaviorSubject<number> = new BehaviorSubject(400);
@@ -93,6 +97,10 @@ class GameManager {
         this.fleetHealth.next(this.ships.filter(ship => !!ship).map(ship => ship.health).reduce((accum, val) => accum + val, 0) || 100);
     }
 
+    public changeDifficulty(newDiff: number): void {
+        this.difficulty.next(newDiff);
+    }
+
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
     }
@@ -103,6 +111,10 @@ class GameManager {
 
     public getCurrentCrewCount(): Observable<number> {
         return this.currentCrewCount.asObservable();
+    }
+
+    public getDifficulty(): Observable<number> {
+        return this.difficulty.asObservable();
     }
 
     public getFleetHealth(): Observable<number> {

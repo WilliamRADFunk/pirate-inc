@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import styles from './LocationHeader.module.scss';
 import { gameManager } from "../../services/GameManager";
+import { SceneLocation } from '../../Types/SceneLocation';
 
 interface Props {}
 
@@ -17,7 +18,7 @@ export class LocationHeader extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            sceneLocation: ""
+            sceneLocation: "",
         };
     }
     
@@ -42,10 +43,11 @@ export class LocationHeader extends React.Component<Props, State> {
     public render() {
         const { sceneLocation } = this.state;
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2">
-                <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
-                <div className={styles.title}>{sceneLocation}</div>
-            </div>
+            sceneLocation == SceneLocation.StartMenu || sceneLocation == SceneLocation.Intro ? null :
+                <div className="boundaries col-12 col-lg-8 offset-lg-2">
+                    <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
+                    <div className={styles.title}>{sceneLocation}</div>
+                </div>
         );
     }
 }

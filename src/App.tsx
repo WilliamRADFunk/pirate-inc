@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import { HUD } from './components/HUD/HUD';
 import { LocationHeader } from './components/LocationHeader/LocationHeader';
+import { StartMenu } from './components/StartMenu/StartMenu';
 import { Title } from './components/Title/Title';
 
 class App extends React.Component {
@@ -13,6 +14,9 @@ class App extends React.Component {
         </div>
         <div className="row">
           <LocationHeader></LocationHeader>
+        </div>
+        <div className="row">
+          <StartMenu></StartMenu>
         </div>
         <div className="row">
           <HUD></HUD>
