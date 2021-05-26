@@ -1,5 +1,5 @@
 import React from "react";
-import { ToggleButton, ButtonGroup } from "react-bootstrap";
+import { ToggleButton, ButtonGroup, FormControl, InputGroup } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 import { gameManager } from "../../services/GameManager";
@@ -11,6 +11,7 @@ interface State {
     difficulty: number;
     sceneLocation: string;
     showDifficulty: boolean;
+    showLoadCode: boolean;
 }
 
 export class StartMenu extends React.Component<Props, State> {
@@ -22,7 +23,8 @@ export class StartMenu extends React.Component<Props, State> {
         this.state = {
             difficulty: 0,
             sceneLocation: "",
-            showDifficulty: false
+            showDifficulty: false,
+            showLoadCode: false
         };
     }
     
@@ -61,8 +63,19 @@ export class StartMenu extends React.Component<Props, State> {
         this.setState({ showDifficulty: !this.state.showDifficulty });
     }
 
+    public toggleLoadCodeInput(): void {
+        this.setState({ showLoadCode: !this.state.showLoadCode });
+    }
+
     public render() {
-        const { difficulty, sceneLocation, showDifficulty } = this.state;
+        const { difficulty, sceneLocation, showDifficulty, showLoadCode } = this.state;
+
+        const radios = [
+            { name: 'DifficultyRadio', label: 'Easy', value: 0 },
+            { name: 'DifficultyRadio', label: 'Normal', value: 1 },
+            { name: 'DifficultyRadio', label: 'Hard', value: 2 },
+            { name: 'DifficultyRadio', label: 'Impossible', value: 3 },
+        ];
 
         return (
             sceneLocation != SceneLocation.StartMenu ? null :
@@ -76,9 +89,24 @@ export class StartMenu extends React.Component<Props, State> {
                 <div className="row">
                     <div
                         className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                        onClick={() => this.toggleLoadCodeInput()}
                         role="button">Load Game
                     </div>
                 </div>
+                { !showLoadCode ? null :
+                    <div className="row">
+                        <div className="col-12 col-lg-6 offset-lg-3">
+                            <InputGroup>
+                                <InputGroup.Prepend>
+                                <InputGroup.Text id="load-code-text">
+                                    Your saved game code:
+                                </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <FormControl id="load-code" aria-describedby="load-code-text" />
+                            </InputGroup>
+                        </div>
+                    </div>
+                }
                 <div className="row">
                     <div
                         className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
@@ -91,83 +119,17 @@ export class StartMenu extends React.Component<Props, State> {
                         <ButtonGroup toggle
                             className="col-6 offset-3"
                             aria-label="Choose game difficulty level">
-                            <ToggleButton
-                                key="0"
-                                variant="info"
-                                value="0"
-                                name="radio"
-                                type="radio"
-                                checked={difficulty === 0}
-                                onChange={this.changeDifficulty}>Easy</ToggleButton>
-                            <ToggleButton
-                                key="1"
-                                variant="info"
-                                value="1"
-                                name="radio"
-                                type="radio"
-                                checked={difficulty === 1}
-                                onChange={this.changeDifficulty}>Normal</ToggleButton>
-                            <ToggleButton
-                                key="2"
-                                variant="info"
-                                value="2"
-                                name="radio"
-                                type="radio"
-                                checked={difficulty === 2}
-                                onChange={this.changeDifficulty}>Hard</ToggleButton>
-                            <ToggleButton
-                                key="3"
-                                variant="info"
-                                value="3"
-                                name="radio"
-                                type="radio"
-                                checked={difficulty === 3}
-                                onChange={this.changeDifficulty}>Impossible</ToggleButton>
+                            {radios.map((radio) => (
+                                <ToggleButton
+                                    key={radio.value}
+                                    variant="info"
+                                    value={radio.value}
+                                    name={radio.name}
+                                    type="radio"
+                                    checked={difficulty === radio.value}
+                                    onChange={this.changeDifficulty}>{radio.label}</ToggleButton>
+                            ))}
                         </ButtonGroup>
-                        {/* <div
-                            className="btn-group btn-group-toggle col-6 offset-3"
-                            data-toggle="buttons">
-                            <label className="btn btn-info active">
-                                <input
-                                    type="radio"
-                                    name="options"
-                                    id="option1"
-                                    value="0"
-                                    autoComplete="off"
-                                    onChange={this.changeDifficulty}
-                                    checked={difficulty === 0}/>Easy
-                            </label>
-                            <label className="btn btn-info">
-                                <input
-                                    type="radio"
-                                    name="options"
-                                    id="option2"
-                                    value="1"
-                                    autoComplete="off"
-                                    onChange={this.changeDifficulty}
-                                    checked={difficulty === 1}/>Normal
-                            </label>
-                            <label className="btn btn-info">
-                                <input
-                                    type="radio"
-                                    name="options"
-                                    id="option3"
-                                    value="2"
-                                    autoComplete="off"
-                                    onChange={this.changeDifficulty}
-                                    checked={difficulty === 2}/>Hard
-                            </label>
-                            <label className="btn btn-info">
-                                <input
-                                    type="radio"
-                                    name="options"
-                                    id="option4"
-                                    value="3"
-                                    autoComplete="off"
-                                    onChange={this.changeDifficulty}
-                                    checked={difficulty === 3}/>Impossible
-                            </label>
-                        </div> */}
                     </div>
                 }
                 <div className="row">
