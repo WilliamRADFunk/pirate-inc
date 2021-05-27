@@ -1,0 +1,14 @@
+{
+    "extends": ["react-app"],
+    "rules": {
+        "eqeqeq": "off"
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts?(x)"],
+            "rules": {
+                "eqeqeq": "off"
+            }
+        }
+    ]
+}
