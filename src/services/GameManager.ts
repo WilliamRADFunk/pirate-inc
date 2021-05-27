@@ -156,6 +156,10 @@ class GameManager {
     public getTotalActionPoints(): Observable<number> {
         return this.totalActionPoints.asObservable();
     }
+
+    public loadGame(code: string): void {
+        // Verify code and then load game.
+    }
 }
 
 export const gameManager = new GameManager();

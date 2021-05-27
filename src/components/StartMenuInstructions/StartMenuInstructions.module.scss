@@ -1,0 +1,14 @@
+.instruction-dropdown-toggle {
+    > button:after {
+        display: none !important;
+    }
+
+    > div {
+        background-color: #17a2b8;
+        width: 100% !important;
+    }
+}
+
+.bg-selected {
+    background-color: #117a8b !important;
+}
