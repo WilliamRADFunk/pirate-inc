@@ -3,8 +3,8 @@ import { ButtonGroup, ToggleButton } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
-import { ListOption } from "../../Types/ListOption";
-import { gameManager } from "../../services/GameManager";
+import { ListOption } from "../../../Types/ListOption";
+import { gameManager } from "../../../services/GameManager";
 
 interface Props {
     toggleView: () => void

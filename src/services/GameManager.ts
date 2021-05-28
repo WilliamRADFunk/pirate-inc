@@ -2,6 +2,14 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { SceneLocation } from '../Types/SceneLocation';
 
+export enum GameState {
+    Start = 0,
+    Intro = 1,
+    Load = 2,
+    Active = 3,
+    GameOver = 4
+}
+
 class GameManager {
     /**
      * The amount of money the player has at their disposal.
@@ -39,6 +47,10 @@ class GameManager {
      * The overall health of the player's fleet (ship damage) in percentage.
      */
     private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
+    /**
+     * The state of the overall game: Menu, Intro, Active, Game Over, etc..
+     */
+    private gameState: BehaviorSubject<GameState> = new BehaviorSubject(GameState.Start as GameState);
     /**
      * The infamy associated with player.
      */
@@ -101,6 +113,27 @@ class GameManager {
         this.difficulty.next(newDiff);
     }
 
+    public changeGameState(newState: GameState): void {
+        const oldState = this.gameState.value;
+        if (oldState === GameState.Start && (newState !== GameState.Intro && newState !== GameState.Load)) {
+            return;
+        }
+
+        if (oldState === GameState.Load && (newState !== GameState.Start && newState !== GameState.Active)) {
+            return;
+        }
+
+        if (oldState === GameState.Intro && newState !== GameState.Active) {
+            return;
+        }
+
+        if (oldState === GameState.GameOver && newState !== GameState.Start) {
+            return;
+        }
+
+        this.gameState.next(newState);
+    }
+
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
     }
@@ -119,6 +152,10 @@ class GameManager {
 
     public getFleetHealth(): Observable<number> {
         return this.fleetHealth.asObservable();
+    }
+
+    public getGameState(): Observable<GameState> {
+        return this.gameState.asObservable();
     }
 
     public getInfamy(): Observable<number> {

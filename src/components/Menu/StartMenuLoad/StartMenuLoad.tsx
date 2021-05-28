@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 
 import styles from "./StartMenuLoad.module.scss";
-import { gameManager } from "../../services/GameManager";
+import { gameManager } from "../../../services/GameManager";
 
 interface Props {
     toggleView: () => void

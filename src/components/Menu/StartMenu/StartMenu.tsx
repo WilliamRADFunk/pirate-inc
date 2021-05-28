@@ -2,8 +2,8 @@ import React from "react";
 
 import { Subscription } from "rxjs";
 
-import { gameManager } from "../../services/GameManager";
-import { SceneLocation } from "../../Types/SceneLocation";
+import { gameManager } from "../../../services/GameManager";
+import { SceneLocation } from "../../../Types/SceneLocation";
 import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
 import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
 import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";
