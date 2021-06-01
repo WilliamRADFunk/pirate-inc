@@ -73,6 +73,10 @@ class GameManager {
     private officerSalaries: BehaviorSubject<number> = new BehaviorSubject(
         this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
     /**
+     * The name the player has chosen for themself.
+     */
+    private playerName: BehaviorSubject<string> = new BehaviorSubject('');
+    /**
      * Tracks user's scene location, mostly for identifying which controls to make available on screen.
      */
     private sceneLocation: BehaviorSubject<string> = new BehaviorSubject(SceneLocation.StartMenu.toString());
@@ -107,6 +111,24 @@ class GameManager {
 
     private updateFleetHealth(): void {
         this.fleetHealth.next(this.ships.filter(ship => !!ship).map(ship => ship.health).reduce((accum, val) => accum + val, 0) || 100);
+    }
+
+    private verifyPlayerName(name: string): boolean {
+        const badWords = [
+            'asshole',
+            'assholes',
+            'fucker',
+            'fuckers',
+            'shit',
+            'shits',
+            'bitch',
+            'bitches',
+            'cock',
+            'cocks',
+            'cunt',
+            'cunts'
+        ];
+        return !(!!~badWords.indexOf(name));
     }
 
     public changeDifficulty(newDiff: number): void {
@@ -196,6 +218,15 @@ class GameManager {
 
     public loadGame(code: string): void {
         // Verify code and then load game.
+    }
+
+    public startGame(name: string): boolean {
+        if (this.verifyPlayerName(name)) {
+            this.playerName.next(name);
+            this.changeGameState(GameState.Active);
+            return true;
+        }
+        return false;
     }
 }
 

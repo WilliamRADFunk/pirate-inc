@@ -2,7 +2,7 @@ import React from "react";
 
 import { Subscription } from "rxjs";
 
-import { gameManager } from "../../../services/GameManager";
+import { gameManager, GameState } from "../../../services/GameManager";
 import { SceneLocation } from "../../../Types/SceneLocation";
 import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
 import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
@@ -33,7 +33,7 @@ export class StartMenu extends React.Component<Props, State> {
             sceneLocation: "",
         };
     }
-    
+
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
@@ -67,6 +67,7 @@ export class StartMenu extends React.Component<Props, State> {
                         <div className="row">
                             <div
                                 className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                onClick={() => this.startGame()}
                                 role="button">Start Game
                             </div>
                         </div>
@@ -104,5 +105,9 @@ export class StartMenu extends React.Component<Props, State> {
                 }
             </div>
         );
+    }
+
+    public startGame(): void {
+        gameManager.changeGameState(GameState.Intro);
     }
 }

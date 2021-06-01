@@ -40,7 +40,7 @@ export class StartMenuLoad extends React.Component<Props, State> {
         } else {
             this.setState({ validLoadCode: false });
         }
-        
+
         console.log("StartMenuLoad: changedLoadCode", this.state.validLoadCode);
     }
 
@@ -50,9 +50,9 @@ export class StartMenuLoad extends React.Component<Props, State> {
             gameManager.loadGame("");
         }
     }
-    
+
     public render() {
-        const { loadCode, toggleView, validLoadCode } = this.state;
+        const { toggleView, validLoadCode } = this.state;
 
         return (
             <>
@@ -74,7 +74,7 @@ export class StartMenuLoad extends React.Component<Props, State> {
                                 placeholder="XXXXXXXXXXXXXXXX"
                                 onChange={(e) => this.changedLoadCode(e)}
                                 isInvalid={ !validLoadCode }/>
-                            <Form.Control.Feedback type='invalid' className={styles["fs-sm"]}>
+                            <Form.Control.Feedback type='invalid' className="fs-sm">
                                 Load Code must be 16 alphanumeric characters.
                             </Form.Control.Feedback>
                         </InputGroup>
