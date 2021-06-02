@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
@@ -65,32 +66,32 @@ export class StartMenu extends React.Component<Props, State> {
                 { menuState !== MenuState.MainMenu ? null :
                     <>
                         <div className="row">
-                            <div
-                                className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                                onClick={() => this.startGame()}
-                                role="button">Start Game
-                            </div>
+                            <Button
+                                variant="primary"
+                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                onClick={() => this.startGame()}>Start Game
+                            </Button>
                         </div>
                         <div className="row">
-                            <div
-                                className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                                onClick={() => this.changeMenuState(MenuState.LoadGame)}
-                                role="button">Load Game
-                            </div>
+                            <Button
+                                variant="primary"
+                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                onClick={() => this.changeMenuState(MenuState.LoadGame)}>Load Game
+                            </Button>
                         </div>
                         <div className="row">
-                            <div
-                                className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                                onClick={() => this.changeMenuState(MenuState.Difficulty)}
-                                role="button">Change Difficulty
-                            </div>
+                            <Button
+                                variant="primary"
+                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                onClick={() => this.changeMenuState(MenuState.Difficulty)}>Change Difficulty
+                            </Button>
                         </div>
                         <div className="row">
-                            <div
-                                className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                                onClick={() => this.changeMenuState(MenuState.Instructions)}
-                                role="button">How to Play
-                            </div>
+                            <Button
+                                variant="primary"
+                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                onClick={() => this.changeMenuState(MenuState.Instructions)}>How to Play
+                            </Button>
                         </div>
                     </>
                 }

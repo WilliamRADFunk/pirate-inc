@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, FormControl, InputGroup } from "react-bootstrap";
+import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
 
 import styles from "./StartMenuLoad.module.scss";
 import { gameManager } from "../../../services/GameManager";
@@ -57,16 +57,20 @@ export class StartMenuLoad extends React.Component<Props, State> {
         return (
             <>
                 <div className="row">
-                    <div
-                        className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                        onClick={toggleView}
-                        role="button">Back to Menu</div>
+                    <Button
+                        variant="primary"
+                        className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                        onClick={toggleView}>
+                        Back to Menu
+                    </Button>
                 </div>
                 <div className="row">
                     <div className="col-12 col-lg-6 offset-lg-3">
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
-                                <InputGroup.Text id="load-code-text">Code:</InputGroup.Text>
+                                <InputGroup.Text id="load-code-text">
+                                    Code:
+                                </InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl
                                 id="load-code"
@@ -81,10 +85,12 @@ export class StartMenuLoad extends React.Component<Props, State> {
                     </div>
                 </div>
                 <div className="row">
-                    <div
-                        className={`btn btn-info col-6 col-lg-2 offset-3 offset-lg-5 my-4${validLoadCode ? "" : " disabled"}`}
-                        onClick={() => this.loadGame()}
-                        role="button">Load Game</div>
+                    <Button
+                        variant="primary"
+                        className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validLoadCode ? "" : " disabled"}`}
+                        onClick={() => this.loadGame()}>
+                        Load Game
+                    </Button>
                 </div>
             </>
         );

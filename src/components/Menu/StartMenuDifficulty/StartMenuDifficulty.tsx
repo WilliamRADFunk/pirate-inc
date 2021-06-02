@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Button, ButtonGroup, ToggleButton } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
@@ -65,10 +65,11 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
         return (
             <>
                 <div className="row">
-                    <div
-                        className="btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4"
-                        onClick={toggleView}
-                        role="button">Back to Menu</div>
+                    <Button
+                        variant="primary"
+                        className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                        onClick={toggleView}>Back to Menu
+                    </Button>
                 </div>
                 <div className="row">
                     <ButtonGroup toggle
@@ -82,7 +83,8 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
                                 name="DifficultyRadio"
                                 type="radio"
                                 checked={difficulty === radio.value}
-                                onChange={this.changeDifficulty}>{radio.label}</ToggleButton>
+                                onChange={this.changeDifficulty}>{radio.label}
+                            </ToggleButton>
                         ))}
                     </ButtonGroup>
                 </div>

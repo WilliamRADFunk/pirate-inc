@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 
 import styles from "./StartMenuLoad.module.scss";
@@ -185,11 +185,11 @@ export class Intro extends React.Component<Props, State> {
                     </div>
                 </div>
                 <div className="row">
-                    <div
-                        className={`btn btn-primary col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? "" : " disabled"}`}
-                        onClick={() => this.startGame()}
-                        role="button">To the Ship!
-                    </div>
+                    <Button
+                        variant="primary"
+                        className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? "" : " disabled"}`}
+                        onClick={() => this.startGame()}>To the Ship!
+                    </Button>
                 </div>
             </div>
         );
