@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Button, ButtonGroup, Row, ToggleButton } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
@@ -64,14 +64,14 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
 
         return (
             <>
-                <div className="row">
+                <Row>
                     <Button
                         variant="primary"
                         className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                         onClick={toggleView}>Back to Menu
                     </Button>
-                </div>
-                <div className="row">
+                </Row>
+                <Row>
                     <ButtonGroup toggle
                         className="col-6 offset-3"
                         aria-label="Choose game difficulty level">
@@ -87,7 +87,7 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
                             </ToggleButton>
                         ))}
                     </ButtonGroup>
-                </div>
+                </Row>
             </>
         );
     }

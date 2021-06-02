@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
+import { Button, Col, Form, FormControl, InputGroup, Row } from "react-bootstrap";
 
-import styles from "./StartMenuLoad.module.scss";
 import { gameManager } from "../../../services/GameManager";
 
 interface Props {
@@ -56,16 +55,16 @@ export class StartMenuLoad extends React.Component<Props, State> {
 
         return (
             <>
-                <div className="row">
+                <Row>
                     <Button
                         variant="primary"
                         className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                         onClick={toggleView}>
                         Back to Menu
                     </Button>
-                </div>
-                <div className="row">
-                    <div className="col-12 col-lg-6 offset-lg-3">
+                </Row>
+                <Row>
+                    <Col xs="12" lg={{ span: 6, offset: 3 }}>
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="load-code-text">
@@ -82,16 +81,16 @@ export class StartMenuLoad extends React.Component<Props, State> {
                                 Load Code must be 16 alphanumeric characters.
                             </Form.Control.Feedback>
                         </InputGroup>
-                    </div>
-                </div>
-                <div className="row">
+                    </Col>
+                </Row>
+                <Row>
                     <Button
                         variant="primary"
                         className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validLoadCode ? "" : " disabled"}`}
                         onClick={() => this.loadGame()}>
                         Load Game
                     </Button>
-                </div>
+                </Row>
             </>
         );
     }

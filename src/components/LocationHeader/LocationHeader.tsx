@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import styles from './LocationHeader.module.scss';
 import { gameManager } from "../../services/GameManager";
 import { SceneLocation } from '../../Types/SceneLocation';
+import { Col } from 'react-bootstrap';
 
 interface Props {}
 
@@ -42,10 +43,10 @@ export class LocationHeader extends React.Component<Props, State> {
     public render() {
         const { sceneLocation } = this.state;
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2">
+            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
                 <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
                 <div className={styles.title}>{sceneLocation}</div>
-            </div>
+            </Col>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { Subscription } from "rxjs";
@@ -59,13 +59,13 @@ export class Shipyard extends React.Component<Props, State> {
     public render() {
         const { shipYardMode } = this.state;
         return (
-            <div className="boundaries col-12 col-lg-5 mt-5">
-                <div className="row">
-                    <div
+            <Col xs="12" lg="5" className="boundaries mt-5">
+                <Row className="border-white border-bottom mb-2">
+                    <Col xs={{ span: 8, offset: 2 }}
                         aria-label="Shipyard section"
-                        className="col-8 offset-2 text-center">
+                        className="text-center">
                         Shipyard
-                    </div>
+                    </Col>
                     <Button
                         variant="outline-secondary"
                         className="border-0 col-2"
@@ -77,9 +77,9 @@ export class Shipyard extends React.Component<Props, State> {
                             : <EyeSlash color="white" size={20}></EyeSlash>
                         }
                     </Button>
-                </div>
+                </Row>
                 { shipYardMode !== ShipYardMode.Options ? null :
-                    <div className="row">
+                    <Row>
                         <Button
                             aria-label="Open shipyard buy ships section"
                             variant="link"
@@ -108,45 +108,37 @@ export class Shipyard extends React.Component<Props, State> {
                             onClick={() => this.toggleMode(ShipYardMode.Outfit)}>
                             Outfit
                         </Button>
-                    </div>
+                    </Row>
                 }
                 { shipYardMode !== ShipYardMode.Buy ? null :
-                    <div className="row">
-                        <div
-                            aria-label="Shipyard buy ships section"
-                            className="col-12">
-                            Buy Ships
-                        </div>
-                    </div>
+                    <Row>
+                        <Col aria-label="Shipyard buy ships section">
+                            There are a total of {0} ships available for purchase. Select ship from list for details.
+                        </Col>
+                    </Row>
                 }
                 { shipYardMode !== ShipYardMode.Sell ? null :
-                    <div className="row">
-                        <div
-                            aria-label="Shipyard sell ships section"
-                            className="col-12">
+                    <Row>
+                        <Col aria-label="Shipyard sell ships section">
                             Sell Ships
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 }
                 { shipYardMode !== ShipYardMode.Repair ? null :
-                    <div className="row">
-                        <div
-                            aria-label="Shipyard repair ships section"
-                            className="col-12">
+                    <Row>
+                        <Col aria-label="Shipyard repair ships section">
                             Repair Ships
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 }
                 { shipYardMode !== ShipYardMode.Outfit ? null :
-                    <div className="row">
-                        <div
-                            aria-label="Shipyard outfit ships section"
-                            className="col-12">
+                    <Row>
+                        <Col aria-label="Shipyard outfit ships section">
                             Outfit Ships
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 }
-            </div>
+            </Col>
         );
     }
 }

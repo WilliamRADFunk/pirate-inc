@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 
-import styles from "./StartMenuLoad.module.scss";
 import { gameManager } from "../../services/GameManager";
 
 interface Props {}
@@ -49,8 +48,8 @@ export class Intro extends React.Component<Props, State> {
         switch(this.state.difficulty) {
             case 1: {
                 return (
-                    <div className="row">
-                        <div className="col-12 col-lg-8 offset-lg-2 text-left">
+                    <Row>
+                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             <p>
                                 It's the early 1700's and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of Glasgow about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
                             </p>
@@ -69,23 +68,23 @@ export class Intro extends React.Component<Props, State> {
                             <p>
                                 What will you do first?
                             </p>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 );
             }
             case 2: {
                 return (
-                    <div className="row">
-                        <div className="col-12 col-lg-8 offset-lg-2 text-left">
+                    <Row>
+                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             The Hard difficulty story
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 );
             }
             case 3: {
                 return (
-                    <div className="row">
-                        <div className="col-12 col-lg-8 offset-lg-2 text-left">
+                    <Row>
+                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             <p>
                                 That disastrous day had arrived when your fleet met a force greater than it's own. You and the handful of men on the small row boat with you watch as the last of your ships sink beneath the waves. The storm took everything you'd built in but an hour.
                             </p>
@@ -98,14 +97,14 @@ export class Intro extends React.Component<Props, State> {
                             <p>
                                 If you fail in your firststab at treasure, you probably won't get a second.
                             </p>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 );
             }
             default: {
                 return (
-                    <div className="row">
-                        <div className="col-12 col-lg-8 offset-lg-2 text-left">
+                    <Row>
+                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             <p>
                                 Passed up for promotion again, you’ve rallied the crew of a large English merchant vessel to turn on its captain and his worthless officers.
                             </p>
@@ -118,8 +117,8 @@ export class Intro extends React.Component<Props, State> {
                             <p>
                                 Best place to start is the safety of the Pirate Republic of Nassau, and so you set sail. From there, only you can decide how to make your legend.
                             </p>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 );
             }
         }
@@ -159,15 +158,15 @@ export class Intro extends React.Component<Props, State> {
         const { errorMsg, validName } = this.state;
 
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2 py-5">
-                <div className="row">
-                    <div className="col-12 col-lg-8 offset-lg-2 mb-4">
+            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
+                <Row>
+                    <Col xs="12" lg={{ span: 8, offset: 2 }} className="mb-4">
                         <h2 className="font-italic">How your story begins...</h2>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 {this.getIntro()}
-                <div className="row">
-                    <div className="col-12 col-lg-6 offset-lg-3 my-4">
+                <Row>
+                    <Col xs="12" lg={{ span: 6, offset: 3 }} className="my-4">
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="load-code-text">Your Pirate Name:</InputGroup.Text>
@@ -182,16 +181,16 @@ export class Intro extends React.Component<Props, State> {
                                 {errorMsg}
                             </Form.Control.Feedback>
                         </InputGroup>
-                    </div>
-                </div>
-                <div className="row">
+                    </Col>
+                </Row>
+                <Row>
                     <Button
                         variant="primary"
                         className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? "" : " disabled"}`}
                         onClick={() => this.startGame()}>To the Ship!
                     </Button>
-                </div>
-            </div>
+                </Row>
+            </Col>
         );
     }
 }

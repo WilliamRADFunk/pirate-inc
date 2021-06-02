@@ -1,10 +1,9 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
 import { gameManager, GameState } from "../../../services/GameManager";
-import { SceneLocation } from "../../../Types/SceneLocation";
 import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
 import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
 import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";
@@ -62,37 +61,37 @@ export class StartMenu extends React.Component<Props, State> {
 
         return (
             gameState !== GameState.Start ? null :
-            <div className="boundaries col-12 col-lg-8 offset-lg-2 py-5">
+            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
                 { menuState !== MenuState.MainMenu ? null :
                     <>
-                        <div className="row">
+                        <Row>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.startGame()}>Start Game
                             </Button>
-                        </div>
-                        <div className="row">
+                        </Row>
+                        <Row>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.changeMenuState(MenuState.LoadGame)}>Load Game
                             </Button>
-                        </div>
-                        <div className="row">
+                        </Row>
+                        <Row>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.changeMenuState(MenuState.Difficulty)}>Change Difficulty
                             </Button>
-                        </div>
-                        <div className="row">
+                        </Row>
+                        <Row>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.changeMenuState(MenuState.Instructions)}>How to Play
                             </Button>
-                        </div>
+                        </Row>
                     </>
                 }
                 { menuState !== MenuState.LoadGame ? null :
@@ -104,7 +103,7 @@ export class StartMenu extends React.Component<Props, State> {
                 { menuState !== MenuState.Instructions ? null :
                     <StartMenuInstructions toggleView={() => this.changeMenuState(MenuState.MainMenu)}></StartMenuInstructions>
                 }
-            </div>
+            </Col>
         );
     }
 

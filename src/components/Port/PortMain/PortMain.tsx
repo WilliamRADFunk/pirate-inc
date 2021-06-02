@@ -1,9 +1,8 @@
 import React from "react";
+import { Col, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
-import { gameManager } from "../../../services/GameManager";
-import { SceneLocation } from "../../../Types/SceneLocation";
 import { Bungalow } from "../Bungalow/Bungalow";
 import { ColonialOffice } from "../ColonialOffice/ColonialOffice";
 import { Shipyard } from "../Shipyard/Shipyard";
@@ -12,7 +11,7 @@ import { Tavern } from "../Tavern/Tavern";
 interface Props {}
 
 interface State {
-    sceneLocation: SceneLocation;
+    
 }
 
 export class PortMain extends React.Component<Props, State> {
@@ -22,19 +21,19 @@ export class PortMain extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            sceneLocation: SceneLocation.Port,
+            
         };
     }
     
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            gameManager.getSceneLocation().subscribe(location => {
-                if (location) {
-                    // add balance to local state if number
-                    this.setState({ sceneLocation: location });
-                }
-            }),
+            // gameManager.getSceneLocation().subscribe(location => {
+            //     if (location) {
+            //         // add balance to local state if number
+            //         this.setState({ sceneLocation: location });
+            //     }
+            // }),
         );
     }
 
@@ -45,16 +44,16 @@ export class PortMain extends React.Component<Props, State> {
     }
 
     public render() {
-        const { sceneLocation } = this.state;
+        // const { } = this.state;
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2">
-                <div className="row">
+            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries mt-5">
+                <Row>
                     <Shipyard></Shipyard>
                     <Tavern></Tavern>
                     <ColonialOffice></ColonialOffice>
                     <Bungalow></Bungalow>
-                </div>
-            </div>
+                </Row>
+            </Col>
         );
     }
 }

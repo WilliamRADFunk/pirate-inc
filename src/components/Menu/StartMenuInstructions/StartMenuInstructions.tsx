@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, DropdownButton, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
@@ -44,15 +44,15 @@ export class StartMenuInstructions extends React.Component<Props, State> {
 
         return (
             <>
-                <div className="row">
+                <Row>
                     <Button
                         variant="primary"
                         className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                         onClick={toggleView}>
                         Back to Menu
                     </Button>
-                </div>
-                <div className="row">
+                </Row>
+                <Row>
                     <DropdownButton
                         className={styles["instruction-dropdown-toggle"] + " col-6 offset-3 my-4 bg-info px-0"}
                         as={ButtonGroup}
@@ -74,7 +74,7 @@ export class StartMenuInstructions extends React.Component<Props, State> {
                                 </Dropdown.Item>
                         ))}
                     </DropdownButton>
-                </div>
+                </Row>
             </>
         );
     }

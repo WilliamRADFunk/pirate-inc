@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import styles from './HUD.module.scss';
 import { gameManager, GameState } from "../../services/GameManager";
-import { SceneLocation } from '../../Types/SceneLocation';
+import { Col, Row } from 'react-bootstrap';
 
 interface Props {}
 
@@ -161,24 +161,24 @@ export class HUD extends React.Component<Props, State> {
 
         return (gameState !== GameState.Active ? null :
             
-                <div className="boundaries col-12 col-lg-8 offset-lg-2 text-left">
-                    <div className="row">
-                        <div className="col-6">
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Action Points:</div>
-                                <div className={styles.itemValue + " col-6"}>{remActionPoints}/{totalActionPoints}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Treasury:</div>
-                                <div className={styles.itemValue + " col-6"}>{balance}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Crew:</div>
-                                <div className={styles.itemValue + " col-6"}>{currentCrew}/{maxCrew}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Provisions:</div>
-                                <div className={styles.itemValue + " col-6"}>
+                <Col xs="12" lg={{ span: 8, offset: 2}} className="boundaries text-left">
+                    <Row>
+                        <Col xs="12" lg="6">
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Action Points:</Col>
+                                <Col xs="6" className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Treasury:</Col>
+                                <Col xs="6" className={styles.itemValue}>{balance}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Crew:</Col>
+                                <Col xs="6" className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Provisions:</Col>
+                                <Col xs="6" className={styles.itemValue}>
                                     <span className="text-red mr-3">
                                         {provisions[0]}
                                     </span>
@@ -188,38 +188,38 @@ export class HUD extends React.Component<Props, State> {
                                     <span className="text-red">
                                         {provisions[2]}
                                     </span>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Ships:</div>
-                                <div className={styles.itemValue + " col-6"}>{shipCount}</div>
-                            </div>
-                        </div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Ships:</Col>
+                                <Col xs="6" className={styles.itemValue}>{shipCount}</Col>
+                            </Row>
+                        </Col>
                         {/* Right side of HUD */}
-                        <div className="col-6">
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Fleet Health:</div>
-                                <div className={styles.itemValue + " col-6"}>{fleetHealth}%</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Crew Wages:</div>
-                                <div className={styles.itemValue + " col-6"}>{crewWages}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Officer Salaries:</div>
-                                <div className={styles.itemValue + " col-6"}>{officerSalaries}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Infamy:</div>
-                                <div className={styles.itemValue + " col-6"}>{infamy}</div>
-                            </div>
-                            <div className="row">
-                                <div className={styles.itemLabel + " col-6"}>Bounty:</div>
-                                <div className={styles.itemValue + " col-6"}>{playerBounty}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        <Col xs="12" lg="6">
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Fleet Health:</Col>
+                                <Col xs="6" className={styles.itemValue}>{fleetHealth}%</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Crew Wages:</Col>
+                                <Col xs="6" className={styles.itemValue}>{crewWages}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Officer Salaries:</Col>
+                                <Col xs="6" className={styles.itemValue}>{officerSalaries}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Infamy:</Col>
+                                <Col xs="6" className={styles.itemValue}>{infamy}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className={styles.itemLabel}>Bounty:</Col>
+                                <Col xs="6" className={styles.itemValue}>{playerBounty}</Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
         );
     }
 }

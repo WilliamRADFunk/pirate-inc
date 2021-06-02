@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'react-bootstrap';
 
 import { Subscription } from 'rxjs';
 
@@ -56,31 +57,31 @@ class App extends React.Component<Props, State> {
     const { gameState, sceneLocation } = this.state;
     return (
       <div className="App text-center">
-        <div className="row">
+        <Row>
           <Title></Title>
-        </div>
+        </Row>
         { gameState !== GameState.Start ? null :
-          <div className="row">
+          <Row>
             <StartMenu></StartMenu>
-          </div>
+          </Row>
         }
         { gameState !== GameState.Intro ? null :
-          <div className="row">
+          <Row>
             <Intro></Intro>
-          </div>
+          </Row>
         }
         { gameState !== GameState.Active ? null :
           <>
-            <div className="row">
+            <Row>
               <LocationHeader></LocationHeader>
-            </div>
-            <div className="row">
+            </Row>
+            <Row>
               <HUD></HUD>
-            </div>
+            </Row>
             { sceneLocation !== SceneLocation.Port ? null :
-              <div className="row">
+              <Row>
                 <PortMain></PortMain>
-              </div>
+              </Row>
             }
           </>
         }
