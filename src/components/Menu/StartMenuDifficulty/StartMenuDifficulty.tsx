@@ -29,7 +29,7 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            difficulty: 0,
+            difficulty: 1,
             toggleView: props.toggleView
         };
     }

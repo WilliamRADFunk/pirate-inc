@@ -11,8 +11,8 @@ import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";
 interface Props {}
 
 interface State {
+    gameState: GameState;
     menuState: MenuState;
-    sceneLocation: string;
 }
 
 enum MenuState {
@@ -29,18 +29,18 @@ export class StartMenu extends React.Component<Props, State> {
         super(props);
 
         this.state = {
+            gameState: GameState.Start,
             menuState: MenuState.MainMenu,
-            sceneLocation: "",
         };
     }
 
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            gameManager.getSceneLocation().subscribe(location => {
-                if (location) {
-                    // add balance to local state if number
-                    this.setState({ sceneLocation: location });
+            gameManager.getGameState().subscribe(gameState => {
+                if (gameState) {
+                    // add balance to local game state if number
+                    this.setState({ gameState: gameState });
                 }
             })
         );
@@ -57,10 +57,10 @@ export class StartMenu extends React.Component<Props, State> {
     }
 
     public render() {
-        const { menuState, sceneLocation } = this.state;
+        const { gameState, menuState } = this.state;
 
         return (
-            sceneLocation != SceneLocation.StartMenu ? null :
+            gameState !== GameState.Start ? null :
             <div className="boundaries col-12 col-lg-8 offset-lg-2 py-5">
                 { menuState !== MenuState.MainMenu ? null :
                     <>

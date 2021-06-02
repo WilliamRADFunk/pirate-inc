@@ -1,9 +1,9 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
+import React from "react";
 
-import styles from './LocationHeader.module.scss';
-import { gameManager } from "../../services/GameManager";
-import { SceneLocation } from '../../Types/SceneLocation';
+import { Subscription } from "rxjs";
+
+import { gameManager } from "../../../services/GameManager";
+import { SceneLocation } from "../../../Types/SceneLocation";
 
 interface Props {}
 
@@ -11,18 +11,19 @@ interface State {
     sceneLocation: SceneLocation;
 }
 
-export class LocationHeader extends React.Component<Props, State> {
+export class Shipyard extends React.Component<Props, State> {
     private subscriptions: Subscription[] = [];
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            sceneLocation: SceneLocation.Intro,
+            sceneLocation: SceneLocation.Port,
         };
     }
     
     public componentDidMount() {
+        // subscribe to all relevant player HUD data
         this.subscriptions.push(
             gameManager.getSceneLocation().subscribe(location => {
                 if (location) {
@@ -42,9 +43,8 @@ export class LocationHeader extends React.Component<Props, State> {
     public render() {
         const { sceneLocation } = this.state;
         return (
-            <div className="boundaries col-12 col-lg-8 offset-lg-2">
-                <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
-                <div className={styles.title}>{sceneLocation}</div>
+            <div className="boundaries col-12 col-lg-5 mt-5">
+                Shipyard
             </div>
         );
     }

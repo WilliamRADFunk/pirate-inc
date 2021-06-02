@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import styles from './HUD.module.scss';
-import { gameManager } from "../../services/GameManager";
+import { gameManager, GameState } from "../../services/GameManager";
 import { SceneLocation } from '../../Types/SceneLocation';
 
 interface Props {}
@@ -18,7 +18,7 @@ interface State {
     playerBounty: string;
     provisions: [number, number, number];
     remActionPoints: number;
-    sceneLocation: string;
+    gameState: GameState;
     shipCount: number;
     totalActionPoints: number;
 }
@@ -46,7 +46,7 @@ export class HUD extends React.Component<Props, State> {
             playerBounty: '$0',
             provisions: [0, 0, 0],
             remActionPoints: 0,
-            sceneLocation: SceneLocation.StartMenu.toString(),
+            gameState: GameState.Start,
             shipCount: 1,
             totalActionPoints: 0,
         };
@@ -127,10 +127,10 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ fleetHealth: health });
                 }
             }),
-            gameManager.getSceneLocation().subscribe(location => {
-                if (location) {
-                    // add scene location to local state if truthy
-                    this.setState({ sceneLocation: location });
+            gameManager.getGameState().subscribe(gameState => {
+                if (gameState) {
+                    // add scene gameState to local state if truthy
+                    this.setState({ gameState: gameState });
                 }
             })
         );
@@ -149,18 +149,18 @@ export class HUD extends React.Component<Props, State> {
             currentCrew,
             infamy,
             fleetHealth,
+            gameState,
             maxCrew,
             officerSalaries,
             playerBounty,
             provisions,
             remActionPoints,
-            sceneLocation,
             shipCount,
             totalActionPoints
         } = this.state;
 
-        return (
-            sceneLocation == SceneLocation.StartMenu || sceneLocation == SceneLocation.Intro ? null :
+        return (gameState !== GameState.Active ? null :
+            
                 <div className="boundaries col-12 col-lg-8 offset-lg-2 text-left">
                     <div className="row">
                         <div className="col-6">

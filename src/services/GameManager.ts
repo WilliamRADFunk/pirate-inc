@@ -38,7 +38,7 @@ class GameManager {
     /**
      * The player's choice of game difficulty.
      */
-    private difficulty: BehaviorSubject<number> = new BehaviorSubject(0);
+    private difficulty: BehaviorSubject<number> = new BehaviorSubject(1);
     /**
      * The salary paid per turn to your fleet's doctor.
      */
@@ -62,7 +62,7 @@ class GameManager {
     /**
      * The salary paid per turn to your fleet's quartermaster.
      */
-     private quartermasterSalary: BehaviorSubject<number> = new BehaviorSubject(300);
+    private quartermasterSalary: BehaviorSubject<number> = new BehaviorSubject(300);
     /**
      * The number of action points player has left for their turn.
      */
@@ -79,7 +79,7 @@ class GameManager {
     /**
      * Tracks user's scene location, mostly for identifying which controls to make available on screen.
      */
-    private sceneLocation: BehaviorSubject<string> = new BehaviorSubject(SceneLocation.StartMenu.toString());
+    private sceneLocation: BehaviorSubject<SceneLocation> = new BehaviorSubject(SceneLocation.Port as SceneLocation);
     /**
      * The number of ships the player owns.
      */
@@ -204,7 +204,7 @@ class GameManager {
         return this.remainingActionPoints.asObservable();
     }
 
-    public getSceneLocation(): Observable<string> {
+    public getSceneLocation(): Observable<SceneLocation> {
         return this.sceneLocation.asObservable();
     }
 

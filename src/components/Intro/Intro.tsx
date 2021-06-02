@@ -52,19 +52,19 @@ export class Intro extends React.Component<Props, State> {
                     <div className="row">
                         <div className="col-12 col-lg-8 offset-lg-2 text-left">
                             <p>
-                                It's 17** and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of (British Port) about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
+                                It's the early 1700's and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of Glasgow about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
                             </p>
                             <p>
                                 Names like Benjamin Hornigold and the founding of the Pirate Republic of Nassau, Edward “Black Beard” Thatch with his beard set aflame, and the duo of William Palsgrave and Samuel Bellamy; the one seeking fortune, and the other the love of his sweetheart.
                             </p>
                             <p>
-                                Your prospects under the English crown seem grim. A life of piracy, while deadly dangerous, appear a welcomed escape from a tedious life.
+                                Your prospects under the English crown seem grim. A life of piracy, while deadly dangerous, appears as a welcomed escape from a tedious life.
                             </p>
                             <p>
                                 Will you add your name among the infamous and gain your fortune, or will you find yourself a watery grave where no one remembers you?
                             </p>
                             <p>
-                                You and a band of misanthropes have stolen aboard a small frigate. The crew were on leave after a long voyage and the few left on board to stand watch were alseep after a long night of drinking. In quick order you’ve managed to tie them up and deposit them on the dock before setting sail for the Caribbean. You find yourself at the port of St. Croix, one pirate captain among many.
+                                You and a band of misanthropes have stolen aboard a small frigate. The crew were on leave after a lengthy voyage and the few left on board to stand watch were alseep after a long night of drinking. In quick order you’ve managed to tie up and deposit them on the dock before setting sail for the Caribbean. You find yourself at the pirate island fortress of Tortuga, one pirate captain among many.
                             </p>
                             <p>
                                 What will you do first?
@@ -86,7 +86,18 @@ export class Intro extends React.Component<Props, State> {
                 return (
                     <div className="row">
                         <div className="col-12 col-lg-8 offset-lg-2 text-left">
-                            The Impossible difficulty story
+                            <p>
+                                That disastrous day had arrived when your fleet met a force greater than it's own. You and the handful of men on the small row boat with you watch as the last of your ships sink beneath the waves. The storm took everything you'd built in but an hour.
+                            </p>
+                            <p>
+                                Your only hope to survive at all is to row for Norman Island. When you get there you might have just enough rescued wealth on your person to trade for a small sloop with a couple of cannon.
+                            </p>
+                            <p>
+                                Be ever so cautious, though; the slightest misstep could result in ruination.
+                            </p>
+                            <p>
+                                If you fail in your firststab at treasure, you probably won't get a second.
+                            </p>
                         </div>
                     </div>
                 );
@@ -156,7 +167,7 @@ export class Intro extends React.Component<Props, State> {
                 </div>
                 {this.getIntro()}
                 <div className="row">
-                    <div className="col-12 col-lg-6 offset-lg-3">
+                    <div className="col-12 col-lg-6 offset-lg-3 my-4">
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="load-code-text">Your Pirate Name:</InputGroup.Text>
