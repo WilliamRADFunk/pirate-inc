@@ -1,14 +1,7 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
-import { SceneLocation } from '../Types/SceneLocation';
-
-export enum GameState {
-    Start = 0,
-    Intro = 1,
-    Load = 2,
-    Active = 3,
-    GameOver = 4
-}
+import { GameState, stateManager } from './StateManager';
+import { SceneLocation } from '../types/SceneLocation';
 
 class GameManager {
     /**
@@ -48,10 +41,6 @@ class GameManager {
      */
     private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
     /**
-     * The state of the overall game: Menu, Intro, Active, Game Over, etc..
-     */
-    private gameState: BehaviorSubject<GameState> = new BehaviorSubject(GameState.Start as GameState);
-    /**
      * The infamy associated with player.
      */
     private infamy: BehaviorSubject<number> = new BehaviorSubject(37);
@@ -88,6 +77,10 @@ class GameManager {
      * The number of ships the player owns.
      */
     private ships: { health: number; }[] = [];
+    /**
+     * The list of subscriptions, usually other manager services.
+     */
+    private subscriptions: Subscription[] = [];
     /**
      * The number of total action points player is capable of having in a given turn.
      */
@@ -135,27 +128,6 @@ class GameManager {
         this.difficulty.next(newDiff);
     }
 
-    public changeGameState(newState: GameState): void {
-        const oldState = this.gameState.value;
-        if (oldState === GameState.Start && (newState !== GameState.Intro && newState !== GameState.Load)) {
-            return;
-        }
-
-        if (oldState === GameState.Load && (newState !== GameState.Start && newState !== GameState.Active)) {
-            return;
-        }
-
-        if (oldState === GameState.Intro && newState !== GameState.Active) {
-            return;
-        }
-
-        if (oldState === GameState.GameOver && newState !== GameState.Start) {
-            return;
-        }
-
-        this.gameState.next(newState);
-    }
-
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
     }
@@ -174,10 +146,6 @@ class GameManager {
 
     public getFleetHealth(): Observable<number> {
         return this.fleetHealth.asObservable();
-    }
-
-    public getGameState(): Observable<GameState> {
-        return this.gameState.asObservable();
     }
 
     public getInfamy(): Observable<number> {
@@ -223,7 +191,7 @@ class GameManager {
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
             this.playerName.next(name);
-            this.changeGameState(GameState.Active);
+            stateManager.changeGameState(GameState.Active);
             return true;
         }
         return false;

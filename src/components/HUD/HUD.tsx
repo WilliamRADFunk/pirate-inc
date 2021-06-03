@@ -2,7 +2,8 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import styles from './HUD.module.scss';
-import { gameManager, GameState } from "../../services/GameManager";
+import { gameManager } from "../../services/GameManager";
+import { GameState, stateManager } from '../../services/StateManager';
 import { Col, Row } from 'react-bootstrap';
 
 interface Props {}
@@ -127,7 +128,7 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ fleetHealth: health });
                 }
             }),
-            gameManager.getGameState().subscribe(gameState => {
+            stateManager.getGameState().subscribe(gameState => {
                 if (gameState) {
                     // add scene gameState to local state if truthy
                     this.setState({ gameState: gameState });

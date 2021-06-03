@@ -10,8 +10,9 @@ import { LocationHeader } from './components/LocationHeader/LocationHeader';
 import { StartMenu } from './components/Menu/StartMenu/StartMenu';
 import { PortMain } from './components/Port/PortMain/PortMain';
 import { Title } from './components/Title/Title';
-import { gameManager, GameState } from './services/GameManager';
-import { SceneLocation } from './Types/SceneLocation';
+import { gameManager } from './services/GameManager';
+import { GameState, stateManager } from './services/StateManager';
+import { SceneLocation } from './types/SceneLocation';
 
 interface Props {}
 
@@ -35,7 +36,7 @@ class App extends React.Component<Props, State> {
   public componentDidMount() {
       // subscribe to all relevant player HUD data
       this.subscriptions.push(
-          gameManager.getGameState().subscribe(gameState => {
+        stateManager.getGameState().subscribe(gameState => {
             this.setState({ gameState: gameState });
           }),
           gameManager.getSceneLocation().subscribe(location => {

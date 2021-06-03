@@ -3,7 +3,8 @@ import { Button, Col, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
-import { gameManager, GameState } from "../../../services/GameManager";
+import { gameManager } from "../../../services/GameManager";
+import { stateManager, GameState } from "../../../services/StateManager";
 import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
 import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
 import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";
@@ -37,7 +38,7 @@ export class StartMenu extends React.Component<Props, State> {
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            gameManager.getGameState().subscribe(gameState => {
+            stateManager.getGameState().subscribe(gameState => {
                 if (gameState) {
                     // add balance to local game state if number
                     this.setState({ gameState: gameState });
@@ -108,6 +109,6 @@ export class StartMenu extends React.Component<Props, State> {
     }
 
     public startGame(): void {
-        gameManager.changeGameState(GameState.Intro);
+        stateManager.changeGameState(GameState.Intro);
     }
 }

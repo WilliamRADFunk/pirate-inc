@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import styles from './LocationHeader.module.scss';
 import { gameManager } from "../../services/GameManager";
-import { SceneLocation } from '../../Types/SceneLocation';
+import { SceneLocation } from '../../types/SceneLocation';
 import { Col } from 'react-bootstrap';
 
 interface Props {}

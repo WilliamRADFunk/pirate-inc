@@ -112,29 +112,42 @@ export class Shipyard extends React.Component<Props, State> {
                 }
                 { shipYardMode !== ShipYardMode.Buy ? null :
                     <Row>
-                        <Col aria-label="Shipyard buy ships section">
-                            There are a total of {0} ships available for purchase. Select ship from list for details.
+                        <Col
+                            aria-label="Shipyard buy ships section description"
+                            className="fs-sm text-left">
+                            There are a total of {0} ships available for purchase.
+                            <br/>Select ship from list for details.
                         </Col>
                     </Row>
                 }
                 { shipYardMode !== ShipYardMode.Sell ? null :
                     <Row>
-                        <Col aria-label="Shipyard sell ships section">
-                            Sell Ships
+                        <Col
+                            aria-label="Shipyard sell ships section description"
+                            className="fs-sm text-left">
+                            Select one of your ships from the list.
+                            <br/>It's price is dependent on current condition, outfitting, and given need of this port.
                         </Col>
                     </Row>
                 }
                 { shipYardMode !== ShipYardMode.Repair ? null :
                     <Row>
-                        <Col aria-label="Shipyard repair ships section">
-                            Repair Ships
+                        <Col
+                            aria-label="Shipyard repair ships section description"
+                            className="fs-sm text-left">
+                            Select a damaged ship from the list to see cost for repairs.
+                            <br/>If you have no damaged ships, there will be no list.
                         </Col>
                     </Row>
                 }
                 { shipYardMode !== ShipYardMode.Outfit ? null :
                     <Row>
-                        <Col aria-label="Shipyard outfit ships section">
-                            Outfit Ships
+                        <Col
+                            aria-label="Shipyard outfit ships section description"
+                            className="fs-sm text-left">
+                            The port has limited supplies of canon, armor, and sail cloth.
+                            <br/>Each ship will also have a limit.
+                            <br/>Select ship to buy or sell it's outfitting.
                         </Col>
                     </Row>
                 }
