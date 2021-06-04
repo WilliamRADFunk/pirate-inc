@@ -1,7 +1,19 @@
 import { Ship } from "./Ship";
+import {
+    BowCanonType,
+    ShipDefaultArmor,
+    ShipDefaultCost,
+    ShipDefaultMainCannonType,
+    ShipDefaultMaxCannon,
+    ShipDefaultMaxCrew,
+    ShipDefaultMaxHealth,
+    ShipDefaultMinCrew,
+    ShipDefaultTopSpeed,
+    ShipType
+} from "../../types/ShipDefaults";
 
 export class Caravel extends Ship {
-    constructor(name: string) {
+    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
             0,              // armor
             3,              // cost modifier

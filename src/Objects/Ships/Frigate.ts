@@ -1,20 +1,33 @@
 import { Ship } from "./Ship";
+import {
+    BowCanonType,
+    ShipDefaultArmor,
+    ShipDefaultCost,
+    ShipDefaultMainCannonType,
+    ShipDefaultMaxCannon,
+    ShipDefaultMaxCrew,
+    ShipDefaultMaxHealth,
+    ShipDefaultMinCrew,
+    ShipDefaultTopSpeed,
+    ShipType
+} from "../../types/ShipDefaults";
 
 export class Frigate extends  Ship {
-    constructor(name: string) {
+    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            5,              // armor
-            8,              // cost modifier
-            600,            // max crew
-            250,            // min crew
-            38,             // max cannons
-            1000,           // max health
-            name,           // unique name for the vessel
-            7,              // top speed of the vessel
-            "Frigate",      // vessel type
-            1,              // number of cannons
-            "Empty",        // type, if any, of bow cannon on board
-            36              // the poundage type of the main cannons
+            armor ?? ShipDefaultArmor.Frigate,      // armor
+            ShipDefaultCost.Frigate,                // cost modifier
+            ShipDefaultMaxCrew.Frigate,             // max crew
+            ShipDefaultMinCrew.Frigate,             // min crew
+            ShipDefaultMaxCannon.Frigate,           // max cannons
+            ShipDefaultMaxHealth.Frigate,           // max health
+            name,                                   // unique name for the vessel
+            ShipDefaultTopSpeed.Frigate,            // top speed of the vessel
+            ShipType.Frigate,                       // vessel type
+            numCannon ?? 1,                         // number of cannons
+            bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
+            ShipDefaultMainCannonType.Frigate,      // the poundage type of the main cannons
+            health                                  // current health of the ship if not full
         );
     }
 }

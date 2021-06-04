@@ -12,21 +12,21 @@ import {
     ShipType
 } from "../../types/ShipDefaults";
 
-export class EastIndiaman extends  Ship {
+export class Pinnace extends  Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            armor ?? ShipDefaultArmor.EastIndiaman,     // armor
-            ShipDefaultCost.EastIndiaman,               // cost modifier
-            ShipDefaultMaxCrew.EastIndiaman,            // max crew
-            ShipDefaultMinCrew.EastIndiaman,            // min crew
-            ShipDefaultMaxCannon.EastIndiaman,          // max cannons
-            ShipDefaultMaxHealth.EastIndiaman,          // max health
+            armor ?? ShipDefaultArmor.Pinnace,          // armor
+            ShipDefaultCost.Pinnace,                    // cost modifier
+            ShipDefaultMaxCrew.Pinnace,                 // max crew
+            ShipDefaultMinCrew.Pinnace,                 // min crew
+            ShipDefaultMaxCannon.Pinnace,               // max cannons
+            ShipDefaultMaxHealth.Pinnace,               // max health
             name,                                       // unique name for the vessel
-            ShipDefaultTopSpeed.EastIndiaman,           // top speed of the vessel
-            ShipType.EastIndiaman,                      // vessel type
+            ShipDefaultTopSpeed.Pinnace,                // top speed of the vessel
+            ShipType.Pinnace,                           // vessel type
             numCannon ?? 1,                             // number of cannons
             bowCannon ?? "Empty",                       // type, if any, of bow cannon on board
-            ShipDefaultMainCannonType.EastIndiaman,     // the poundage type of the main cannons
+            ShipDefaultMainCannonType.Pinnace,          // the poundage type of the main cannons
             health                                      // current health of the ship if not full
         );
     }

@@ -1,20 +1,33 @@
 import { Ship } from "./Ship";
+import {
+    BowCanonType,
+    ShipDefaultArmor,
+    ShipDefaultCost,
+    ShipDefaultMainCannonType,
+    ShipDefaultMaxCannon,
+    ShipDefaultMaxCrew,
+    ShipDefaultMaxHealth,
+    ShipDefaultMinCrew,
+    ShipDefaultTopSpeed,
+    ShipType
+} from "../../types/ShipDefaults";
 
 export class Dhow extends  Ship {
-    constructor(name: string) {
+    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            0,              // armor
-            3,              // cost modifier
-            80,             // max crew
-            20,             // min crew
-            6,              // max cannons
-            200,            // max health
-            name,           // unique name for the vessel
-            16,             // top speed of the vessel
-            "Dhow",         // vessel type
-            1,              // number of cannons
-            "Empty",        // type, if any, of bow cannon on board
-            6               // the poundage type of the main cannons
+            armor ?? ShipDefaultArmor.Dhow,     // armor
+            ShipDefaultCost.Dhow,               // cost modifier
+            ShipDefaultMaxCrew.Dhow,            // max crew
+            ShipDefaultMinCrew.Dhow,            // min crew
+            ShipDefaultMaxCannon.Dhow,          // max cannons
+            ShipDefaultMaxHealth.Dhow,          // max health
+            name,                               // unique name for the vessel
+            ShipDefaultTopSpeed.Dhow,           // top speed of the vessel
+            ShipType.Dhow,                      // vessel type
+            numCannon ?? 1,                     // number of cannons
+            bowCannon ?? "Empty",               // type, if any, of bow cannon on board
+            ShipDefaultMainCannonType.Dhow,     // the poundage type of the main cannons
+            health                              // current health of the ship if not full
         );
     }
 }

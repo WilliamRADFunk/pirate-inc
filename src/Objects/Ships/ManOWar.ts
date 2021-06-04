@@ -12,21 +12,21 @@ import {
     ShipType
 } from "../../types/ShipDefaults";
 
-export class Cutter extends  Ship {
+export class ManOWar extends  Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            armor ?? ShipDefaultArmor.Cutter,       // armor
-            ShipDefaultCost.Cutter,                 // cost modifier
-            ShipDefaultMaxCrew.Cutter,              // max crew
-            ShipDefaultMinCrew.Cutter,              // min crew
-            ShipDefaultMaxCannon.Cutter,            // max cannons
-            ShipDefaultMaxHealth.Cutter,            // max health
+            armor ?? ShipDefaultArmor.ManOWar,      // armor
+            ShipDefaultCost.ManOWar,                // cost modifier
+            ShipDefaultMaxCrew.ManOWar,             // max crew
+            ShipDefaultMinCrew.ManOWar,             // min crew
+            ShipDefaultMaxCannon.ManOWar,           // max cannons
+            ShipDefaultMaxHealth.ManOWar,           // max health
             name,                                   // unique name for the vessel
-            ShipDefaultTopSpeed.Cutter,             // top speed of the vessel
-            ShipType.Cutter,                        // vessel type
+            ShipDefaultTopSpeed.ManOWar,            // top speed of the vessel
+            ShipType.ManOWar,                       // vessel type
             numCannon ?? 1,                         // number of cannons
             bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
-            ShipDefaultMainCannonType.Cutter,       // the poundage type of the main cannons
+            ShipDefaultMainCannonType.ManOWar,      // the poundage type of the main cannons
             health                                  // current health of the ship if not full
         );
     }
