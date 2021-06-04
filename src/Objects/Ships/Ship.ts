@@ -2,10 +2,38 @@ export type BowCanonType = "Long Nine" | "Explosive Carronade" | "Empty";
 
 export type MainCanonType = 42 | 36 | 32 | 24 | 18 | 12 | 9 | 8 | 6 | 0;
 
+export enum ShipRarityValue {
+    AlmostNonExistent = 1,
+    Sparse = 2,
+    Common = 3,
+    Abundant = 4,
+    Everywhere = 5
+}
+
+export enum ShipRarityType {
+    "Barque" = ShipRarityValue.Abundant,
+    "Brig" = ShipRarityValue.AlmostNonExistent,
+    "Brigantine" = ShipRarityValue.Sparse,
+    "Caravel" = ShipRarityValue.Common,
+    "Carrack" = ShipRarityValue.Sparse,
+    "Corvette" = ShipRarityValue.Common,
+    "Cutter" = ShipRarityValue.Abundant,
+    "Dhow" = ShipRarityValue.AlmostNonExistent,
+    "East Indiaman" = ShipRarityValue.Common,
+    "Frigate" = ShipRarityValue.AlmostNonExistent,
+    "Galleon" = ShipRarityValue.Sparse,
+    "Keltch" = ShipRarityValue.Common,
+    "Man-O-War" |
+    "Pinnace" |
+    "Schooner" |
+    "Slaver" |
+    "Sloop"
+}
+
 export type ShipType =
     "Barque" |
     "Brig" |
-    "Brigatine" |
+    "Brigantine" |
     "Caravel" |
     "Carrack" |
     "Corvette" |
@@ -30,6 +58,8 @@ export class Ship {
 
     private cannonTypeMain: MainCanonType = 0;
 
+    private costModifier: number = 1;
+
     private crewMax: number = 0;
 
     private crewMin: number = 0;
@@ -50,6 +80,7 @@ export class Ship {
 
     constructor(
         armor: number,
+        costModifier: number,
         crewMax: number,
         crewMin: number,
         maxCannonCount: number,
@@ -62,6 +93,7 @@ export class Ship {
         cannonTypeMain?: MainCanonType,
         health?: number) {
         this.armorLevel = armor;
+        this.costModifier = costModifier;
         this.crewMax = crewMax;
         this.crewMin = crewMin;
         this.maxCannonCount = maxCannonCount;
@@ -72,7 +104,7 @@ export class Ship {
         this.cannonCount = cannonCount ?? 0;
         this.cannonTypeBow = cannonTypeBow ?? "Empty";
         this.cannonTypeMain = cannonTypeMain ?? 0;
-        this.health = health ?? 100;
+        this.health = health ?? this.maxHealth;
     }
 
     public addMainCannons(cannons: number): boolean {
@@ -101,6 +133,10 @@ export class Ship {
 
     public getBowCanonType(): string {
         return this.cannonTypeBow;
+    }
+
+    public getCostModifier(): number {
+        return this.costModifier;
     }
 
     public getCrewMax(): number {
