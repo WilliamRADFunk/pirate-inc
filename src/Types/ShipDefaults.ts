@@ -1,4 +1,4 @@
-export type BowCanonType = "Long Nine" | "Explosive Carronade" | "Empty";
+export type BowCanonType = "Long Nine" | "Explosive Carronade" | "Chain Shot" | "Empty";
 
 export type MainCanonType = 42 | 36 | 32 | 24 | 18 | 12 | 9 | 8 | 6 | 0;
 
