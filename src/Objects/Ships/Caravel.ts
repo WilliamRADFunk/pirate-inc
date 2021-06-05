@@ -15,18 +15,19 @@ import {
 export class Caravel extends Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            0,              // armor
-            3,              // cost modifier
-            100,            // max crew
-            20,             // min crew
-            8,              // max cannons
-            150,            // max health
-            name,           // unique name for the vessel
-            13,             // top speed of the vessel
-            "Caravel",      // vessel type
-            1,              // number of cannons
-            "Empty",        // type, if any, of bow cannon on board
-            6               // the poundage type of the main cannons
+            armor ?? ShipDefaultArmor.Caravel,      // armor
+            ShipDefaultCost.Caravel,                // cost modifier
+            ShipDefaultMaxCrew.Caravel,             // max crew
+            ShipDefaultMinCrew.Caravel,             // min crew
+            ShipDefaultMaxCannon.Caravel,           // max cannons
+            ShipDefaultMaxHealth.Caravel,           // max health
+            name,                                   // unique name for the vessel
+            ShipDefaultTopSpeed.Caravel,            // top speed of the vessel
+            ShipType.Caravel,                       // vessel type
+            numCannon ?? 1,                         // number of cannons
+            bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
+            ShipDefaultMainCannonType.Caravel,      // the poundage type of the main cannons
+            health                                  // current health of the ship if not full
         );
     }
 }

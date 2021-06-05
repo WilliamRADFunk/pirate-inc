@@ -1,3 +1,4 @@
+import { Cargo } from "../../types/Cargo";
 import { BowCanonType, MainCanonType, ShipType } from "../../types/ShipDefaults";
 
 export class Ship {
@@ -8,6 +9,10 @@ export class Ship {
     private cannonTypeBow: BowCanonType = "Empty";
 
     private cannonTypeMain: MainCanonType = 0;
+
+    private cargoCapacity: number = 100;
+
+    private cargoCarried: Cargo[] = [];
 
     private costModifier: number = 1;
 
@@ -31,6 +36,7 @@ export class Ship {
 
     constructor(
         armor: number,
+        cargoCapacity: number,
         costModifier: number,
         crewMax: number,
         crewMin: number,
@@ -42,8 +48,10 @@ export class Ship {
         cannonCount?: number,
         cannonTypeBow?: BowCanonType,
         cannonTypeMain?: MainCanonType,
+        cargoCarried?: Cargo[],
         health?: number) {
         this.armorLevel = armor;
+        this.cargoCapacity = cargoCapacity;
         this.costModifier = costModifier;
         this.crewMax = crewMax;
         this.crewMin = crewMin;
@@ -55,6 +63,7 @@ export class Ship {
         this.cannonCount = cannonCount ?? 0;
         this.cannonTypeBow = cannonTypeBow ?? "Empty";
         this.cannonTypeMain = cannonTypeMain ?? 0;
+        this.cargoCarried = cargoCarried ?? [];
         this.health = health ?? this.maxHealth;
     }
 
@@ -84,6 +93,14 @@ export class Ship {
 
     public getBowCanonType(): string {
         return this.cannonTypeBow;
+    }
+
+    public getCargoCapacity(): number {
+        return this.cargoCapacity;
+    }
+
+    public getCargoCarried(): Cargo[] {
+        return this.cargoCarried;
     }
 
     public getCostModifier(): number {

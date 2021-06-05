@@ -15,18 +15,19 @@ import {
 export class Brig extends Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            1,          // armor
-            4,          // cost modifier
-            150,        // max crew
-            30,         // min crew
-            18,         // max cannons
-            300,        // max health
-            name,       // unique name for the vessel
-            8,          // top speed of the vessel
-            "Brig",     // vessel type
-            1,          // number of cannons
-            "Empty",    // type, if any, of bow cannon on board
-            9           // the poundage type of the main cannons
+            armor ?? ShipDefaultArmor.Brig,         // armor
+            ShipDefaultCost.Brig,                   // cost modifier
+            ShipDefaultMaxCrew.Brig,                // max crew
+            ShipDefaultMinCrew.Brig,                // min crew
+            ShipDefaultMaxCannon.Brig,              // max cannons
+            ShipDefaultMaxHealth.Brig,              // max health
+            name,                                   // unique name for the vessel
+            ShipDefaultTopSpeed.Brig,               // top speed of the vessel
+            ShipType.Brig,                          // vessel type
+            numCannon ?? 1,                         // number of cannons
+            bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
+            ShipDefaultMainCannonType.Brig,         // the poundage type of the main cannons
+            health                                  // current health of the ship if not full
         );
     }
 }

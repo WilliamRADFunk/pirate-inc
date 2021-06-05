@@ -15,18 +15,19 @@ import {
 export class Brigantine extends Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
         super(
-            0,              // armor
-            3,              // cost modifier
-            125,            // max crew
-            25,             // min crew
-            16,             // max cannons
-            250,            // max health
-            name,           // unique name for the vessel
-            9,              // top speed of the vessel
-            "Brigantine",   // vessel type
-            1,              // number of cannons
-            "Empty",        // type, if any, of bow cannon on board
-            8               // the poundage type of the main cannons
+            armor ?? ShipDefaultArmor.Brigantine,   // armor
+            ShipDefaultCost.Brigantine,             // cost modifier
+            ShipDefaultMaxCrew.Brigantine,          // max crew
+            ShipDefaultMinCrew.Brigantine,          // min crew
+            ShipDefaultMaxCannon.Brigantine,        // max cannons
+            ShipDefaultMaxHealth.Brigantine,        // max health
+            name,                                   // unique name for the vessel
+            ShipDefaultTopSpeed.Brigantine,         // top speed of the vessel
+            ShipType.Brigantine,                    // vessel type
+            numCannon ?? 1,                         // number of cannons
+            bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
+            ShipDefaultMainCannonType.Brigantine,   // the poundage type of the main cannons
+            health                                  // current health of the ship if not full
         );
     }
 }
