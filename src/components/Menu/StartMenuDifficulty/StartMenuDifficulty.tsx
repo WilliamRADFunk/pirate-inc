@@ -19,10 +19,10 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
     private subscriptions: Subscription[] = [];
 
     public radios: ListOption[] = [
-        { label: 'Easy', value: 0 },
-        { label: 'Normal', value: 1 },
-        { label: 'Hard', value: 2 },
-        { label: 'Impossible', value: 3 },
+        { label: 'Easy', value: 1 },
+        { label: 'Normal', value: 2 },
+        { label: 'Hard', value: 3 },
+        { label: 'Impossible', value: 4 },
     ];
 
     constructor(props: Props) {

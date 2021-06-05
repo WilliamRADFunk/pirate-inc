@@ -2,6 +2,7 @@ import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 import { GameState, stateManager } from './StateManager';
 import { SceneLocation } from '../types/SceneLocation';
+import { BasePirateWage } from '../types/Constants';
 
 class GameManager {
     /**
@@ -19,7 +20,7 @@ class GameManager {
     /**
      * The cost per turn of a single crew member.
      */
-    private crewWage: BehaviorSubject<number> = new BehaviorSubject(100);
+    private crewWage: BehaviorSubject<number> = new BehaviorSubject(0);
     /**
      * The combined total of the crew's wages.
      */
@@ -31,7 +32,7 @@ class GameManager {
     /**
      * The player's choice of game difficulty.
      */
-    private difficulty: BehaviorSubject<number> = new BehaviorSubject(1);
+    private difficulty: BehaviorSubject<number> = new BehaviorSubject(2);
     /**
      * The salary paid per turn to your fleet's doctor.
      */
@@ -91,7 +92,13 @@ class GameManager {
     private totalProvisions: BehaviorSubject<[number, number, number]> = new BehaviorSubject([132, 74, 13]);
 
     constructor() {
+        this.crewWage.next(BasePirateWage * this.difficulty.value);
         this.crewWages.next(this.crewWage.value * this.currentCrewCount.value);
+    }
+
+    private updateCrewWage(): void {
+        this.crewWage.next(BasePirateWage * this.difficulty.value);
+        this.updateCrewWages();
     }
 
     private updateCrewWages(): void {
@@ -191,6 +198,7 @@ class GameManager {
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
             this.playerName.next(name);
+            this.updateCrewWage();
             stateManager.changeGameState(GameState.Active);
             return true;
         }

@@ -5,17 +5,20 @@ import {
     ShipDefaultCost,
     ShipDefaultMainCannonType,
     ShipDefaultMaxCannon,
+    ShipDefaultMaxCargo,
     ShipDefaultMaxCrew,
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
     ShipType
 } from "../../types/ShipDefaults";
+import { Cargo } from "../../types/Cargo";
 
 export class ManOWar extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
+    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.ManOWar,      // armor
+            ShipDefaultMaxCargo.ManOWar,            // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.ManOWar,                // cost modifier
             ShipDefaultMaxCrew.ManOWar,             // max crew
             ShipDefaultMinCrew.ManOWar,             // min crew
@@ -27,6 +30,7 @@ export class ManOWar extends  Ship {
             numCannon ?? 1,                         // number of cannons
             bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
             ShipDefaultMainCannonType.ManOWar,      // the poundage type of the main cannons
+            cargoCarried ?? [],                     // cargo ship might already be carrying when instantiated.
             health                                  // current health of the ship if not full
         );
     }

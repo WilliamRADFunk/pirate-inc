@@ -5,17 +5,20 @@ import {
     ShipDefaultCost,
     ShipDefaultMainCannonType,
     ShipDefaultMaxCannon,
+    ShipDefaultMaxCargo,
     ShipDefaultMaxCrew,
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
     ShipType
 } from "../../types/ShipDefaults";
+import { Cargo } from "../../types/Cargo";
 
 export class Caravel extends Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, health?: number) {
+    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Caravel,      // armor
+            ShipDefaultMaxCargo.Caravel,            // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.Caravel,                // cost modifier
             ShipDefaultMaxCrew.Caravel,             // max crew
             ShipDefaultMinCrew.Caravel,             // min crew
@@ -27,6 +30,7 @@ export class Caravel extends Ship {
             numCannon ?? 1,                         // number of cannons
             bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
             ShipDefaultMainCannonType.Caravel,      // the poundage type of the main cannons
+            cargoCarried ?? [],                     // cargo ship might already be carrying when instantiated.
             health                                  // current health of the ship if not full
         );
     }

@@ -90,6 +90,26 @@ export enum ShipDefaultMaxCannon {
     Sloop = 12
 }
 
+export enum ShipDefaultMaxCargo {
+    Barque = 70,
+    Brig = 70,
+    Brigantine = 150,
+    Caravel = 120,
+    Carrack = 120,
+    Corvette = 620,
+    Cutter = 800,
+    Dhow = 900,
+    EastIndiaman = 1250,
+    Frigate = 80,
+    Galleon = 500,
+    Keltch = 40,
+    ManOWar = 600,
+    Pinnace = 25,
+    Schooner = 300,
+    Slaver = 450,
+    Sloop = 40
+}
+
 export enum ShipDefaultMaxCrew {
     Barque = 100,
     Brig = 150,
