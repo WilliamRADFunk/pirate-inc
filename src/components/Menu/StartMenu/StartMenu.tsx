@@ -3,8 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
 
-import { gameManager } from "../../../services/GameManager";
-import { stateManager, GameState } from "../../../services/StateManager";
+import { stateManager, GameState } from "../../../Services/StateManager";
 import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
 import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
 import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";

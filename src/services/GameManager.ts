@@ -1,8 +1,8 @@
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 import { GameState, stateManager } from './StateManager';
-import { SceneLocation } from '../types/SceneLocation';
-import { BasePirateWage } from '../types/Constants';
+import { SceneLocation } from '../Types/SceneLocation';
+import { BasePirateWage } from '../Types/Constants';
 
 class GameManager {
     /**

@@ -1,5 +1,5 @@
-import { Cargo } from "../../types/Cargo";
-import { BowCanonType, MainCanonType, ShipType } from "../../types/ShipDefaults";
+import { Cargo } from "../../Types/Cargo";
+import { BowCanonType, MainCanonType, ShipType } from "../../Types/ShipDefaults";
 
 export class Ship {
     private armorLevel: number = 0;

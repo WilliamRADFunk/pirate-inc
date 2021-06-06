@@ -4,7 +4,7 @@ import { Button, ButtonGroup, Dropdown, DropdownButton, Row } from "react-bootst
 import { Subscription } from "rxjs";
 
 import styles from './StartMenuInstructions.module.scss';
-import { ListOption } from "../../../types/ListOption";
+import { ListOption } from "../../../Types/ListOption";
 
 interface Props {
     toggleView: () => void

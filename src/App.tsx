@@ -4,15 +4,15 @@ import { Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 
 import './App.scss';
-import { HUD } from './components/HUD/HUD';
-import { Intro } from './components/Intro/Intro';
-import { LocationHeader } from './components/LocationHeader/LocationHeader';
-import { StartMenu } from './components/Menu/StartMenu/StartMenu';
-import { PortMain } from './components/Port/PortMain/PortMain';
-import { Title } from './components/Title/Title';
-import { gameManager } from './services/GameManager';
-import { GameState, stateManager } from './services/StateManager';
-import { SceneLocation } from './types/SceneLocation';
+import { HUD } from './Components/HUD/HUD';
+import { Intro } from './Components/Intro/Intro';
+import { LocationHeader } from './Components/LocationHeader/LocationHeader';
+import { StartMenu } from './Components/Menu/StartMenu/StartMenu';
+import { PortMain } from './Components/Port/PortMain/PortMain';
+import { Title } from './Components/Title/Title';
+import { gameManager } from './Services/GameManager';
+import { GameState, stateManager } from './Services/StateManager';
+import { SceneLocation } from './Types/SceneLocation';
 
 interface Props {}
 

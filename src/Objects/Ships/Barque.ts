@@ -11,8 +11,8 @@ import {
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
     ShipType
-} from "../../types/ShipDefaults";
-import { Cargo } from "../../types/Cargo";
+} from "../../Types/ShipDefaults";
+import { Cargo } from "../../Types/Cargo";
 
 export class Barque extends Ship {
     constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {

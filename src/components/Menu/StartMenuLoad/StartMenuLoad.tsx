@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Col, Form, FormControl, InputGroup, Row } from "react-bootstrap";
 
-import { gameManager } from "../../../services/GameManager";
+import { gameManager } from "../../../Services/GameManager";
 
 interface Props {
     toggleView: () => void

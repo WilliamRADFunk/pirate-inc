@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { gameManager } from "../../services/GameManager";
+import { gameManager } from "../../Services/GameManager";
 
 interface Props {}
 

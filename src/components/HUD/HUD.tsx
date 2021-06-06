@@ -2,8 +2,8 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import styles from './HUD.module.scss';
-import { gameManager } from "../../services/GameManager";
-import { GameState, stateManager } from '../../services/StateManager';
+import { gameManager } from "../../Services/GameManager";
+import { GameState, stateManager } from '../../Services/StateManager';
 import { Col, Row } from 'react-bootstrap';
 
 interface Props {}

@@ -4,8 +4,6 @@ import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { Subscription } from "rxjs";
 
-import { gameManager } from "../../../services/GameManager";
-
 interface Props {}
 
 interface State {
