@@ -1,46 +1,64 @@
-# Getting Started with Create React App
+# Pirates Incorporated
+(In Progress) Become a pirate captain and manage your fleet to fight and score plunder.</br></br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+***
 
-## Available Scripts
+## Intro
 
-In the project directory, you can run:
+Your a new pirate captain. You must manage your crew, your ships, hire officers, avoid mutiny, attack merchant vessels, steal booty, avoid capture, become famous, and much more in this pirate captain simulator.</br></br>
 
-### `npm start`
+***
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Instructions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Do stuff
 
-### `npm test`
+***
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Endgame
 
-### `npm run build`
+Steal booty. Don't die. Retire rich or die famous.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+***
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## First Steps
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Navigate to the root folder where you want your project to reside.</br></br>
 
-### `npm run eject`
+2. Run `git clone https://github.com/WilliamRADFunk/pirates-inc.git`.</br></br>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Run `npm install`. If failure, see Common Gotchas section below.</br></br>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Run `npm run start` and then simply navigate to `http://localhost:3000` in your browser (should open on it's own in a few seconds).</br></br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Remaining TODOs
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### General
 
-## Learn More
+:white_check_mark: Create start menu with start, load, change difficulty, and help buttons.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+:white_check_mark: Pair start button with transition to the intro screen.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+:white_check_mark: Load button creates control to receive and validate a load code.
+
+:black_square_button: Create and implement algorithm that decrypts load code into a current game.
+
+:white_check_mark: Change difficulty button has the four difficulty options that translate to a stored difficulty value.
+
+:white_check_mark: Control that allows player to choose the help topic of their choice and switch text to that value.
+
+:black_square_button: Add the various help descriptions inside the help section.
+
+:black_square_button: ...
+
+### Ships
+
+:white_check_mark: Create the different possible ship types and their starting stats.
+
+:black_square_button: Create fleet object that stores all ships in a group, both for player and for encountered enemies as single place to run calculations during maintenance and fighting.
+
+:black_square_button: ....
+
+### Ports
+
+:black_square_button: ....
