@@ -1,10 +1,12 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { Col, Row } from 'react-bootstrap';
 
 import styles from './HUD.module.scss';
-import { gameManager } from "../../Services/GameManager";
+import { gameManager } from '../../Services/GameManager';
+import { playerManager } from '../../Services/PlayerManager';
 import { GameState, stateManager } from '../../Services/StateManager';
-import { Col, Row } from 'react-bootstrap';
+import { ShipNameGenerator } from '../../Helpers/ShipNameGenerator';
 
 interface Props {}
 
@@ -62,18 +64,6 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ balance: formatter.format(bal) });
                 }
             }),
-            gameManager.getRemainingActionPoints().subscribe(ac => {
-                if (!isNaN(ac)) {
-                    // add remaining action points to local state if number
-                    this.setState({ remActionPoints: ac });
-                }
-            }),
-            gameManager.getTotalActionPoints().subscribe(ac => {
-                if (!isNaN(ac)) {
-                    // add total action points to local state if number
-                    this.setState({ totalActionPoints: ac });
-                }
-            }),
             gameManager.getCurrentCrewCount().subscribe(currCrew => {
                 if (!isNaN(currCrew)) {
                     // add current crew count to local state if number
@@ -128,6 +118,18 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ fleetHealth: health });
                 }
             }),
+            playerManager.getRemainingActionPoints().subscribe(ac => {
+                if (!isNaN(ac)) {
+                    // add remaining action points to local state if number
+                    this.setState({ remActionPoints: ac });
+                }
+            }),
+            playerManager.getTotalActionPoints().subscribe(ac => {
+                if (!isNaN(ac)) {
+                    // add total action points to local state if number
+                    this.setState({ totalActionPoints: ac });
+                }
+            }),
             stateManager.getGameState().subscribe(gameState => {
                 if (gameState) {
                     // add scene gameState to local state if truthy
@@ -162,61 +164,66 @@ export class HUD extends React.Component<Props, State> {
 
         return (gameState !== GameState.Active ? null :
             
-                <Col xs="12" lg={{ span: 8, offset: 2}} className="boundaries text-left">
+                <Col xs='12' lg={{ span: 8, offset: 2}} className='boundaries text-left'>
                     <Row>
-                        <Col xs="12" lg="6">
+                        <Col xs='12' lg='6'>
+                            {`The ${ShipNameGenerator()}`}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs='12' lg='6'>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Action Points:</Col>
-                                <Col xs="6" className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Action Points:</Col>
+                                <Col xs='6' className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Treasury:</Col>
-                                <Col xs="6" className={styles.itemValue}>{balance}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Treasury:</Col>
+                                <Col xs='6' className={styles.itemValue}>{balance}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Crew:</Col>
-                                <Col xs="6" className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Crew:</Col>
+                                <Col xs='6' className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Provisions:</Col>
-                                <Col xs="6" className={styles.itemValue}>
-                                    <span className="text-red mr-3">
+                                <Col xs='6' className={styles.itemLabel}>Provisions:</Col>
+                                <Col xs='6' className={styles.itemValue}>
+                                    <span className='text-red mr-3'>
                                         {provisions[0]}
                                     </span>
-                                    <span className="text-red mr-3">
+                                    <span className='text-red mr-3'>
                                         {provisions[1]}
                                     </span>
-                                    <span className="text-red">
+                                    <span className='text-red'>
                                         {provisions[2]}
                                     </span>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Ships:</Col>
-                                <Col xs="6" className={styles.itemValue}>{shipCount}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Ships:</Col>
+                                <Col xs='6' className={styles.itemValue}>{shipCount}</Col>
                             </Row>
                         </Col>
                         {/* Right side of HUD */}
-                        <Col xs="12" lg="6">
+                        <Col xs='12' lg='6'>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Fleet Health:</Col>
-                                <Col xs="6" className={styles.itemValue}>{fleetHealth}%</Col>
+                                <Col xs='6' className={styles.itemLabel}>Fleet Health:</Col>
+                                <Col xs='6' className={styles.itemValue}>{fleetHealth}%</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Crew Wages:</Col>
-                                <Col xs="6" className={styles.itemValue}>{crewWages}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
+                                <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Officer Salaries:</Col>
-                                <Col xs="6" className={styles.itemValue}>{officerSalaries}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Officer Salaries:</Col>
+                                <Col xs='6' className={styles.itemValue}>{officerSalaries}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Infamy:</Col>
-                                <Col xs="6" className={styles.itemValue}>{infamy}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Infamy:</Col>
+                                <Col xs='6' className={styles.itemValue}>{infamy}</Col>
                             </Row>
                             <Row>
-                                <Col xs="6" className={styles.itemLabel}>Bounty:</Col>
-                                <Col xs="6" className={styles.itemValue}>{playerBounty}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Bounty:</Col>
+                                <Col xs='6' className={styles.itemValue}>{playerBounty}</Col>
                             </Row>
                         </Col>
                     </Row>

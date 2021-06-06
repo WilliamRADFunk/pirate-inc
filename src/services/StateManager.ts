@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 /**
  * The main game states to control game flow from starting to playing to ending.
  */
-export enum GameState {
+ export enum GameState {
     Start = 0,
     Intro = 1,
     Load = 2,
@@ -11,10 +11,8 @@ export enum GameState {
     GameOver = 4
 }
 
-/**
- * Singleton to control the various states of the game,
- */
-export class StateManager {
+// Singleton to control the various states of the game.
+class StateManager {
     /**
      * The state of the overall game: Menu, Intro, Active, Game Over, etc..
      */
@@ -45,9 +43,16 @@ export class StateManager {
         this.gameState.next(newState);
     }
 
+    /**
+     * Allows subscribing to the game's main state.
+     * @returns observable of the game's current main state.
+     */
     public getGameState(): Observable<GameState> {
         return this.gameState.asObservable();
     }
 }
 
+/**
+ * Singleton to control the various states of the game.
+ */
 export const stateManager = new StateManager();
