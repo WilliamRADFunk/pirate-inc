@@ -1,7 +1,16 @@
+/**
+ * Available types of bow fixed cannon. There can be only one per ship, and is used for first attack volley.
+ */
 export type BowCanonType = "Long Nine" | "Explosive Carronade" | "Chain Shot" | "Empty";
 
+/**
+ * Available types of main cannons. The numerical type values also equate to their caliber in "poundage".
+ */
 export type MainCanonType = 42 | 36 | 32 | 24 | 18 | 12 | 9 | 8 | 6 | 0;
 
+/**
+ * A map to relay how common or rare a ship type is to be found in ports for sale, or on the open seas to battle.
+ */
 export enum ShipRarityValue {
     AlmostNonExistent = 1,
     Sparse = 2,
@@ -10,6 +19,9 @@ export enum ShipRarityValue {
     Everywhere = 5
 }
 
+/**
+ * A map to associate the level of armor a specific ship type starts with.
+ */
 export enum ShipDefaultArmor {
     Barque = 0,
     Brig = 1,
@@ -30,6 +42,9 @@ export enum ShipDefaultArmor {
     Sloop = 1
 }
 
+/**
+ * A map to associate the cost modifier for a specific ship type for sale or purcahse, to be applied against a separate port modifier.
+ */
 export enum ShipDefaultCost {
     Barque = 2,
     Brig = 4,
@@ -50,6 +65,9 @@ export enum ShipDefaultCost {
     Sloop = 3
 }
 
+/**
+ * A map to associate the what main cannon type is associated to a given ship type.
+ */
 export enum ShipDefaultMainCannonType {
     Barque = 6,
     Brig = 9,
@@ -70,6 +88,9 @@ export enum ShipDefaultMainCannonType {
     Sloop = 24
 }
 
+/**
+ * A map to associate the total number of main cannon a specific ship type can have.
+ */
 export enum ShipDefaultMaxCannon {
     Barque = 16,
     Brig = 18,
@@ -90,6 +111,9 @@ export enum ShipDefaultMaxCannon {
     Sloop = 12
 }
 
+/**
+ * A map to associate the total amount of cargo tonnage a specific ship type can have.
+ */
 export enum ShipDefaultMaxCargo {
     Barque = 70,
     Brig = 70,
@@ -110,6 +134,9 @@ export enum ShipDefaultMaxCargo {
     Sloop = 40
 }
 
+/**
+ * A map to associate the total number of crew a specific ship type can have.
+ */
 export enum ShipDefaultMaxCrew {
     Barque = 100,
     Brig = 150,
@@ -130,6 +157,9 @@ export enum ShipDefaultMaxCrew {
     Sloop = 250
 }
 
+/**
+ * A map to associate the total amount of health a specific ship type can have.
+ */
 export enum ShipDefaultMaxHealth {
     Barque = 200,
     Brig = 300,
@@ -150,6 +180,9 @@ export enum ShipDefaultMaxHealth {
     Sloop = 450
 }
 
+/**
+ * A map to associate the minumum amount of crew a specific ship type can have in order to operate.
+ */
 export enum ShipDefaultMinCrew {
     Barque = 12,
     Brig = 30,
@@ -170,6 +203,9 @@ export enum ShipDefaultMinCrew {
     Sloop = 50
 }
 
+/**
+ * A map to associate the total speed a specific ship type can hope to achieve under optimal conditions.
+ */
 export enum ShipDefaultTopSpeed {
     Barque = 9,
     Brig = 8,
@@ -190,6 +226,9 @@ export enum ShipDefaultTopSpeed {
     Sloop = 12
 }
 
+/**
+ * A map to associate how rare a specific ship type is to be found for sale in any port.
+ */
 export enum ShipPurchaseRarityType {
     Barque = ShipRarityValue.Abundant,
     Brig = ShipRarityValue.AlmostNonExistent,
@@ -210,6 +249,9 @@ export enum ShipPurchaseRarityType {
     Sloop = ShipRarityValue.Everywhere
 }
 
+/**
+ * A map to associate how rare a specific ship type is to be found on the open seas as a target.
+ */
 export enum ShipTargetRarityType {
     Barque = ShipRarityValue.Abundant,
     Brig = ShipRarityValue.Sparse,
@@ -230,6 +272,9 @@ export enum ShipTargetRarityType {
     Sloop = ShipRarityValue.Everywhere
 }
 
+/**
+ * Available types of ships.
+ */
 export enum ShipType {
     Barque = "Barque",
     Brig = "Brig",

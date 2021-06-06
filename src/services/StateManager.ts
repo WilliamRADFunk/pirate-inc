@@ -1,6 +1,8 @@
 import { BehaviorSubject, Observable } from "rxjs";
 
-
+/**
+ * The main game states to control game flow from starting to playing to ending.
+ */
 export enum GameState {
     Start = 0,
     Intro = 1,
@@ -9,12 +11,19 @@ export enum GameState {
     GameOver = 4
 }
 
+/**
+ * Singleton to control the various states of the game,
+ */
 export class StateManager {
     /**
      * The state of the overall game: Menu, Intro, Active, Game Over, etc..
      */
     private gameState: BehaviorSubject<GameState> = new BehaviorSubject(GameState.Start as GameState);
 
+    /**
+     * Changes to different game state if new state is an allowed transition from current state.
+     * @param newState the new game state to transition to.
+     */
     public changeGameState(newState: GameState): void {
         const oldState = this.gameState.value;
         if (oldState === GameState.Start && (newState !== GameState.Intro && newState !== GameState.Load)) {

@@ -25,7 +25,7 @@ export class Intro extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            difficulty: 0,
+            difficulty: 1,
             errorMsg: ErrorMessages.Default,
             name: '',
             validName: false
@@ -46,7 +46,7 @@ export class Intro extends React.Component<Props, State> {
 
     private getIntro(): JSX.Element {
         switch(this.state.difficulty) {
-            case 1: {
+            case 2: {
                 return (
                     <Row>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
@@ -72,7 +72,7 @@ export class Intro extends React.Component<Props, State> {
                     </Row>
                 );
             }
-            case 2: {
+            case 3: {
                 return (
                     <Row>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
@@ -81,7 +81,7 @@ export class Intro extends React.Component<Props, State> {
                     </Row>
                 );
             }
-            case 3: {
+            case 4: {
                 return (
                     <Row>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">

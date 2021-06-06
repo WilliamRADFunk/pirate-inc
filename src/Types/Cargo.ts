@@ -1,3 +1,6 @@
+/**
+ * String value names of the possible cargo types. Used to limit which goods can be found in the game.
+ */
 export enum CargoType {
     Beer = "Beer",
     Cocoa = "Cocoa",
@@ -24,6 +27,9 @@ export enum CargoType {
     Wool = "Wool"
 }
 
+/**
+ * Instance of cargo that exists somewhere, complete with a type name and a quantity in tonnage.
+ */
 export interface Cargo {
     type: CargoType;
     quantity: number;
