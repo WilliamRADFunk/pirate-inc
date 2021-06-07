@@ -57,7 +57,19 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Add stats selection screen after the intro but before starting. From here the player can distribute skill points as they see fit. Amount of points to distribute will be affected by difficulty chosen. (Iron, Cunning, Silver Tongue, People Person, Energetic).
 
-:black_square_button: ...
+:black_square_button: Add end turn button with warning modal if AC remain.
+
+:black_square_button: Brief tutorial section that explains basics of gameplay.
+
+:black_square_button: Add battle simulator section that allows player to compare a fleet of their choice against an enemy fleet of their choice.
+
+:black_square_button: Each turn at sea, the crew consumes one unit of food per crew member. A turn without enough food diminishes morale some. A turn without any food reduces morale a lot. This is the quickest way to ensure a mutiny.
+
+:black_square_button: Create mutiny possibility. This is where certain stats affect the outcome of your...trial. A truly dismal morale could result in death and game over. Low morale could just mean a loss of part or all of oyur fleet. If the player loses their entire fleet to a mutiny, they will be "deposited" at the nearest pirate port. If they lack the money to buy a new ship, their only option is to retire into obscurity.
+
+:black_square_button: Create capture possibility. At non-pirate ports, the player's bounty might result in their capture. If captured, there will be a trial. Depending on the level of infamy, the penalty ranges from a fine, imprisonment (loss of turns and pay to crew), or hanging (game over). Depending on player stats, they could affect the outcome. A bribe goes a long way.
+
+:black_square_button: Create random encounters for all stages; at port, enroute, and battle.
 
 ### Ships
 
@@ -65,7 +77,9 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Create fleet object that stores all ships in a group, both for player and for encountered enemies as single place to run calculations during maintenance and fighting.
 
-:black_square_button: ....
+:black_square_button: Create battle turnout section. This shows the effect each side had on the other per turn.
+
+:black_square_button: Create small skill challenge for player's flagship each turn that adds or substracts from the effect they have.
 
 ### Ports
 
@@ -76,8 +90,6 @@ Steal booty. Don't die. Retire rich or die famous.
 :black_square_button: Create a randomizer to reshuffle what's available and for how much every time player visits that port.
 
 :black_square_button: Setup each port to buy player's stolen goods, but some goods will be worth more than others depending on the port. The more of a given loot sold at a port will reduce amount paid for subsequent units as a market saturation issue.
-
-:black_square_button: ...
 
 ### Tavern
 
@@ -129,12 +141,22 @@ Steal booty. Don't die. Retire rich or die famous.
 
 ### Doctor's Quarters
 
-:black_square_button: ...
+:black_square_button: Chat with your officer. Possibly give short back stories to them for greater depth.
+
+:black_square_button: Learn the health and morale of the crew. Similar to the bungalow crew manifest, but focused only on health and morale (maybe vague outputs rather than spreadsheets).
 
 ### Carpenter's Quarters
 
-:black_square_button: ...
+:black_square_button: Chat with your officer. Possibly give short back stories to them for greater depth.
+
+:black_square_button: When not in battle, this officer can suggest making ad hoc repairs if the supplies are available.
+
+:black_square_button: When in battle, they might be able to recommend which tactics the fleet is most or least likely to take damage.
 
 ### Quartermaster's Quarters
 
-:black_square_button: ...
+:black_square_button: Chat with your officer. Possibly give short back stories to them for greater depth.
+
+:black_square_button: In battle, you can instruct to use more or less ammunition. More gives a bonus but burns through ammunition quicker.
+
+:black_square_button: When not in battle, player can change which provision type to give the crew.
