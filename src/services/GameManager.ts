@@ -213,7 +213,7 @@ class GameManager {
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
             this.updateCrewWage();
-            playerManager.initiatePlayer(this.difficulty.value, name);
+            playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
             stateManager.changeGameState(GameState.Active);
             return true;
         }

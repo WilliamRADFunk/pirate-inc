@@ -99,7 +99,23 @@ class PlayerManager {
         this.totalActionPoints.next(2 + this.difficulty);
         this.remainingActionPoints.next(this.totalActionPoints.value);
         this.playerName = name;
+        this.playerStats.next({
+            Iron_Will: statCheck(stats.Iron_Will),
+            Cunning: statCheck(stats.Cunning),
+            Energetic: statCheck(stats.Energetic),
+            Silver_Tongue: statCheck(stats.Silver_Tongue),
+            People_Person: statCheck(stats.People_Person),
+            Cowardly: statCheck(stats.Cowardly),
+            Reckless: statCheck(stats.Reckless),
+            Lethargic: statCheck(stats.Lethargic),
+            Close_Minded: statCheck(stats.Close_Minded),
+            Paranoid: statCheck(stats.Paranoid)
+        });
     }
+}
+
+function statCheck(stat: number): number {
+    return (stat > 1 && 9 > stat) ? stat : 5;
 }
 
 /**

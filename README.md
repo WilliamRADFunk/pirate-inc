@@ -91,6 +91,8 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Setup each port to buy player's stolen goods, but some goods will be worth more than others depending on the port. The more of a given loot sold at a port will reduce amount paid for subsequent units as a market saturation issue.
 
+:black_square_button: Setup reputation system with every port. Infamy affects piracy ports positively, whereas Crown Favor affects non-pirate ports. The inverse affects port reputations inversely. Low infamy and high crown favor at a pirate port can mean capture and trial in a pirate port. This happens if player partakes in pirate hunting.
+
 ### Tavern
 
 :black_square_button: Create ability to buy certain artifacts that boost some stats (crew morale, refresh AC, etc.).
