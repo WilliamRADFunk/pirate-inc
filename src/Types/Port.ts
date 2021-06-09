@@ -14,10 +14,12 @@ export enum PortLocation {
  * Interface of what a port must have to be a port.
  */
 export interface Port {
-    connectedPorts: Port[];
+    readonly colonialOptions: { [key: number]: boolean };
+    readonly connectedPorts: Port[];
     readonly costScaleSize: number;
-    readonly shipyardOptions: { [key: number]: boolean };
     readonly isPiratePort: boolean;
-    reputation: number;
     readonly name: PortLocation;
+    reputation: number;
+    readonly shipyardOptions: { [key: number]: boolean };
+    readonly tavernOptions: { [key: number]: boolean };
 }

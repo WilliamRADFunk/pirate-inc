@@ -10,6 +10,11 @@ export class PortManager {
         // Creates all the ports.
         this.ports.push(
             {
+                colonialOptions: {
+                    1: true, // Bribe
+                    2: true, // Writ of Protection
+                    3: false, // Royal Pardon
+                },
                 connectedPorts: [],
                 costScaleSize: 7,
                 shipyardOptions: {
@@ -23,6 +28,11 @@ export class PortManager {
                 name: PortLocation.Bath
             },
             {
+                colonialOptions: {
+                    1: true,
+                    2: true,
+                    3: false,
+                },
                 connectedPorts: [],
                 costScaleSize: 8,
                 shipyardOptions: {
@@ -36,6 +46,11 @@ export class PortManager {
                 name: PortLocation.CharlesTown
             },
             {
+                colonialOptions: {
+                    1: true,
+                    2: true,
+                    3: false,
+                },
                 connectedPorts: [],
                 costScaleSize: 5,
                 shipyardOptions: {
@@ -49,6 +64,11 @@ export class PortManager {
                 name: PortLocation.Nassau
             },
             {
+                colonialOptions: {
+                    1: true,
+                    2: false,
+                    3: false,
+                },
                 connectedPorts: [],
                 costScaleSize: 3,
                 shipyardOptions: {
@@ -62,6 +82,11 @@ export class PortManager {
                 name: PortLocation.NormanIsland
             },
             {
+                colonialOptions: {
+                    1: false,
+                    2: false,
+                    3: true,
+                },
                 connectedPorts: [],
                 costScaleSize: 10,
                 shipyardOptions: {
@@ -75,6 +100,11 @@ export class PortManager {
                 name: PortLocation.PortRoyal
             },
             {
+                colonialOptions: {
+                    1: false,
+                    2: false,
+                    3: false,
+                },
                 connectedPorts: [],
                 costScaleSize: 2,
                 shipyardOptions: {
