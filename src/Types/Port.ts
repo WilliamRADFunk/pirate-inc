@@ -17,9 +17,10 @@ export interface Port {
     readonly colonialOptions: { [key: number]: boolean };
     readonly connectedPorts: Port[];
     readonly costScaleSize: number;
+    hasArrestBeenAttempted: boolean;
     readonly isPiratePort: boolean;
     readonly name: PortLocation;
     reputation: number;
     readonly shipyardOptions: { [key: number]: boolean };
-    readonly tavernOptions: { [key: number]: boolean };
+    willArrest: boolean;
 }

@@ -23,10 +23,10 @@ export class Tavern extends React.Component<Props, State> {
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            // gameManager.getSceneLocation().subscribe(location => {
-            //     if (location) {
+            // stateManager.getSceneState().subscribe(state => {
+            //     if (state) {
             //         // add balance to local state if number
-            //         this.setState({ sceneLocation: location });
+            //         this.setState({ sceneState: state });
             //     }
             // }),
         );

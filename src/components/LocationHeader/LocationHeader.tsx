@@ -2,14 +2,13 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import styles from './LocationHeader.module.scss';
-import { gameManager } from "../../Services/GameManager";
-import { SceneLocation } from '../../Types/SceneLocation';
 import { Col } from 'react-bootstrap';
+import { stateManager, SceneState } from '../../Services/StateManager';
 
 interface Props {}
 
 interface State {
-    sceneLocation: SceneLocation;
+    sceneState: SceneState;
 }
 
 export class LocationHeader extends React.Component<Props, State> {
@@ -19,16 +18,16 @@ export class LocationHeader extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            sceneLocation: SceneLocation.Intro,
+            sceneState: SceneState.Port,
         };
     }
     
     public componentDidMount() {
         this.subscriptions.push(
-            gameManager.getSceneLocation().subscribe(location => {
-                if (location) {
+            stateManager.getSceneState().subscribe(state => {
+                if (state) {
                     // add balance to local state if number
-                    this.setState({ sceneLocation: location });
+                    this.setState({ sceneState: state });
                 }
             }),
         );
@@ -41,11 +40,11 @@ export class LocationHeader extends React.Component<Props, State> {
     }
 
     public render() {
-        const { sceneLocation } = this.state;
+        const { sceneState } = this.state;
         return (
             <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
                 <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
-                <div className={styles.title}>{sceneLocation}</div>
+                <div className={styles.title}>{sceneState}</div>
             </Col>
         );
     }

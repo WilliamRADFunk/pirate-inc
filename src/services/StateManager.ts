@@ -36,6 +36,16 @@ import { BehaviorSubject, Observable } from "rxjs";
     ColonialOfficeWritOfProtection = 18
 }
 
+/**
+ * Available types of scene state, or game location modes.
+ */
+ export enum SceneState {
+    AtSea = "At Sea",
+    Battle = "Battle",
+    Other = "Other",
+    Port = "Port"
+}
+
 // Singleton to control the various states of the game.
 class StateManager {
     /**
@@ -46,6 +56,11 @@ class StateManager {
      * The state of the port scene.
      */
     private portSceneState: BehaviorSubject<PortSceneState> = new BehaviorSubject(PortSceneState.Menu as PortSceneState);
+
+    /**
+     * Tracks user's scene location, mostly for identifying which controls to make available on screen.
+     */
+    private sceneState: BehaviorSubject<SceneState> = new BehaviorSubject(SceneState.Port as SceneState);
 
     /**
      * Changes to different game state if new state is an allowed transition from current state.
@@ -94,6 +109,14 @@ class StateManager {
      */
     public getPortSceneState(): Observable<PortSceneState> {
         return this.portSceneState.asObservable();
+    }
+
+    /**
+     * Get the current scene state (ie. Port, AtSea, Battle, etc.).
+     * @returns observable of current scene state
+     */
+    public getSceneState(): Observable<SceneState> {
+        return this.sceneState.asObservable();
     }
 }
 

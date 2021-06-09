@@ -10,15 +10,13 @@ import { LocationHeader } from './Components/LocationHeader/LocationHeader';
 import { StartMenu } from './Components/Menu/StartMenu/StartMenu';
 import { PortMain } from './Components/Port/PortMain/PortMain';
 import { Title } from './Components/Title/Title';
-import { gameManager } from './Services/GameManager';
-import { GameState, stateManager } from './Services/StateManager';
-import { SceneLocation } from './Types/SceneLocation';
+import { GameState, SceneState, stateManager } from './Services/StateManager';
 
 interface Props {}
 
 interface State {
   gameState: GameState;
-  sceneLocation: SceneLocation;
+  sceneState: SceneState;
 }
 
 class App extends React.Component<Props, State> {
@@ -29,7 +27,7 @@ class App extends React.Component<Props, State> {
 
       this.state = {
           gameState: GameState.Start,
-          sceneLocation: SceneLocation.Port,
+          sceneState: SceneState.Port,
       };
   }
   
@@ -39,10 +37,10 @@ class App extends React.Component<Props, State> {
         stateManager.getGameState().subscribe(gameState => {
             this.setState({ gameState: gameState });
           }),
-          gameManager.getSceneLocation().subscribe(location => {
-            if (location) {
+          stateManager.getSceneState().subscribe(state => {
+            if (state) {
                 // add balance to local state if number
-                this.setState({ sceneLocation: location });
+                this.setState({ sceneState: state });
             }
           })
       );
@@ -55,7 +53,7 @@ class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { gameState, sceneLocation } = this.state;
+    const { gameState, sceneState } = this.state;
     return (
       <div className="App text-center">
         <Row>
@@ -79,7 +77,7 @@ class App extends React.Component<Props, State> {
             <Row>
               <HUD></HUD>
             </Row>
-            { sceneLocation !== SceneLocation.Port ? null :
+            { sceneState !== SceneState.Port ? null :
               <Row>
                 <PortMain></PortMain>
               </Row>

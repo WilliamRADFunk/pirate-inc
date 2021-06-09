@@ -1,10 +1,11 @@
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import { GameState, stateManager } from './StateManager';
-import { SceneLocation } from '../Types/SceneLocation';
+import { GameState, SceneState, stateManager } from './StateManager';
 import { BasePirateWage } from '../Types/Constants';
 import { playerManager } from './PlayerManager';
 
+// Singleton service of the overall game manager.
 class GameManager {
     /**
      * The amount of money the player has at their disposal.
@@ -73,11 +74,6 @@ class GameManager {
         this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
 
     /**
-     * Tracks user's scene location, mostly for identifying which controls to make available on screen.
-     */
-    private sceneLocation: BehaviorSubject<SceneLocation> = new BehaviorSubject(SceneLocation.Port as SceneLocation);
-
-    /**
      * The number of ships the player owns.
      */
     private shipCount: BehaviorSubject<number> = new BehaviorSubject(3);
@@ -86,11 +82,6 @@ class GameManager {
      * The number of ships the player owns.
      */
     private ships: { health: number; }[] = [];
-
-    /**
-     * The list of subscriptions, usually other manager services.
-     */
-    private subscriptions: Subscription[] = [];
 
     /**
      * The number of total food units of each category that player owns.
@@ -154,62 +145,145 @@ class GameManager {
         return !(!!~badWords.indexOf(name));
     }
 
+    /**
+     * Update the difficulty setting to the user's new choice.
+     * @param newDiff new difficulty setting for the game.
+     */
     public changeDifficulty(newDiff: number): void {
         this.difficulty.next(newDiff);
     }
 
+    public endTurn(): void {
+        let currState = "";
+        stateManager.getSceneState().pipe(take(1)).subscribe(state => currState = state);
+
+        switch(currState) {
+            case SceneState.Port.toString(): {
+                // Deduct crew wages
+                // Adjust crew morale
+                // Update port reputation
+                // Roll chance for arrest
+                // Roll chance for event
+                break;
+            }
+            case SceneState.AtSea.toString(): {
+                // Deduct provisions
+                // Adjust crew morale
+                // Update port reputation
+                // Roll chance for event
+                break;
+            }
+            case SceneState.Battle.toString(): {
+                // Fleet fires
+                // Ammunition deducted
+                // Enemy Fleet fires
+                // Roll chance for event
+                // Roll for enemy surrender or sunk ships
+                break;
+            }
+        }
+    }
+
+    /**
+     * Gets the subscribable value of balance.
+     * @returns observable of player's monetary balance.
+     */
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of crew wages.
+     * @returns observable of player's monetary balance.
+     */
     public getCrewWages(): Observable<number> {
         return this.crewWages.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of current crew count.
+     * @returns observable of player's monetary balance.
+     */
     public getCurrentCrewCount(): Observable<number> {
         return this.currentCrewCount.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of difficulty setting.
+     * @returns observable of player's monetary balance.
+     */
     public getDifficulty(): Observable<number> {
         return this.difficulty.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of fleet health.
+     * @returns observable of player's monetary balance.
+     */
     public getFleetHealth(): Observable<number> {
         return this.fleetHealth.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of player's infamy.
+     * @returns observable of player's monetary balance.
+     */
     public getInfamy(): Observable<number> {
         return this.infamy.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of maximum crew allowed.
+     * @returns observable of player's monetary balance.
+     */
     public getMaxCrewCount(): Observable<number> {
         return this.maxCrewCount.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of officer combined salaries.
+     * @returns observable of player's monetary balance.
+     */
     public getOfficerSalaries(): Observable<number> {
         return this.officerSalaries.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of player's bounty.
+     * @returns observable of player's monetary balance.
+     */
     public getPlayerBounty(): Observable<number> {
         return this.bounty.asObservable();
     }
 
+    /**
+     * Gets the subscribable value of provisions.
+     * @returns observable of player's monetary balance.
+     */
     public getProvisions(): Observable<[number, number, number]> {
         return this.totalProvisions.asObservable();
     }
 
-    public getSceneLocation(): Observable<SceneLocation> {
-        return this.sceneLocation.asObservable();
-    }
-
+    /**
+     * Gets the subscribable value of ship count.
+     * @returns observable of player's monetary balance.
+     */
     public getShipCount(): Observable<number> {
         return this.shipCount.asObservable();
     }
 
+    /**
+     * Loads a previous game using a save code.
+     * @param code a save code with game data to load from.
+     */
     public loadGame(code: string): void {
         // Verify code and then load game.
     }
 
+    /**
+     * Gets the subscribable value of balance.
+     * @returns observable of player's monetary balance.
+     */
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
             this.updateCrewWage();
@@ -221,4 +295,7 @@ class GameManager {
     }
 }
 
+/**
+ * Singleton service of the overall game manager.
+ */
 export const gameManager = new GameManager();
