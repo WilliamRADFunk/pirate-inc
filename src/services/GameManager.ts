@@ -1,9 +1,10 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { GameState, SceneState, stateManager } from './StateManager';
 import { BasePirateWage } from '../Types/Constants';
 import { playerManager } from './PlayerManager';
+import { portManager } from './PortManager';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -18,9 +19,19 @@ class GameManager {
     private bounty: BehaviorSubject<number> = new BehaviorSubject(500);
 
     /**
+     * The flag to disable all player options between the end of a turn and the start of the next.
+     */
+    private canPlayTurn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    /**
      * The salary paid per turn to your fleet's carpenter.
      */
     private carpenterSalary: BehaviorSubject<number> = new BehaviorSubject(200);
+
+    /**
+     * The morale of the crew.
+     */
+    private crewMorale: BehaviorSubject<number> = new BehaviorSubject(100);
 
     /**
      * The cost per turn of a single crew member.
@@ -30,7 +41,7 @@ class GameManager {
     /**
      * The combined total of the crew's wages.
      */
-    private crewWages: Subject<number> = new Subject();
+    private crewWages: BehaviorSubject<number> = new BehaviorSubject(0);
 
     /**
      * The number of crew members on player's payroll.
@@ -53,11 +64,6 @@ class GameManager {
     private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
 
     /**
-     * The infamy associated with player.
-     */
-    private infamy: BehaviorSubject<number> = new BehaviorSubject(37);
-
-    /**
      * The maximum number of crew members on player can employee (limited by size and number of ships owned).
      */
     private maxCrewCount: BehaviorSubject<number> = new BehaviorSubject(25);
@@ -66,6 +72,11 @@ class GameManager {
      * The salary paid per turn to your fleet's quartermaster.
      */
     private quartermasterSalary: BehaviorSubject<number> = new BehaviorSubject(300);
+
+    /**
+     * The morale of the officers.
+     */
+    private officersMorale: BehaviorSubject<number> = new BehaviorSubject(100);
 
     /**
      * The combined total of the officer's salaries.
@@ -90,7 +101,10 @@ class GameManager {
 
     constructor() {
         this.crewWage.next(BasePirateWage * this.difficulty.value);
-        this.crewWages.next(this.crewWage.value * this.currentCrewCount.value);
+        this.currentCrewCount.subscribe(() => {
+            this.updateCrewWages();
+        });
+        // TODO: When there are officer slots to subscribe to, updateOfficerSalaries when they change.
     }
 
     /**
@@ -153,17 +167,89 @@ class GameManager {
         this.difficulty.next(newDiff);
     }
 
-    public endTurn(): void {
+    public async endTurn(): Promise<void> {
+        this.canPlayTurn.next(false);
+
         let currState = "";
         stateManager.getSceneState().pipe(take(1)).subscribe(state => currState = state);
 
         switch(currState) {
             case SceneState.Port.toString(): {
+                // Deduct officer salaries
+                let oMorale = this.officersMorale.value;
+                const oSalaries = this.crewWages.value;
+                let balance = this.balance.value;
+                let remainingBalance = balance - oSalaries;
+                this.balance.next(remainingBalance >= 0 ? remainingBalance : 0);
+
+                // Adjust offciers morale
+                if (remainingBalance < 0) {
+                    oMorale -= Math.ceil(Math.abs(remainingBalance / 1000));
+                    this.officersMorale.next(oMorale);
+                }
+                
+                // Roll officers morale event (leave)
+                // If officers morale is below 50%, a random check is made on a 1d100.
+                // If the score + current morale is higher than 50%, then no loass of officers.
+                if (oMorale < 50 && ((Math.random() * 100) + oMorale) <= 50) {
+                    // The order of officers leaving are (doctor, carpenter, and then quartermaster).
+                    // TODO: should have actual slots for these officers and not simply salaries.
+                    if (this.doctorSalary.value) {
+                        // TODO: remove doctor from slot
+                        this.doctorSalary.next(0);
+                    } else if (this.carpenterSalary.value) {
+                        // TODO: remove carpenter from slot
+                        this.carpenterSalary.next(0);
+                    } else if (this.quartermasterSalary.value) {
+                        // TODO: remove quartermaster from slot
+                        this.quartermasterSalary.next(0);
+                        this.officersMorale.next(100);
+                    }
+                }
+
                 // Deduct crew wages
+                let cMorale = this.crewMorale.value;
+                const cWages = this.crewWages.value;
+                balance = this.balance.value;
+                remainingBalance -= balance - cWages;
+                this.balance.next(remainingBalance >= 0 ? remainingBalance : 0);
+
                 // Adjust crew morale
+                if (remainingBalance < 0) {
+                    cMorale -= Math.ceil(Math.abs(remainingBalance / 1000));
+                    this.crewMorale.next(cMorale);
+                }
+                
+                // Roll crew morale event (leave)
+                // If crew morale is below 50%, a random check is made on a 1d100.
+                // If the score + current morale is higher than 50%, then no loass of crew.
+                if (cMorale < 50 && ((Math.random() * 100) + cMorale) <= 50) {
+                    // Percentage of crew that desert (1% - 5%)
+                    const lostCrewPercentage = Math.ceil(Math.ceil(Math.random() * 5) / 100);
+                    let currCrewCount = this.currentCrewCount.value;
+                    const lostCrew = Math.ceil(currCrewCount * lostCrewPercentage);
+                    currCrewCount -= lostCrew;
+
+                    this.currentCrewCount.next(currCrewCount > 0 ? currCrewCount : 0);
+                }
+                if (!this.currentCrewCount.value) {
+                    this.crewMorale.next(100);
+                }
+                
                 // Update port reputation
-                // Roll chance for arrest
-                // Roll chance for event
+                await zip(playerManager.getInfamy(), playerManager.getCrownFavor())
+                    .pipe(take(1))
+                    .subscribe(infAndCrownFav => {
+                        portManager.updatePortReputation(infAndCrownFav[0], infAndCrownFav[1]);
+                    });
+                portManager.updatePortTurn();
+
+                // TODO: Roll chance for arrest
+                let port;
+                portManager.getCurrentPort().pipe(take(1)).subscribe(p => port = p);
+
+
+                // TODO: Roll chance for event
                 break;
             }
             case SceneState.AtSea.toString(): {
@@ -181,6 +267,7 @@ class GameManager {
                 // Roll for enemy surrender or sunk ships
                 break;
             }
+            // TODO: Need a blocking modal summary event to show all that happened (crew or officers leaving, etc.).
         }
     }
 
@@ -190,6 +277,22 @@ class GameManager {
      */
     public getBalance(): Observable<number> {
         return this.balance.asObservable();
+    }
+
+    /**
+     * Gets the subscribable value of flag allowing player to start their next turn.
+     * @returns observable of player's flag allowing player to start their next turn.
+     */
+    public getCanPlayTurn(): Observable<boolean> {
+        return this.canPlayTurn.asObservable();
+    }
+
+    /**
+     * Gets the subscribable value of crew morale.
+     * @returns observable of the crew morale.
+     */
+    public getCrewMorale(): Observable<number> {
+        return this.crewMorale.asObservable();
     }
 
     /**
@@ -225,19 +328,19 @@ class GameManager {
     }
 
     /**
-     * Gets the subscribable value of player's infamy.
-     * @returns observable of player's monetary balance.
-     */
-    public getInfamy(): Observable<number> {
-        return this.infamy.asObservable();
-    }
-
-    /**
      * Gets the subscribable value of maximum crew allowed.
      * @returns observable of player's monetary balance.
      */
     public getMaxCrewCount(): Observable<number> {
         return this.maxCrewCount.asObservable();
+    }
+
+    /**
+     * Gets the subscribable value of officers morale.
+     * @returns observable of the officers morale.
+     */
+    public getOfficersMorale(): Observable<number> {
+        return this.officersMorale.asObservable();
     }
 
     /**

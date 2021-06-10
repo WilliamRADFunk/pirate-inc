@@ -1,27 +1,32 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Col, Row } from 'react-bootstrap';
 
 import styles from './HUD.module.scss';
 import { gameManager } from '../../Services/GameManager';
 import { playerManager } from '../../Services/PlayerManager';
-import { GameState, stateManager } from '../../Services/StateManager';
+import { GameState, SceneState, stateManager } from '../../Services/StateManager';
 import { ShipNameGenerator } from '../../Helpers/ShipNameGenerator';
+import { portManager } from '../../Services/PortManager';
 
 interface Props {}
 
 interface State {
     balance: string;
     crewWages: string;
+    crownFavor: number;
     currentCrew: number;
     fleetHealth: number;
     infamy: number;
     maxCrew: number;
     officerSalaries: string;
     playerBounty: string;
+    portReputation: number;
     provisions: [number, number, number];
     remActionPoints: number;
     gameState: GameState;
+    sceneState: SceneState;
     shipCount: number;
     totalActionPoints: number;
 }
@@ -41,15 +46,18 @@ export class HUD extends React.Component<Props, State> {
         this.state = {
             balance: '$0',
             crewWages: '$0',
+            crownFavor: 0,
             currentCrew: 0,
             fleetHealth: 100,
             infamy: 0,
             maxCrew: 0,
             officerSalaries: '$0',
             playerBounty: '$0',
+            portReputation: 0,
             provisions: [0, 0, 0],
             remActionPoints: 0,
             gameState: GameState.Start,
+            sceneState: SceneState.Other,
             shipCount: 1,
             totalActionPoints: 0,
         };
@@ -94,12 +102,6 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ officerSalaries: formatter.format(salaries) });
                 }
             }),
-            gameManager.getInfamy().subscribe(inf => {
-                if (!isNaN(inf)) {
-                    // add infamy to local state if number
-                    this.setState({ infamy: inf });
-                }
-            }),
             gameManager.getShipCount().subscribe(ships => {
                 if (!isNaN(ships)) {
                     // add ship count to local state if number
@@ -118,6 +120,18 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ fleetHealth: health });
                 }
             }),
+            playerManager.getCrownFavor().subscribe(fav => {
+                if (!isNaN(fav)) {
+                    // add crownFavor to local state if number
+                    this.setState({ crownFavor: fav });
+                }
+            }),
+            playerManager.getInfamy().subscribe(inf => {
+                if (!isNaN(inf)) {
+                    // add infamy to local state if number
+                    this.setState({ infamy: inf });
+                }
+            }),
             playerManager.getRemainingActionPoints().subscribe(ac => {
                 if (!isNaN(ac)) {
                     // add remaining action points to local state if number
@@ -130,11 +144,17 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ totalActionPoints: ac });
                 }
             }),
+            portManager.getCurrentPort().pipe( map(port => port?.reputation ?? 0) ).subscribe(rep => {
+                this.setState({ portReputation: rep });
+            }),
             stateManager.getGameState().subscribe(gameState => {
                 if (gameState) {
                     // add scene gameState to local state if truthy
                     this.setState({ gameState: gameState });
                 }
+            }),
+            stateManager.getSceneState().subscribe(state => {
+                this.setState({ sceneState: state });
             })
         );
     }
@@ -149,6 +169,7 @@ export class HUD extends React.Component<Props, State> {
         const {
             balance,
             crewWages,
+            crownFavor,
             currentCrew,
             infamy,
             fleetHealth,
@@ -156,8 +177,10 @@ export class HUD extends React.Component<Props, State> {
             maxCrew,
             officerSalaries,
             playerBounty,
+            portReputation,
             provisions,
             remActionPoints,
+            sceneState,
             shipCount,
             totalActionPoints
         } = this.state;
@@ -202,13 +225,13 @@ export class HUD extends React.Component<Props, State> {
                                 <Col xs='6' className={styles.itemLabel}>Ships:</Col>
                                 <Col xs='6' className={styles.itemValue}>{shipCount}</Col>
                             </Row>
-                        </Col>
-                        {/* Right side of HUD */}
-                        <Col xs='12' lg='6'>
                             <Row>
                                 <Col xs='6' className={styles.itemLabel}>Fleet Health:</Col>
                                 <Col xs='6' className={styles.itemValue}>{fleetHealth}%</Col>
                             </Row>
+                        </Col>
+                        {/* Right side of HUD */}
+                        <Col xs='12' lg='6'>
                             <Row>
                                 <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
                                 <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
@@ -222,9 +245,19 @@ export class HUD extends React.Component<Props, State> {
                                 <Col xs='6' className={styles.itemValue}>{infamy}</Col>
                             </Row>
                             <Row>
+                                <Col xs='6' className={styles.itemLabel}>Crown Favor:</Col>
+                                <Col xs='6' className={styles.itemValue}>{crownFavor}</Col>
+                            </Row>
+                            <Row>
                                 <Col xs='6' className={styles.itemLabel}>Bounty:</Col>
                                 <Col xs='6' className={styles.itemValue}>{playerBounty}</Col>
                             </Row>
+                            { sceneState !== SceneState.Port ? null : 
+                                <Row>
+                                    <Col xs='6' className={styles.itemLabel}>Port Reputation:</Col>
+                                    <Col xs='6' className={styles.itemValue}>{portReputation}</Col>
+                                </Row>
+                            }
                         </Col>
                     </Row>
                 </Col>

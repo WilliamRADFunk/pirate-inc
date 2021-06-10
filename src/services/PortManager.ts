@@ -3,8 +3,9 @@ import { take } from "rxjs/operators";
 
 import { Port, PortLocation } from "../Types/Port";
 import { playerManager } from "./PlayerManager";
+import { PortSceneState, stateManager } from "./StateManager";
 
-export class PortManager {
+class PortManager {
     /**
      * The port where the player is currently docked. Will be null when they leave a port.
      */
@@ -195,7 +196,8 @@ export class PortManager {
         }
         port.hasArrestBeenAttempted = false;
         port.willArrest = false;
-        this
+        this.currentPort.next(null);
+        stateManager.changePortSceneState(PortSceneState.Menu, true);
     }
 
     /**
@@ -240,3 +242,5 @@ export class PortManager {
         !hasWritOrBribe ? this.rollForArrest() : null;
     }
 }
+
+export const portManager = new PortManager();

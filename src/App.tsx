@@ -31,7 +31,7 @@ class App extends React.Component<Props, State> {
       };
   }
   
-  public componentDidMount() {
+  public componentDidMount(): void {
       // subscribe to all relevant player HUD data
       this.subscriptions.push(
         stateManager.getGameState().subscribe(gameState => {
@@ -46,13 +46,17 @@ class App extends React.Component<Props, State> {
       );
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
       // unsubscribe to ensure no memory leaks
       this.subscriptions.filter(s => s).forEach(s => s.unsubscribe());
       this.subscriptions.length = 0;
   }
 
-  public render() {
+  /**
+   * The render function to run each time there is a state change.
+   * @returns Jsx Element representing the DOM of the component.
+   */
+  public render(): any {
     const { gameState, sceneState } = this.state;
     return (
       <div className="App text-center">

@@ -19,9 +19,19 @@ export interface PlayerNegativeStats {
 // Singleton to control the various aspects of the player object.
 class PlayerManager {
     /**
+     * The crownFavor associated with player.
+     */
+    private crownFavor: BehaviorSubject<number> = new BehaviorSubject(0);
+
+    /**
      * game difficulty from which certain player stats are set.
      */
     private difficulty: number = 2;
+
+    /**
+     * The infamy associated with player.
+     */
+    private infamy: BehaviorSubject<number> = new BehaviorSubject(37);
 
     /**
      * The player object can only be set once. Once this flag is flipped to true, it can't be reset.
@@ -58,6 +68,22 @@ class PlayerManager {
      * The number of total action points player is capable of having in a given turn.
      */
     private totalActionPoints: BehaviorSubject<number> = new BehaviorSubject(5);
+
+    /**
+     * Gets the subscribable value of player's crownFavor.
+     * @returns observable of player's crownFavor.
+     */
+    public getCrownFavor(): Observable<number> {
+        return this.crownFavor.asObservable();
+    }
+
+    /**
+     * Gets the subscribable value of player's infamy.
+     * @returns observable of player's infamy.
+     */
+    public getInfamy(): Observable<number> {
+        return this.infamy.asObservable();
+    }
 
     /**
      * Allows subscribing to the player's pirate name.

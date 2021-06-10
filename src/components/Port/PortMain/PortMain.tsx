@@ -46,7 +46,7 @@ export class PortMain extends React.Component<Props, State> {
     public render() {
         // const { } = this.state;
         return (
-            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries mt-5">
+            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
                 <Row>
                     <Shipyard></Shipyard>
                     <Tavern></Tavern>

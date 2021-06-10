@@ -91,8 +91,13 @@ class StateManager {
      * Changes to different port scene state if new state is an allowed transition from current state.
      * @param newState the new port scene state to transition to.
      */
-    public changePortSceneState(newState: GameState): void {
-
+    public changePortSceneState(newState: PortSceneState, leaving?: boolean): void {
+        // TODO: Check if valid transition.
+        this.portSceneState.next(newState);
+        // If optional leaving was set, SceneState should be updated as well to be "at sea".
+        if (leaving) {
+            this.sceneState.next(SceneState.AtSea);
+        }
     }
 
     /**
