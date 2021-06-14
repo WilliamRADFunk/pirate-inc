@@ -104,6 +104,51 @@ export class Tavern extends React.Component<Props, State> {
                     </Button>
                 </Row>
             }
+            { portSceneState !== PortSceneState.TavernBuySupplies ? null :
+                <Row>
+                    <Col
+                        aria-label="Tavern buy suplies section description"
+                        className="fs-sm text-left">
+                        Buy some supplies
+                    </Col>
+                </Row>
+            }
+            { portSceneState !== PortSceneState.TavernFireCrew ? null :
+                <Row>
+                    <Col
+                        aria-label="Tavern fire crew section description"
+                        className="fs-sm text-left">
+                        Select specific crew members to let go, or let the quartermaster pick automatically given a number.
+                    </Col>
+                </Row>
+            }
+            { portSceneState !== PortSceneState.TavernHireCrew ? null :
+                <Row>
+                    <Col
+                        aria-label="Tavern hire crew section description"
+                        className="fs-sm text-left">
+                        Select specific crew members to hire, or let the quartemaster pick automatically given a number.
+                    </Col>
+                </Row>
+            }
+            { portSceneState !== PortSceneState.TavernFireOfficers ? null :
+                <Row>
+                    <Col
+                        aria-label="Tavern fire officers section description"
+                        className="fs-sm text-left">
+                        Which of your officers would you let go?
+                    </Col>
+                </Row>
+            }
+            { portSceneState !== PortSceneState.TavernHireOfficers ? null :
+                <Row>
+                    <Col
+                        aria-label="Tavern hire officers section description"
+                        className="fs-sm text-left">
+                        Which officer position are trying to fill?
+                    </Col>
+                </Row>
+            }
         </>);
     }
 }
