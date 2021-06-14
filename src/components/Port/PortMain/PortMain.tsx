@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { Subscription } from "rxjs";
+import { PortSceneState, stateManager } from "../../../Services/StateManager";
 
 import { Bungalow } from "../Bungalow/Bungalow";
 import { ColonialOffice } from "../ColonialOffice/ColonialOffice";
@@ -11,7 +12,7 @@ import { Tavern } from "../Tavern/Tavern";
 interface Props {}
 
 interface State {
-    
+    portSceneState: PortSceneState;
 }
 
 export class PortMain extends React.Component<Props, State> {
@@ -21,19 +22,16 @@ export class PortMain extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            
+            portSceneState: PortSceneState.Menu
         };
     }
     
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            // stateManager.getSceneState().subscribe(state => {
-            //     if (state) {
-            //         // add balance to local state if number
-            //         this.setState({ sceneState: state });
-            //     }
-            // }),
+            stateManager.getPortSceneState().subscribe(state => {
+                this.setState({ portSceneState: state });
+            }),
         );
     }
 
@@ -44,14 +42,46 @@ export class PortMain extends React.Component<Props, State> {
     }
 
     public render() {
-        // const { } = this.state;
+        const { portSceneState } = this.state;
         return (
             <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
                 <Row>
-                    <Shipyard></Shipyard>
-                    <Tavern></Tavern>
-                    <ColonialOffice></ColonialOffice>
-                    <Bungalow></Bungalow>
+                    { portSceneState !== PortSceneState.Menu ? null :
+                        <>
+                            <Col xs="12" lg="5" className="boundaries mt-5">
+                                <Shipyard></Shipyard>
+                            </Col>
+                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="boundaries mt-5">
+                                <Tavern></Tavern>
+                            </Col>
+                            <Col xs="12" lg="5" className="boundaries mt-5">
+                                <ColonialOffice></ColonialOffice>
+                            </Col>
+                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="boundaries mt-5">
+                                <Bungalow></Bungalow>
+                            </Col>
+                        </>
+                    }
+                    { (portSceneState < PortSceneState.BungalowCrewManifest || PortSceneState.BungalowShipManifest < portSceneState) ? null :
+                        <Col xs="12" className="boundaries mt-5">
+                            <Bungalow></Bungalow>
+                        </Col>
+                    }
+                    { (portSceneState < PortSceneState.ColonialOfficeBribe || PortSceneState.ColonialOfficeWritOfProtection < portSceneState) ? null :
+                        <Col xs="12" className="boundaries mt-5">
+                            <ColonialOffice></ColonialOffice>
+                        </Col>
+                    }
+                    { (portSceneState < PortSceneState.ShipyardBuy || PortSceneState.ShipyardSell < portSceneState) ? null :
+                        <Col xs="12" className="boundaries mt-5">
+                            <Shipyard></Shipyard>
+                        </Col>
+                    }
+                    { (portSceneState < PortSceneState.TavernBuySupplies || PortSceneState.TavernOptions < portSceneState) ? null :
+                        <Col xs="12" className="boundaries mt-5">
+                            <Tavern></Tavern>
+                        </Col>
+                    }
                 </Row>
             </Col>
         );

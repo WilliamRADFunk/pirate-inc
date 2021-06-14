@@ -1,12 +1,14 @@
 import React from "react";
-import { Col } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { Subscription } from "rxjs";
+import { PortSceneState, stateManager } from "../../../Services/StateManager";
 
 interface Props {}
 
 interface State {
-    
+    portSceneState: PortSceneState;
 }
 
 export class Tavern extends React.Component<Props, State> {
@@ -16,19 +18,25 @@ export class Tavern extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            
+            portSceneState: PortSceneState.Menu
         };
+    }
+
+    private toggleMode(): void {
+        const currState = this.state.portSceneState;
+        if (currState === PortSceneState.Menu) {
+            stateManager.changePortSceneState(PortSceneState.TavernOptions);
+        } else {
+            stateManager.changePortSceneState(PortSceneState.Menu);
+        }
     }
     
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
-            // stateManager.getSceneState().subscribe(state => {
-            //     if (state) {
-            //         // add balance to local state if number
-            //         this.setState({ sceneState: state });
-            //     }
-            // }),
+            stateManager.getPortSceneState().subscribe(state => {
+                this.setState({ portSceneState: state });
+            }),
         );
     }
 
@@ -39,11 +47,63 @@ export class Tavern extends React.Component<Props, State> {
     }
 
     public render() {
-        // const { } = this.state;
-        return (
-            <Col xs="12" lg={{ span: 5, offset: 2 }} className="boundaries mt-5">
-                Tavern
-            </Col>
-        );
+        const { portSceneState } = this.state;
+        return (<>
+            <Row className="border-white border-bottom mb-2">
+                <Col xs={{ span: 8, offset: 2 }}
+                    aria-label="Tavern section"
+                    className="text-center">
+                    Tavern
+                </Col>
+                <Button
+                    variant="outline-secondary"
+                    className="border-0 col-2"
+                    onClick={() => this.toggleMode()}>
+                    { portSceneState !== PortSceneState.TavernOptions
+                        ? <Eye color="white" size={20}></Eye>
+                        : <EyeSlash color="white" size={20}></EyeSlash>
+                    }
+                </Button>
+            </Row>
+            { portSceneState !== PortSceneState.TavernOptions ? null :
+                <Row>
+                    <Button
+                        aria-label="Open tavern buy supplies section"
+                        variant="link"
+                        className="col-2 offset-1"
+                        onClick={() => stateManager.changePortSceneState(PortSceneState.TavernBuySupplies)}>
+                        Buy Supplies
+                    </Button>
+                    <Button
+                        aria-label="Open tavern fire crew section"
+                        variant="link"
+                        className="col-2"
+                        onClick={() => stateManager.changePortSceneState(PortSceneState.TavernFireCrew)}>
+                        Fire Crew
+                    </Button>
+                    <Button
+                        aria-label="Open tavern hire crew section"
+                        variant="link"
+                        className="col-2"
+                        onClick={() => stateManager.changePortSceneState(PortSceneState.TavernHireCrew)}>
+                        Hire Crew
+                    </Button>
+                    <Button
+                        aria-label="Open tavern fire officers section"
+                        variant="link"
+                        className="col-2"
+                        onClick={() => stateManager.changePortSceneState(PortSceneState.TavernFireOfficers)}>
+                        Fire Officers
+                    </Button>
+                    <Button
+                        aria-label="Open tavern hire officers section"
+                        variant="link"
+                        className="col-2"
+                        onClick={() => stateManager.changePortSceneState(PortSceneState.TavernHireOfficers)}>
+                        Hire Officers
+                    </Button>
+                </Row>
+            }
+        </>);
     }
 }
