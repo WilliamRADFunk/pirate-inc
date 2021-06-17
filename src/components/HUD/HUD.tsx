@@ -2,6 +2,8 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Col, Row } from 'react-bootstrap';
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-male-sprites';
 
 import styles from './HUD.module.scss';
 import { gameManager } from '../../Services/GameManager';
@@ -68,79 +70,61 @@ export class HUD extends React.Component<Props, State> {
         this.subscriptions.push(
             gameManager.getBalance().subscribe(bal => {
                 if (!isNaN(bal)) {
-                    // add balance to local state if number
                     this.setState({ balance: formatter.format(bal) });
                 }
             }),
-            gameManager.getCurrentCrewCount().subscribe(currCrew => {
-                if (!isNaN(currCrew)) {
-                    // add current crew count to local state if number
-                    this.setState({ currentCrew: currCrew });
+            gameManager.getCrewHUD().subscribe(crewHUD => {
+                if (crewHUD) {
+                    this.setState({ currentCrew: crewHUD.crewCountLiving, crewWages: formatter.format(crewHUD.crewWages) });
                 }
             }),
             gameManager.getMaxCrewCount().subscribe(mCrew => {
                 if (!isNaN(mCrew)) {
-                    // add maximum crew count to local state if number
                     this.setState({ maxCrew: mCrew });
                 }
             }),
             gameManager.getProvisions().subscribe(provs => {
                 if (provs?.length && provs.filter(prov => !isNaN(prov)).length === 3) {
-                    // add provisions to local state if array with exactly 3 numbers
                     this.setState({ provisions: [...provs] });
-                }
-            }),
-            gameManager.getCrewWages().subscribe(wages => {
-                if (!isNaN(wages)) {
-                    // add crew wages to local state if number
-                    this.setState({ crewWages: formatter.format(wages) });
                 }
             }),
             gameManager.getOfficerSalaries().subscribe(salaries => {
                 if (!isNaN(salaries)) {
-                    // add officer salaries to local state if number
                     this.setState({ officerSalaries: formatter.format(salaries) });
                 }
             }),
             gameManager.getShipCount().subscribe(ships => {
                 if (!isNaN(ships)) {
-                    // add ship count to local state if number
                     this.setState({ shipCount: ships });
                 }
             }),
             gameManager.getPlayerBounty().subscribe(bounty => {
                 if (!isNaN(bounty)) {
-                    // add player bounty to local state if number
                     this.setState({ playerBounty: formatter.format(bounty) });
                 }
             }),
             gameManager.getFleetHealth().subscribe(health => {
                 if (!isNaN(health)) {
-                    // add player's fleet health to local state if number
                     this.setState({ fleetHealth: health });
                 }
             }),
             playerManager.getCrownFavor().subscribe(fav => {
                 if (!isNaN(fav)) {
-                    // add crownFavor to local state if number
                     this.setState({ crownFavor: fav });
                 }
             }),
             playerManager.getInfamy().subscribe(inf => {
                 if (!isNaN(inf)) {
-                    // add infamy to local state if number
                     this.setState({ infamy: inf });
                 }
             }),
             playerManager.getRemainingActionPoints().subscribe(ac => {
                 if (!isNaN(ac)) {
-                    // add remaining action points to local state if number
                     this.setState({ remActionPoints: ac });
                 }
             }),
             playerManager.getTotalActionPoints().subscribe(ac => {
                 if (!isNaN(ac)) {
-                    // add total action points to local state if number
                     this.setState({ totalActionPoints: ac });
                 }
             }),
@@ -149,7 +133,6 @@ export class HUD extends React.Component<Props, State> {
             }),
             stateManager.getGameState().subscribe(gameState => {
                 if (gameState) {
-                    // add scene gameState to local state if truthy
                     this.setState({ gameState: gameState });
                 }
             }),
@@ -191,6 +174,11 @@ export class HUD extends React.Component<Props, State> {
                     <Row>
                         <Col xs='12' lg='6'>
                             {`The ${ShipNameGenerator()}`}
+                        </Col>
+                        <Col>
+                            {
+                                <div style={{"width": "25px", "height": "25px"}} className="Container" dangerouslySetInnerHTML={{__html: createAvatar(style, { seed: 'custom-seed' })}}></div>
+                            }
                         </Col>
                     </Row>
                     <Row>

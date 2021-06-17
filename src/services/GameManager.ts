@@ -1,10 +1,10 @@
-import { BehaviorSubject, Observable, zip } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { GameState, SceneState, stateManager } from './StateManager';
-import { BasePirateWage } from '../Types/Constants';
 import { playerManager } from './PlayerManager';
 import { portManager } from './PortManager';
+import { Crew } from '../Objects/Crew/Crew';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -29,24 +29,9 @@ class GameManager {
     private carpenterSalary: BehaviorSubject<number> = new BehaviorSubject(200);
 
     /**
-     * The morale of the crew.
+     * The crew object that manages all things crew.
      */
-    private crewMorale: BehaviorSubject<number> = new BehaviorSubject(100);
-
-    /**
-     * The cost per turn of a single crew member.
-     */
-    private crewWage: BehaviorSubject<number> = new BehaviorSubject(0);
-
-    /**
-     * The combined total of the crew's wages.
-     */
-    private crewWages: BehaviorSubject<number> = new BehaviorSubject(0);
-
-    /**
-     * The number of crew members on player's payroll.
-     */
-    private currentCrewCount: BehaviorSubject<number> = new BehaviorSubject(12);
+    private crew: Crew = new Crew();
 
     /**
      * The player's choice of game difficulty.
@@ -95,31 +80,17 @@ class GameManager {
     private ships: { health: number; }[] = [];
 
     /**
+     * List of active subscriptions within the service.
+     */
+    private subscriptions: Subscription[] = [];
+
+    /**
      * The number of total food units of each category that player owns.
      */
     private totalProvisions: BehaviorSubject<[number, number, number]> = new BehaviorSubject([132, 74, 13]);
 
     constructor() {
-        this.crewWage.next(BasePirateWage * this.difficulty.value);
-        this.currentCrewCount.subscribe(() => {
-            this.updateCrewWages();
-        });
         // TODO: When there are officer slots to subscribe to, updateOfficerSalaries when they change.
-    }
-
-    /**
-     * Updates base wage for a single crew member, caused primarily when the difficulty has changed.
-     */
-    private updateCrewWage(): void {
-        this.crewWage.next(BasePirateWage * this.difficulty.value);
-        this.updateCrewWages();
-    }
-
-    /**
-     * Updates base wage for the total crew, caused primarily when the amount of crew has changed.
-     */
-    private updateCrewWages(): void {
-        this.crewWages.next(this.crewWage.value * this.currentCrewCount.value);
     }
 
     /**
@@ -177,12 +148,12 @@ class GameManager {
             case SceneState.Port.toString(): {
                 // Deduct officer salaries
                 let oMorale = this.officersMorale.value;
-                const oSalaries = this.crewWages.value;
+                const oSalaries = this.officerSalaries.value;
                 let balance = this.balance.value;
                 let remainingBalance = balance - oSalaries;
                 this.balance.next(remainingBalance >= 0 ? remainingBalance : 0);
 
-                // Adjust offciers morale
+                // Adjust officers' morale
                 if (remainingBalance < 0) {
                     oMorale -= Math.ceil(Math.abs(remainingBalance / 1000));
                     this.officersMorale.next(oMorale);
@@ -207,34 +178,8 @@ class GameManager {
                     }
                 }
 
-                // Deduct crew wages
-                let cMorale = this.crewMorale.value;
-                const cWages = this.crewWages.value;
-                balance = this.balance.value;
-                remainingBalance -= balance - cWages;
-                this.balance.next(remainingBalance >= 0 ? remainingBalance : 0);
-
-                // Adjust crew morale
-                if (remainingBalance < 0) {
-                    cMorale -= Math.ceil(Math.abs(remainingBalance / 1000));
-                    this.crewMorale.next(cMorale);
-                }
-                
-                // Roll crew morale event (leave)
-                // If crew morale is below 50%, a random check is made on a 1d100.
-                // If the score + current morale is higher than 50%, then no loass of crew.
-                if (cMorale < 50 && ((Math.random() * 100) + cMorale) <= 50) {
-                    // Percentage of crew that desert (1% - 5%)
-                    const lostCrewPercentage = Math.ceil(Math.ceil(Math.random() * 5) / 100);
-                    let currCrewCount = this.currentCrewCount.value;
-                    const lostCrew = Math.ceil(currCrewCount * lostCrewPercentage);
-                    currCrewCount -= lostCrew;
-
-                    this.currentCrewCount.next(currCrewCount > 0 ? currCrewCount : 0);
-                }
-                if (!this.currentCrewCount.value) {
-                    this.crewMorale.next(100);
-                }
+                // Apply wage affects and adjust crew morale accordingly.
+                this.balance.next(this.crew.payDay(this.balance.value));
                 
                 // Update port reputation
                 await zip(playerManager.getInfamy(), playerManager.getCrownFavor())
@@ -288,27 +233,11 @@ class GameManager {
     }
 
     /**
-     * Gets the subscribable value of crew morale.
-     * @returns observable of the crew morale.
+     * Consolidates crew info into a single observable for HUD use.
+     * @returns an observable of an object containing the relevant crew info for the HUD.
      */
-    public getCrewMorale(): Observable<number> {
-        return this.crewMorale.asObservable();
-    }
-
-    /**
-     * Gets the subscribable value of crew wages.
-     * @returns observable of player's monetary balance.
-     */
-    public getCrewWages(): Observable<number> {
-        return this.crewWages.asObservable();
-    }
-
-    /**
-     * Gets the subscribable value of current crew count.
-     * @returns observable of player's monetary balance.
-     */
-    public getCurrentCrewCount(): Observable<number> {
-        return this.currentCrewCount.asObservable();
+    public getCrewHUD(): Observable<{[key: string]: number}> {
+        return this.crew.getHUD();
     }
 
     /**
@@ -389,7 +318,8 @@ class GameManager {
      */
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
-            this.updateCrewWage();
+            this.crew.updateCrewWage(this.difficulty.value);
+            this.crew.addCrew(new Array(48 / this.difficulty.value), true);
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
             stateManager.changeGameState(GameState.Active);
             return true;
