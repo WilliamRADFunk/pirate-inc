@@ -97,6 +97,14 @@ export class Crew {
     }
 
     /**
+     * Get a clone of the crew roster to be used in populating the crew manifest and similar uses.
+     * @returns the clone of the crew list.
+     */
+    public getCrew(): Crew[] {
+        return this.crew.map(c => JSON.parse(JSON.stringify(c)));
+    }
+
+    /**
      * Gets the value of crew morale.
      * @returns value of the crew morale.
      */

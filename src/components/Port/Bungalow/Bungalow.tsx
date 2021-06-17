@@ -4,6 +4,7 @@ import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { Subscription } from "rxjs";
 import { PortSceneState, stateManager } from "../../../Services/StateManager";
+import { CrewManifest } from "../CrewManifest/CrewManifest";
 
 interface Props {}
 
@@ -102,7 +103,7 @@ export class Bungalow extends React.Component<Props, State> {
                     <Col
                         aria-label="Bungalow buy suplies section description"
                         className="fs-sm text-left">
-                        See the full compliment of you crew and their associated stats.
+                        <CrewManifest></CrewManifest>
                     </Col>
                 </Row>
             }

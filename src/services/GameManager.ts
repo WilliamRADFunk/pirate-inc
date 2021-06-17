@@ -233,6 +233,14 @@ class GameManager {
     }
 
     /**
+     * Get a clone of the crew roster to be used in populating the crew manifest and similar uses.
+     * @returns the clone of the crew list.
+     */
+    public getCrew(): Crew[] {
+        return this.crew.getCrew();
+    }
+
+    /**
      * Consolidates crew info into a single observable for HUD use.
      * @returns an observable of an object containing the relevant crew info for the HUD.
      */
