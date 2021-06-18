@@ -5,6 +5,7 @@ import { GameState, SceneState, stateManager } from './StateManager';
 import { playerManager } from './PlayerManager';
 import { portManager } from './PortManager';
 import { Crew } from '../Objects/Crew/Crew';
+import { CrewMember } from '../Types/CrewMember';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -236,7 +237,7 @@ class GameManager {
      * Get a clone of the crew roster to be used in populating the crew manifest and similar uses.
      * @returns the clone of the crew list.
      */
-    public getCrew(): Crew[] {
+    public getCrew(): Observable<CrewMember[]> {
         return this.crew.getCrew();
     }
 

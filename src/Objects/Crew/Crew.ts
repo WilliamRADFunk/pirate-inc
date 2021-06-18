@@ -1,5 +1,5 @@
-import { BehaviorSubject, Observable, zip } from "rxjs";
-import { map, take } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subscription, zip } from "rxjs";
+import { map } from "rxjs/operators";
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-male-sprites';
 
@@ -10,9 +10,14 @@ const random = require('random-name');
 
 export class Crew {
     /**
-     * The full list of the player's crew.
+     * The real list of the player's crew
      */
-    private crew: CrewMember[] = [];
+    private _crew: BehaviorSubject<CrewMember[]> = new BehaviorSubject([] as CrewMember[]);
+
+    /**
+     * The cloned list of the player's crew.
+     */
+    private crew: BehaviorSubject<CrewMember[]> = new BehaviorSubject(this._crew.value);
 
     /**
      * The number of crew members that died on player's watch.
@@ -39,7 +44,18 @@ export class Crew {
      */
     private crewWages: BehaviorSubject<number> = new BehaviorSubject(0);
 
-    // constructor() {}
+    /**
+     * List of subscriptions class instance is listening on.
+     */
+    private subscriptions: Subscription[] = [];
+
+    constructor() {
+        this.subscriptions.push(
+            this._crew.subscribe(crew => {
+                this.crew.next(crew.map(c => JSON.parse(JSON.stringify(c))));
+            })
+        );
+    }
 
     private _calculateDesertion(): void {
         const cMorale = this.crewMorale.value;
@@ -89,10 +105,12 @@ export class Crew {
                     turnsSinceDeath: 0
                 };
                 newMember.avatar = createAvatar(style, { seed: `${newMember.nameFirst}-${newMember.nameLast}` });
-                this.crew.push(newMember);
+                const theCrew = this._crew.value.slice();
+                theCrew.push(newMember);
+                this._crew.next(theCrew);
             }
         }
-        this.crewCountLiving.next(this.crew.filter(c => c.isAlive).length);
+        this.crewCountLiving.next(this._crew.value.filter(c => c.isAlive).length);
         this.updateCrewWages();
     }
 
@@ -100,8 +118,8 @@ export class Crew {
      * Get a clone of the crew roster to be used in populating the crew manifest and similar uses.
      * @returns the clone of the crew list.
      */
-    public getCrew(): Crew[] {
-        return this.crew.map(c => JSON.parse(JSON.stringify(c)));
+    public getCrew(): Observable<CrewMember[]> {
+        return this.crew.asObservable();
     }
 
     /**
