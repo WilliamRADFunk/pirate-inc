@@ -90,9 +90,9 @@ class GameManager {
      */
     private totalProvisions: BehaviorSubject<[number, number, number]> = new BehaviorSubject([132, 74, 13]);
 
-    constructor() {
-        // TODO: When there are officer slots to subscribe to, updateOfficerSalaries when they change.
-    }
+    // constructor() {
+    //     // TODO: When there are officer slots to subscribe to, updateOfficerSalaries when they change.
+    // }
 
     /**
      * Updates combined salaries for all officers.
@@ -191,8 +191,8 @@ class GameManager {
                 portManager.updatePortTurn();
 
                 // TODO: Roll chance for arrest
-                let port;
-                portManager.getCurrentPort().pipe(take(1)).subscribe(p => port = p);
+                // let port;
+                // portManager.getCurrentPort().pipe(take(1)).subscribe(p => port = p);
 
 
                 // TODO: Roll chance for event

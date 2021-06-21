@@ -2,14 +2,14 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Subscription } from "rxjs";
 import { gameManager } from "../../../Services/GameManager";
-import { SceneState, stateManager } from "../../../Services/StateManager";
-import { CrewMember } from "../../../Types/CrewMember";
+// import { SceneState, stateManager } from "../../../Services/StateManager";
+import { CrewMember, MouthToMood } from "../../../Types/CrewMember";
 
 interface Props {}
 
 interface State {
     crew: CrewMember[];
-    sceneState: SceneState;
+    // sceneState: SceneState;
 }
 
 export class CrewManifest extends React.Component<Props, State> {
@@ -20,7 +20,7 @@ export class CrewManifest extends React.Component<Props, State> {
 
         this.state = {
             crew: [],
-            sceneState: SceneState.Port
+            // sceneState: SceneState.Port
         };
     }
     
@@ -29,9 +29,9 @@ export class CrewManifest extends React.Component<Props, State> {
             gameManager.getCrew().subscribe(crew => {
                 this.setState({ crew: crew });
             }),
-            stateManager.getSceneState().subscribe(state => {
-                this.setState({ sceneState: state });
-            }),
+            // stateManager.getSceneState().subscribe(state => {
+            //     this.setState({ sceneState: state });
+            // }),
         );
     }
 
@@ -42,7 +42,7 @@ export class CrewManifest extends React.Component<Props, State> {
     }
 
     public render() {
-        const { crew, sceneState } = this.state;
+        const { crew, /*sceneState*/ } = this.state;
         return (
             <Row className="border-white border-bottom mb-2">
                 <Col xs="12"
@@ -50,13 +50,14 @@ export class CrewManifest extends React.Component<Props, State> {
                     className="text-center">
                     Crew Manifest
                     <br/><br/>
-                    See the full compliment of you crew and their associated stats.
+                    See the full compliment of your crew and their associated stats.
                     <br/><br/>
                     <table className="table table-striped text-light">
                         <thead>
                             <tr>
                                 <th>Avatar</th>
                                 <th>Name</th>
+                                <th>Morale</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -73,6 +74,11 @@ export class CrewManifest extends React.Component<Props, State> {
                                         <td>
                                             {
                                                 `${c.nameFirst} ${c.nameLast}`
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                c.isAlive ? MouthToMood[c.mood] : '---'
                                             }
                                         </td>
                                         <td>

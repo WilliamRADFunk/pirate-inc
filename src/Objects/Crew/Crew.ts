@@ -1,9 +1,9 @@
-import { BehaviorSubject, Observable, Subscription, zip } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subscription, zip } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-male-sprites';
+import * as style from '@dicebear/micah';
 
-import { CrewMember } from "../../Types/CrewMember";
+import { CrewMember, MoodToMouth } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
 
 const random = require('random-name');
@@ -78,10 +78,24 @@ export class Crew {
         }
     }
 
+    private _translateMood(morale: number): MoodToMouth {
+        if (morale < 20) {
+            return MoodToMouth.Angry;
+        } else if (morale < 40) {
+            return MoodToMouth.Disgruntled;
+        } else if (morale < 60) {
+            return MoodToMouth.Uncertain;
+        } else if (morale < 80) {
+            return MoodToMouth.Pleased;
+        } else {
+            return MoodToMouth.Happy;
+        }
+    }
+
     /**
      * Updates base wage for the total crew, caused primarily when the amount of crew has changed.
      */
-    private updateCrewWages(): void {
+    private _updateCrewWages(): void {
         this.crewWages.next(this.crewWage.value * this.crewCountLiving.value);
     }
 
@@ -93,25 +107,36 @@ export class Crew {
     public addCrew(newCrew: CrewMember[], isRandom?: boolean): void {
         if (isRandom) {
             for (let i = 0; i < newCrew.length; i++) {
-                const newMember = <CrewMember>{
+                const newMember = {
                     avatar: '',
+                    concern: '',
                     deathBenefit: 0,
                     hasPaidDeathBenefit: false,
                     isAlive: true,
-                    morale: 100,
-                    nameFirst: random.first(),
+                    mood: MoodToMouth.Happy,
+                    morale: (Math.random() * (100 - 50) + 50),
+                    nameFirst: random.middle(),
                     nameLast: random.last(),
                     ship: null,
                     turnsSinceDeath: 0
-                };
-                newMember.avatar = createAvatar(style, { seed: `${newMember.nameFirst}-${newMember.nameLast}` });
+                } as CrewMember;
+                newMember.mood = this._translateMood(newMember.morale);
+                newMember.avatar = createAvatar(
+                    style,
+                    {
+                        seed: `${newMember.nameFirst}-${newMember.nameLast}`,
+                        facialHairProbability: 55,
+                        glassesProbability: 0,
+                        hair: ['dougFunny', 'fonze', 'mrClean', 'mrT'],
+                        mouth: [newMember.mood]
+                    });
                 const theCrew = this._crew.value.slice();
                 theCrew.push(newMember);
                 this._crew.next(theCrew);
             }
         }
         this.crewCountLiving.next(this._crew.value.filter(c => c.isAlive).length);
-        this.updateCrewWages();
+        this._updateCrewWages();
     }
 
     /**
@@ -195,6 +220,6 @@ export class Crew {
      */
     public updateCrewWage(difficulty: number): void {
         this.crewWage.next(BasePirateWage * difficulty);
-        this.updateCrewWages();
+        this._updateCrewWages();
     }
 }
