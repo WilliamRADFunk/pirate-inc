@@ -58,13 +58,14 @@ export class CrewManifest extends React.Component<Props, State> {
                                 <th>Avatar</th>
                                 <th>Name</th>
                                 <th>Morale</th>
+                                <th>Concern</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 crew.map(c => {
-                                    return (<tr>
+                                    return (<tr key={`${c.nameFirst} ${c.nameLast}`}>
                                         <td style={{"width": "25px", "height": "25px"}}>
                                             <span
                                                 style={{"width": "25px", "height": "25px"}}
@@ -73,12 +74,17 @@ export class CrewManifest extends React.Component<Props, State> {
                                         </td>
                                         <td>
                                             {
-                                                `${c.nameFirst} ${c.nameLast}`
+                                                `${c.nameFirst}${ c.nameNick ? ` "${c.nameNick}" ` : ' '}${c.nameLast}`
                                             }
                                         </td>
                                         <td>
                                             {
                                                 c.isAlive ? MouthToMood[c.mood] : '---'
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                c.concern || '---'
                                             }
                                         </td>
                                         <td>

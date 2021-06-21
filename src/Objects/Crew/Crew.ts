@@ -3,8 +3,9 @@ import { map } from 'rxjs/operators';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
 
-import { CrewMember, MoodToMouth } from '../../Types/CrewMember';
+import { ConcernTypes, CrewMember, getHairColor, MoodToMouth } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
+import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 
 const random = require('random-name');
 
@@ -109,14 +110,15 @@ export class Crew {
             for (let i = 0; i < newCrew.length; i++) {
                 const newMember = {
                     avatar: '',
-                    concern: '',
+                    concern: Math.random() > 0.5 ? ConcernTypes[Math.floor(Math.random() * 9.999)] : '',
                     deathBenefit: 0,
                     hasPaidDeathBenefit: false,
                     isAlive: true,
                     mood: MoodToMouth.Happy,
-                    morale: (Math.random() * (100 - 50) + 50),
+                    morale: Math.floor(Math.random() * (100 - 50) + 50),
                     nameFirst: random.middle(),
                     nameLast: random.last(),
+                    nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
                     ship: null,
                     turnsSinceDeath: 0
                 } as CrewMember;
@@ -124,8 +126,10 @@ export class Crew {
                 newMember.avatar = createAvatar(
                     style,
                     {
-                        seed: `${newMember.nameFirst}-${newMember.nameLast}`,
-                        facialHairProbability: 55,
+                        ...getHairColor(), // facialHairColor, hairColor
+                        backgroundColor: 'salmon',
+                        seed: `${newMember.nameFirst}-${newMember.nameNick}-${newMember.nameLast}`,
+                        facialHairProbability: 65,
                         glassesProbability: 0,
                         hair: ['dougFunny', 'fonze', 'mrClean', 'mrT'],
                         mouth: [newMember.mood]

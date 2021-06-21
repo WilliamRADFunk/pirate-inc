@@ -2,14 +2,11 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Col, Row } from 'react-bootstrap';
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-male-sprites';
 
 import styles from './HUD.module.scss';
 import { gameManager } from '../../Services/GameManager';
 import { playerManager } from '../../Services/PlayerManager';
 import { GameState, SceneState, stateManager } from '../../Services/StateManager';
-import { ShipNameGenerator } from '../../Helpers/ShipNameGenerator';
 import { portManager } from '../../Services/PortManager';
 
 interface Props {}
@@ -171,16 +168,6 @@ export class HUD extends React.Component<Props, State> {
         return (gameState !== GameState.Active ? null :
             
                 <Col xs='12' lg={{ span: 8, offset: 2}} className='boundaries text-left'>
-                    <Row>
-                        <Col xs='12' lg='6'>
-                            {`The ${ShipNameGenerator()}`}
-                        </Col>
-                        <Col>
-                            {
-                                <div style={{"width": "25px", "height": "25px"}} className="Container" dangerouslySetInnerHTML={{__html: createAvatar(style, { seed: 'custom-seed' })}}></div>
-                            }
-                        </Col>
-                    </Row>
                     <Row>
                         <Col xs='12' lg='6'>
                             <Row>
