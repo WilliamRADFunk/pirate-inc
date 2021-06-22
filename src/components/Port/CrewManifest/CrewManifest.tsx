@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { Subscription } from "rxjs";
 import { gameManager } from "../../../Services/GameManager";
 // import { SceneState, stateManager } from "../../../Services/StateManager";
-import { CrewMember, MouthToMood } from "../../../Types/CrewMember";
+import { ConcernTypes, CrewMember, MouthToMood } from "../../../Types/CrewMember";
 
 interface Props {}
 
@@ -59,6 +59,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                 <th>Name</th>
                                 <th>Morale</th>
                                 <th>Concern</th>
+                                <th>Priority for Pay</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -84,7 +85,12 @@ export class CrewManifest extends React.Component<Props, State> {
                                         </td>
                                         <td>
                                             {
-                                                c.concern || '---'
+                                                c.concern !== ConcernTypes.Empty ? c.concern : '---'
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                c.payOrder
                                             }
                                         </td>
                                         <td>

@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
 
-import { ConcernTypes, CrewMember, getHairColor, MoodToMouth } from '../../Types/CrewMember';
+import { ConcernTypes, CrewMember, CrewMemberFeatures, getHair, MoodToMouth } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 
@@ -79,6 +79,33 @@ export class Crew {
         }
     }
 
+    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth): string {
+        return createAvatar(
+            style,
+            {
+                backgroundColor: 'salmon',
+                seed: features.seed,
+                facialHairColor: [features.facialHairColor],
+                facialHairProbability: features.facialHairProbability ? 100 : 0,
+                glassesProbability: 0,
+                hair: [features.hair as any],
+                hairColor: [features.hairColor],
+                mouth: [mood]
+            });
+    }
+
+    private _getAvatarFeatures(first: string, nick: string, last: string): CrewMemberFeatures {
+        const { facialHairColor, facialHairProbability, hair, hairColor } = getHair();
+        const seed =  `${first}-${nick}-${last}`;
+        return {
+            facialHairColor,
+            facialHairProbability,
+            hair,
+            hairColor,
+            seed
+        };
+    }
+
     private _translateMood(morale: number): MoodToMouth {
         if (morale < 20) {
             return MoodToMouth.Angry;
@@ -107,10 +134,11 @@ export class Crew {
      */
     public addCrew(newCrew: CrewMember[], isRandom?: boolean): void {
         if (isRandom) {
+            const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
             for (let i = 0; i < newCrew.length; i++) {
                 const newMember = {
                     avatar: '',
-                    concern: Math.random() > 0.5 ? ConcernTypes[Math.floor(Math.random() * 9.999)] : '',
+                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
                     deathBenefit: 0,
                     hasPaidDeathBenefit: false,
                     isAlive: true,
@@ -119,21 +147,13 @@ export class Crew {
                     nameFirst: random.middle(),
                     nameLast: random.last(),
                     nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
+                    payOrder: i,
                     ship: null,
                     turnsSinceDeath: 0
                 } as CrewMember;
                 newMember.mood = this._translateMood(newMember.morale);
-                newMember.avatar = createAvatar(
-                    style,
-                    {
-                        ...getHairColor(), // facialHairColor, hairColor
-                        backgroundColor: 'salmon',
-                        seed: `${newMember.nameFirst}-${newMember.nameNick}-${newMember.nameLast}`,
-                        facialHairProbability: 65,
-                        glassesProbability: 0,
-                        hair: ['dougFunny', 'fonze', 'mrClean', 'mrT'],
-                        mouth: [newMember.mood]
-                    });
+                newMember.features = this._getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
+                newMember.avatar = this._getAvatar(newMember.features, newMember.mood);
                 const theCrew = this._crew.value.slice();
                 theCrew.push(newMember);
                 this._crew.next(theCrew);
@@ -210,7 +230,29 @@ export class Crew {
 
         // Positive amount means player could pay in full. Negative will lower morale.
         if (remainingBalance < 0) {
-            this.crewMorale.next(this.crewMorale.value - Math.ceil(Math.abs(remainingBalance / 1000)));
+            const wage = this.crewWage.value;
+            let amountToSpend = cWages - balance;
+            const crew = this._crew.value
+                .filter(c => c.isAlive)
+                .sort((a, b) => a.payOrder - b.payOrder);
+            crew.forEach(c => {
+                    if (amountToSpend >= wage) {
+                        amountToSpend -= wage;
+                        if (c.concern === ConcernTypes.NotPaid) {
+                            c.concern = ConcernTypes.Empty;
+                        }
+                    } else if (c.morale > 0) {
+                        c.morale -= 1;
+                        c.concern = ConcernTypes.NotPaid;
+                        c.mood = this._translateMood(c.morale);
+                        c.avatar = this._getAvatar(c.features, c.mood);
+                    }
+                });
+            const moraleSum = crew.reduce((acc, crew) => {
+                return acc + crew.morale;
+            }, 0);
+            this.crewMorale.next(moraleSum / crew.length);
+            this._crew.next(crew);
         }
 
         // Determine if and how many crew will leave, starting with those having the lowest morale.

@@ -26,14 +26,16 @@ export enum MouthToMood {
 }
 
 /**
- * Set list of possible gripes from crew members to match a bad mood in array form.
+ * Set list of possible gripes from crew members to match a bad mood.
  */
-export const ConcernTypes = ['Not Paid', 'Bad Food', 'Bored', 'Crewmates Fired', 'Untended Injury', ''] as const;
-
-/**
- * Set list of possible gripes from crew members to match a bad mood in type form.
- */
-export type Concern = typeof ConcernTypes[number];
+export enum ConcernTypes {
+    BadFood = 'Bad Food',
+    Bored = 'Bored',
+    CrewmatesFired = 'Crewmates Fired',
+    Empty = 'Empty',
+    NotPaid = 'Not Paid',
+    UntendedInjury = 'Untended Injury'
+}
 
 /**
  * List of possible head hair and facial hair colors to be used by the avatar generator.
@@ -41,16 +43,24 @@ export type Concern = typeof ConcernTypes[number];
 export const HairColors = ['apricot', 'coast', 'topaz', 'canary', 'calm', 'azure', 'seashell', 'mellow', 'black', 'white'];
 
 /**
- * Picks a hair color from the list at random and applies it to both head and facial hair to keep them consistent.
+ * List of possible hairstyles the avatar generator supports.
+ */
+export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
+
+/**
+ * Picks a hair color, style, etc. from the list at random and applies it to both head and facial hair to keep them consistent.
  * @returns The partial style settings for the avatar generator to use for hair.
  */
-export const getHairColor: () => Partial<Style<style.Options>> = () => {
+export const getHair = () => {
     // To keep head and facial hair consistent color.
-    const hairColorIndex = Math.floor(Math.random() * 9.999);
+    const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
+    const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
     return {
-        facialHairColor: [HairColors[hairColorIndex]],
-        hairColor: [HairColors[hairColorIndex]]
-    } as Partial<Style<style.Options>>;
+        facialHairColor: HairColors[hairColorIndex],
+        facialHairProbability: Math.random() < 0.65,
+        hair: HairStyles[hairStyleIndex],
+        hairColor: HairColors[hairColorIndex]
+    };
 };
 
 /**
@@ -58,8 +68,9 @@ export const getHairColor: () => Partial<Style<style.Options>> = () => {
  */
 export interface CrewMember {
     avatar: string;
-    concern: Concern;
+    concern: ConcernTypes;
     deathBenefit: number;
+    features: CrewMemberFeatures;
     hasPaidDeathBenefit: boolean;
     isAlive: boolean;
     mood: MoodToMouth;
@@ -67,6 +78,18 @@ export interface CrewMember {
     nameFirst: string;
     nameLast: string;
     nameNick: string;
+    payOrder: number;
     ship: Ship | null;
     turnsSinceDeath: number;
 }
+
+/**
+ * All the physcial attributes all crew members have in their avatar.
+ */
+ export interface CrewMemberFeatures {
+    facialHairColor: string;
+    facialHairProbability: boolean;
+    hair: string;
+    hairColor: string;
+    seed: string;
+ }
