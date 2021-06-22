@@ -44,7 +44,7 @@ export class CrewManifest extends React.Component<Props, State> {
     public render() {
         const { crew, /*sceneState*/ } = this.state;
         return (
-            <Row className="border-white border-bottom mb-2">
+            <Row className="mb-2">
                 <Col xs="12"
                     aria-label="Crew Manifest section"
                     className="text-center">

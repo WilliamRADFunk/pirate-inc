@@ -2,6 +2,7 @@ import { BehaviorSubject, Observable, Subscription, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
+import { Hair } from '@dicebear/micah/lib/options';
 
 import { ConcernTypes, CrewMember, CrewMemberFeatures, getHair, MoodToMouth } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
@@ -54,29 +55,28 @@ export class Crew {
         this.subscriptions.push(
             this._crew.subscribe(crew => {
                 this.crew.next(crew.map(c => JSON.parse(JSON.stringify(c))));
+                this.crewCountLiving.next(this._crew.value.filter(c => c.isAlive).length);
+                const moraleSum = crew.reduce((acc, crew) => {
+                    return acc + crew.morale;
+                }, 0);
+                this.crewMorale.next(moraleSum / crew.length);
+                this._updateCrewWages();
             })
         );
     }
 
     private _calculateDesertion(): void {
-        const cMorale = this.crewMorale.value;
-        const currCount = this.crewCountLiving.value;
-        // Roll crew morale event (leave)
-        // If crew morale is below 50%, a random check is made on a 1d100.
-        // If the score + current morale is higher than 50%, then no loass of crew.
-        if (cMorale < 50 && ((Math.random() * 100) + cMorale) <= 50) {
-            // Percentage of crew that desert (1% - 5%)
-            const lostCrewPercentage = Math.ceil(Math.ceil(Math.random() * 5) / 100);
-            let currCrewCount = currCount;
-            const lostCrew = Math.ceil(currCrewCount * lostCrewPercentage);
-            currCrewCount -= lostCrew;
-
-            this.crewCountLiving.next(currCrewCount > 0 ? currCrewCount : 0);
-        }
-        // If no crew remains, set morale to 100%
-        if (!this.crewCountLiving.value) {
-            this.crewMorale.next(100);
-        }
+        const crew = this._crew.value;
+        const remainingCrew = crew.filter(c => c.isAlive).filter(c => {
+            // Roll crew morale event (leave)
+            // If crew morale is below 50%, a random check is made on a 1d100.
+            // If the score + current morale is higher than 50%, then no loass of crew.
+            if (c.morale < 50 && ((Math.random() * 100) + c.morale) <= 50) {
+                return false;
+            }
+            return true;
+        });
+        this._crew.next(remainingCrew);
     }
 
     private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth): string {
@@ -88,7 +88,7 @@ export class Crew {
                 facialHairColor: [features.facialHairColor],
                 facialHairProbability: features.facialHairProbability ? 100 : 0,
                 glassesProbability: 0,
-                hair: [features.hair as any],
+                hair: [features.hair] as Hair,
                 hairColor: [features.hairColor],
                 mouth: [mood]
             });
@@ -134,11 +134,12 @@ export class Crew {
      */
     public addCrew(newCrew: CrewMember[], isRandom?: boolean): void {
         if (isRandom) {
+            const theCrew = this._crew.value.slice();
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
             for (let i = 0; i < newCrew.length; i++) {
                 const newMember = {
                     avatar: '',
-                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
+                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 1))] : ConcernTypes.Empty,
                     deathBenefit: 0,
                     hasPaidDeathBenefit: false,
                     isAlive: true,
@@ -154,13 +155,10 @@ export class Crew {
                 newMember.mood = this._translateMood(newMember.morale);
                 newMember.features = this._getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
                 newMember.avatar = this._getAvatar(newMember.features, newMember.mood);
-                const theCrew = this._crew.value.slice();
                 theCrew.push(newMember);
-                this._crew.next(theCrew);
             }
+            this._crew.next(theCrew.reverse());
         }
-        this.crewCountLiving.next(this._crew.value.filter(c => c.isAlive).length);
-        this._updateCrewWages();
     }
 
     /**
@@ -232,10 +230,9 @@ export class Crew {
         if (remainingBalance < 0) {
             const wage = this.crewWage.value;
             let amountToSpend = cWages - balance;
-            const crew = this._crew.value
-                .filter(c => c.isAlive)
-                .sort((a, b) => a.payOrder - b.payOrder);
-            crew.forEach(c => {
+            const crew = this._crew.value.filter(c => c.isAlive);
+            const sortedCrew = crew.sort((a, b) => a.payOrder - b.payOrder);
+            sortedCrew.forEach(c => {
                     if (amountToSpend >= wage) {
                         amountToSpend -= wage;
                         if (c.concern === ConcernTypes.NotPaid) {
@@ -248,10 +245,6 @@ export class Crew {
                         c.avatar = this._getAvatar(c.features, c.mood);
                     }
                 });
-            const moraleSum = crew.reduce((acc, crew) => {
-                return acc + crew.morale;
-            }, 0);
-            this.crewMorale.next(moraleSum / crew.length);
             this._crew.next(crew);
         }
 

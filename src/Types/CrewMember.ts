@@ -1,6 +1,3 @@
-import { Style } from '@dicebear/avatars';
-import * as style from '@dicebear/micah';
-
 import { Ship } from '../Objects/Ships/Ship';
 
 /**
@@ -53,8 +50,8 @@ export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
  */
 export const getHair = () => {
     // To keep head and facial hair consistent color.
-    const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
-    const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
+    const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 1));
+    const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 1));
     return {
         facialHairColor: HairColors[hairColorIndex],
         facialHairProbability: Math.random() < 0.65,
