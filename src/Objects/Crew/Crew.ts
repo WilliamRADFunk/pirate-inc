@@ -139,12 +139,12 @@ export class Crew {
             for (let i = 0; i < newCrew.length; i++) {
                 const newMember = {
                     avatar: '',
-                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 1))] : ConcernTypes.Empty,
+                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
                     deathBenefit: 0,
                     hasPaidDeathBenefit: false,
                     isAlive: true,
                     mood: MoodToMouth.Happy,
-                    morale: Math.floor(Math.random() * (100 - 50) + 50),
+                    morale: Math.floor((Math.random() * 50) + 50),
                     nameFirst: random.middle(),
                     nameLast: random.last(),
                     nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
