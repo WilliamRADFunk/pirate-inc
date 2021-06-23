@@ -13,6 +13,7 @@ interface Props {}
 
 interface State {
     balance: string;
+    crewMorale: number;
     crewWages: string;
     crownFavor: number;
     currentCrew: number;
@@ -44,6 +45,7 @@ export class HUD extends React.Component<Props, State> {
 
         this.state = {
             balance: '$0',
+            crewMorale: 100,
             crewWages: '$0',
             crownFavor: 0,
             currentCrew: 0,
@@ -72,7 +74,11 @@ export class HUD extends React.Component<Props, State> {
             }),
             gameManager.getCrewHUD().subscribe(crewHUD => {
                 if (crewHUD) {
-                    this.setState({ currentCrew: crewHUD.crewCountLiving, crewWages: formatter.format(crewHUD.crewWages) });
+                    this.setState({
+                        currentCrew: crewHUD.crewCountLiving,
+                        crewMorale: crewHUD.crewMorale,
+                        crewWages: formatter.format(crewHUD.crewWages)
+                    });
                 }
             }),
             gameManager.getMaxCrewCount().subscribe(mCrew => {
@@ -148,6 +154,7 @@ export class HUD extends React.Component<Props, State> {
     public render() {
         const {
             balance,
+            crewMorale,
             crewWages,
             crownFavor,
             currentCrew,
@@ -166,7 +173,7 @@ export class HUD extends React.Component<Props, State> {
         } = this.state;
 
         return (gameState !== GameState.Active ? null :
-            
+
                 <Col xs='12' lg={{ span: 8, offset: 2}} className='boundaries text-left'>
                     <Row>
                         <Col xs='12' lg='6'>
@@ -181,6 +188,10 @@ export class HUD extends React.Component<Props, State> {
                             <Row>
                                 <Col xs='6' className={styles.itemLabel}>Crew:</Col>
                                 <Col xs='6' className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
+                                <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
                             </Row>
                             <Row>
                                 <Col xs='6' className={styles.itemLabel}>Provisions:</Col>
@@ -208,8 +219,12 @@ export class HUD extends React.Component<Props, State> {
                         {/* Right side of HUD */}
                         <Col xs='12' lg='6'>
                             <Row>
-                                <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
-                                <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
+                                <Col xs='6' className={styles.itemLabel}>Crew Morale:</Col>
+                                <Col xs='6' className={styles.itemValue}>{crewMorale.toFixed(0)}%</Col>
+                            </Row>
+                            <Row>
+                                <Col xs='6' className={styles.itemLabel}>Officer Morale:</Col>
+                                <Col xs='6' className={styles.itemValue}>NaN%</Col>
                             </Row>
                             <Row>
                                 <Col xs='6' className={styles.itemLabel}>Officer Salaries:</Col>
@@ -227,7 +242,7 @@ export class HUD extends React.Component<Props, State> {
                                 <Col xs='6' className={styles.itemLabel}>Bounty:</Col>
                                 <Col xs='6' className={styles.itemValue}>{playerBounty}</Col>
                             </Row>
-                            { sceneState !== SceneState.Port ? null : 
+                            { sceneState !== SceneState.Port ? null :
                                 <Row>
                                     <Col xs='6' className={styles.itemLabel}>Port Reputation:</Col>
                                     <Col xs='6' className={styles.itemValue}>{portReputation}</Col>

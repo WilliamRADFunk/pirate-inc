@@ -1,7 +1,29 @@
 import { Ship } from '../Objects/Ships/Ship';
 
 /**
- * A mapping to set facial expression of avatar generated image to based off morale setting.
+ * A mapping to set facial expression (eyes) of avatar generated image to based off morale setting.
+ */
+export enum MoodToEyes {
+    Angry = 'round',
+    Disgruntled = 'round',
+    Uncertain = 'round',
+    Pleased = 'smiling',
+    Happy = 'smiling'
+}
+
+/**
+ * A mapping to set facial expression (eyebrows) of avatar generated image to based off morale setting.
+ */
+export enum MoodToEyebrows {
+    Angry = 'down',
+    Disgruntled = 'down',
+    Uncertain = 'down',
+    Pleased = 'up',
+    Happy = 'up'
+}
+
+/**
+ * A mapping to set facial expression (mouth) of avatar generated image to based off morale setting.
  */
 export enum MoodToMouth {
     Angry = 'frown',
@@ -40,6 +62,16 @@ export enum ConcernTypes {
 export const HairColors = ['apricot', 'coast', 'topaz', 'canary', 'calm', 'azure', 'seashell', 'mellow', 'black', 'white'];
 
 /**
+ * List of possible earing colors to be used by the avatar generator.
+ */
+export const EarringColor = ['mellow', 'silver'];
+
+/**
+ * List of possible eye colors to be used by the avatar generator.
+ */
+export const EyeColors = ['apricot', 'coast', 'topaz', 'lavender', 'sky', 'salmon', 'canary', 'calm', 'azure', 'seashell', 'mellow'];
+
+/**
  * List of possible hairstyles the avatar generator supports.
  */
 export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
@@ -48,11 +80,15 @@ export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
  * Picks a hair color, style, etc. from the list at random and applies it to both head and facial hair to keep them consistent.
  * @returns The partial style settings for the avatar generator to use for hair.
  */
-export const getHair = () => {
+export const getFeatures = () => {
     // To keep head and facial hair consistent color.
     const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
     const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
+    const earringColorIndex = Math.floor(Math.random() * (EarringColor.length - 0.001));
+    const eyeColorIndex = Math.floor(Math.random() * (EyeColors.length - 0.001));
     return {
+        earringColor: EarringColor[earringColorIndex],
+        eyeColor: EyeColors[eyeColorIndex],
         facialHairColor: HairColors[hairColorIndex],
         facialHairProbability: Math.random() < 0.65,
         hair: HairStyles[hairStyleIndex],
@@ -84,6 +120,8 @@ export interface CrewMember {
  * All the physcial attributes all crew members have in their avatar.
  */
  export interface CrewMemberFeatures {
+     earringColor: string;
+    eyeColor: string
     facialHairColor: string;
     facialHairProbability: boolean;
     hair: string;

@@ -23,7 +23,7 @@ export class CrewManifest extends React.Component<Props, State> {
             // sceneState: SceneState.Port
         };
     }
-    
+
     public componentDidMount() {
         this.subscriptions.push(
             gameManager.getCrew().subscribe(crew => {
@@ -67,9 +67,9 @@ export class CrewManifest extends React.Component<Props, State> {
                             {
                                 crew.map(c => {
                                     return (<tr key={`${c.nameFirst} ${c.nameLast}`}>
-                                        <td style={{"width": "25px", "height": "25px"}}>
+                                        <td style={{"width": "200px", "height": "200px"}}>
                                             <span
-                                                style={{"width": "25px", "height": "25px"}}
+                                                style={{"width": "200px", "height": "200px"}}
                                                 className="Container"
                                                 dangerouslySetInnerHTML={{__html: c.avatar}}></span>
                                         </td>

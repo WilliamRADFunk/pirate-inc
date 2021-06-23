@@ -4,7 +4,7 @@ import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
 import { Hair } from '@dicebear/micah/lib/options';
 
-import { ConcernTypes, CrewMember, CrewMemberFeatures, getHair, MoodToMouth } from '../../Types/CrewMember';
+import { ConcernTypes, CrewMember, CrewMemberFeatures, getFeatures, MoodToEyebrows, MoodToEyes, MoodToMouth, MouthToMood } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 
@@ -80,11 +80,16 @@ export class Crew {
     }
 
     private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth): string {
+        console.log('features', features);
         return createAvatar(
             style,
             {
-                backgroundColor: 'salmon',
+                backgroundColor: '#555',
                 seed: features.seed,
+                earringColor: [features.earringColor],
+                eyes: [MoodToEyes[MouthToMood[mood]]],
+                eyebrows: [MoodToEyebrows[MouthToMood[mood]]],
+                eyebrowColor: [features.facialHairColor],
                 facialHairColor: [features.facialHairColor],
                 facialHairProbability: features.facialHairProbability ? 100 : 0,
                 glassesProbability: 0,
@@ -95,9 +100,11 @@ export class Crew {
     }
 
     private _getAvatarFeatures(first: string, nick: string, last: string): CrewMemberFeatures {
-        const { facialHairColor, facialHairProbability, hair, hairColor } = getHair();
+        const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures();
         const seed =  `${first}-${nick}-${last}`;
         return {
+            earringColor,
+            eyeColor,
             facialHairColor,
             facialHairProbability,
             hair,
@@ -198,11 +205,12 @@ export class Crew {
      * @returns an observable of an object containing the relevant crew info for the HUD.
      */
     public getHUD(): Observable<{[key: string]: number}> {
-        return zip(this.crewCountLiving, this.crewWages)
+        return zip(this.crewCountLiving, this.crewMorale, this.crewWages)
             .pipe(map(val => {
                 return {
                     crewCountLiving: val[0],
-                    crewWages: val[1]
+                    crewMorale: val[1],
+                    crewWages: val[2]
                 };
             }));
     }
