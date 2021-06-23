@@ -157,6 +157,14 @@ export class Crew {
                     nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
                     payOrder: i,
                     ship: null,
+                    skills: {
+                        cannoneering: Number(Math.random().toFixed(2)),
+                        cleanliness: Number(Math.random().toFixed(2)),
+                        greed: Number(Math.random().toFixed(2)),
+                        hand2HandCombat: Number(Math.random().toFixed(2)),
+                        sailing: Number(Math.random().toFixed(2)),
+                        teamwork: Number(Math.random().toFixed(2))
+                    },
                     turnsSinceDeath: 0
                 } as CrewMember;
                 newMember.mood = this._translateMood(newMember.morale);

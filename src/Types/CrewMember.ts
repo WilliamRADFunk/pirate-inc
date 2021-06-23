@@ -113,6 +113,7 @@ export interface CrewMember {
     nameNick: string;
     payOrder: number;
     ship: Ship | null;
+    skills: CrewMemberSkills;
     turnsSinceDeath: number;
 }
 
@@ -120,11 +121,41 @@ export interface CrewMember {
  * All the physcial attributes all crew members have in their avatar.
  */
  export interface CrewMemberFeatures {
-     earringColor: string;
+    earringColor: string;
     eyeColor: string
     facialHairColor: string;
     facialHairProbability: boolean;
     hair: string;
     hairColor: string;
     seed: string;
+ }
+
+/**
+ * All the skills a crew member has during gameplay.
+ */
+ export interface CrewMemberSkills {
+    /**
+     * Used in crew average to determine +/- to cannon accuracy and potency during combat.
+     */
+    cannoneering: number;
+    /**
+     * Used in crew average to determine +/- to chance of disease on board ship.
+     */
+    cleanliness: number;
+    /**
+     * Used as +/- to determine if crew member will desert if not paid.
+     */
+    greed: number;
+    /**
+     * Used in crew average to determine +/- to boarding actions during combat.
+     */
+    hand2HandCombat: number;
+    /**
+     * Used in crew average to determine +/- for how fast and agile the vessels are during AtSea and Battle scenarios.
+     */
+    sailing: number;
+    /**
+     * Used in crew average to determine +/- to chance of in-fighting amongst the crew.
+     */
+    teamwork: number;
  }
