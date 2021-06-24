@@ -1,3 +1,13 @@
+.avatar-sizing {
+    height: 100px;
+    width: 100px;
+}
+
+.min-headers thead th,
+.min-headers tbody td.no-break {
+    white-space: nowrap;
+}
+
 .pay-order-button {
     line-height: 1.25px;
 }
@@ -13,5 +23,5 @@
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    z-index: -1;
+    z-index: 0;
 }

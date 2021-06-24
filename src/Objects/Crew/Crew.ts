@@ -269,6 +269,42 @@ export class Crew {
     }
 
     /**
+     * Sort the crew order based on the offered params.
+     * @param key the first-level nested crewMember key to sort by.
+     * @param secondaryKey the optional second-level nested crewMember key to sort by.
+     * @param asc whether to sort in ascending order or not.
+     */
+    public sortCrewManifest(key: string, secondaryKey: string, asc: boolean): void {
+        let crew = this._crew.value.slice();
+        if (secondaryKey) {
+            crew = crew.sort((a: any, b: any) => {
+                const aVal = a[key][secondaryKey];
+                const bVal = b[key][secondaryKey];
+                if (aVal < bVal) {
+                    return asc ? -1 : 1;
+                }
+                if (aVal > bVal) {
+                    return asc ? 1 : -1;
+                }
+                return 0;
+            });
+        } else {
+            crew = crew.sort((a: any, b: any) => {
+                const aVal = a[key];
+                const bVal = b[key];
+                if (aVal < bVal) {
+                    return asc ? -1 : 1;
+                }
+                if (aVal > bVal) {
+                    return asc ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        this._crew.next(crew);
+    }
+
+    /**
      * Updates base wage for a single crew member, caused primarily when the difficulty has changed.
      * @param difficulty the game difficulty level the player chose at start.
      */

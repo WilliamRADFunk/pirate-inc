@@ -322,6 +322,16 @@ class GameManager {
     }
 
     /**
+     * Sort the crew order based on the offered params.
+     * @param key the first-level nested crewMember key to sort by.
+     * @param secondaryKey the optional second-level nested crewMember key to sort by.
+     * @param asc whether to sort in ascending order or not.
+     */
+    public sortCrewManifest(key: string, secondaryKey: string, asc: boolean): void {
+        this.crew.sortCrewManifest(key, secondaryKey, asc);
+    }
+
+    /**
      * Gets the subscribable value of balance.
      * @returns observable of player's monetary balance.
      */
