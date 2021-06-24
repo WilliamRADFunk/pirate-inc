@@ -80,7 +80,6 @@ export class Crew {
     }
 
     private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth): string {
-        console.log('features', features);
         return createAvatar(
             style,
             {
@@ -276,5 +275,27 @@ export class Crew {
     public updateCrewWage(difficulty: number): void {
         this.crewWage.next(BasePirateWage * difficulty);
         this._updateCrewWages();
+    }
+
+    /**
+     * Alters the pay priority of one crew member in the list.
+     * @param payNumber the payOrder index of the crew member whose position is being altered.
+     * @param isDown flag to determine which of the two direction the change moves in.
+     */
+    public updatePayPriority(payNumber: number, isDown: boolean): void {
+        if (isDown) {
+            const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => b.payOrder - a.payOrder);
+            const originalCrewMember = crew[payNumber];
+            const crewMemberToSwapWith = crew[payNumber - 1];
+            originalCrewMember.payOrder -= 1;
+            crewMemberToSwapWith.payOrder += 1;
+        } else {
+            const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => a.payOrder - b.payOrder);
+            const originalCrewMember = crew[payNumber];
+            const crewMemberToSwapWith = crew[payNumber + 1];
+            originalCrewMember.payOrder += 1;
+            crewMemberToSwapWith.payOrder -= 1;
+        }
+        this._crew.next(this._crew.value);
     }
 }

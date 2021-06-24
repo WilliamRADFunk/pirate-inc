@@ -67,13 +67,13 @@ const pirateDic = {
 export const NickNameGenerator: () => string = () => {
     let dicChoice = animalsDic;
     const random = Math.random();
-    if (random < 0.2) {
+    if (random < 0.15) {
         dicChoice = colorAnimal;
-    } else if (random < 0.35) {
+    } else if (random < 0.30) {
         dicChoice = namesDic;
-    } else if (random < 0.50) {
+    } else if (random < 0.45) {
         dicChoice = adjAnimal;
-    } else if (random < 0.65) {
+    } else if (random < 0.60) {
         dicChoice = colorsDic;
     } else if (random < 0.8) {
         dicChoice = pirateDic;

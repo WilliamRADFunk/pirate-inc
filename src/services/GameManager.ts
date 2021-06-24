@@ -335,6 +335,15 @@ class GameManager {
         }
         return false;
     }
+
+    /**
+     * Alters the pay priority of one crew member in the list.
+     * @param payNumber the payOrder index of the crew member whose position is being altered.
+     * @param isDown flag to determine which of the two direction the change moves in.
+     */
+    public updatePayPriority(payNumber: number, isDown: boolean): void {
+        this.crew.updatePayPriority(payNumber, isDown);
+    }
 }
 
 /**
