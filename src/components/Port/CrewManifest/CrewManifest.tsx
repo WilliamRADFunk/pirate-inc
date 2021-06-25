@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row, Table } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row, Table, Tooltip } from 'react-bootstrap';
 import { FaCaretDown, FaCaretUp, FaSort } from 'react-icons/fa';
 import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
 import { RiTeamFill } from 'react-icons/ri';
@@ -15,6 +15,34 @@ interface State {
     crew: CrewMember[];
 }
 
+function getSkillAvg(crew: CrewMember[], skillName: string): string {
+    const sum = crew.reduce((acc, val) => {
+        const skills = val.skills as any;
+        return acc + skills[skillName];
+    }, 0);
+    return ((sum / crew.length) * 100).toFixed(0);
+}
+
+function renderFullscreenTableHeader(props: any): JSX.Element {
+    return (<>
+        { props.headerLabel }
+        <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 400 }}
+            overlay={renderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
+            <span className={ [styles.clickable, 'ml-1'].join(' ') } onClick={ () => props.sortBy() }><FaSort /></span>
+        </OverlayTrigger>
+    </>);
+}
+
+function renderTooltip(props: any): JSX.Element {
+    return (
+        <Tooltip id="button-tooltip" {...props}>
+            { props.children }
+        </Tooltip>
+    );
+}
+
 export class CrewManifest extends React.Component<Props, State> {
     private lastSort: BehaviorSubject<[string, string, boolean]> = new BehaviorSubject(['', '', true] as [string, string, boolean]);
     private subscriptions: Subscription[] = [];
@@ -27,13 +55,6 @@ export class CrewManifest extends React.Component<Props, State> {
         };
     }
 
-    private _getSkillAvg(crew: CrewMember[], skillName: string): string {
-        const sum = crew.reduce((acc, val) => {
-            return acc + val.skills[skillName];
-        }, 0);
-        return sum / crew.length
-    }
-
     private _payPriority(payNumber: number, isDown: boolean): void {
         gameManager.updatePayPriority(payNumber, isDown);
     }
@@ -43,14 +64,12 @@ export class CrewManifest extends React.Component<Props, State> {
         const lastSort = this.lastSort.value;
         // Whether or not the sort direction is ascending. Should flip to false if this is 2nd time same sort button is clicked.
         let dir = lastSort[2];
-        console.log("_sortBy Before", key, secondaryKey, dir);
         if (key === lastSort[0] && secondaryKey === lastSort[1]) {
             dir = !dir;
         } else {
             dir = true;
         }
         this.lastSort.next([key, secondaryKey, dir]);
-        console.log("_sortBy After", key, secondaryKey, dir);
         gameManager.sortCrewManifest(key, secondaryKey, dir);
     }
 
@@ -84,88 +103,113 @@ export class CrewManifest extends React.Component<Props, State> {
                             <tr>
                                 <th className="mr-3">Avatar</th>
                                 <th className="mr-3">
-                                    Name <span onClick={ () => this._sortBy('nameFirst')}><FaSort /></span>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Name',
+                                            sortBy: () => this._sortBy('nameFirst')
+                                        })
+                                    }
                                 </th>
                                 <th className="mr-3">
                                     <Row>
                                         <Col xs='12'>Skills</Col>
                                     </Row>
                                     <Row>
-                                        <Col xs='2' aria-label='cannoneering'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='cannoneering'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
                                                 <GiCannon />
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='cleanliness'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='cleanliness'>
                                             <span onClick={ () => this._sortBy('skills', 'cleanliness')}>
                                                 <GiBroom />
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='greed'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='greed'>
                                             <span onClick={ () => this._sortBy('skills', 'greed')}>
                                                 <GiReceiveMoney />
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='hand2HandCombat'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='hand2HandCombat'>
                                             <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
                                                 <GiFist />
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='sailing'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='sailing'>
                                             <span onClick={ () => this._sortBy('skills', 'sailing')}>
                                                 <GiSailboat />
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='teamwork'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='teamwork'>
                                             <span onClick={ () => this._sortBy('skills', 'teamwork')}>
                                                 <RiTeamFill />
                                             </span>
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col xs='2' aria-label='cannoneering average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='cannoneering average'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
-                                                { (crew.reduce((acc, val) => { return acc + val.skills.cannoneering; }, 0) / crew.length).toFixed(0) }
+                                                { getSkillAvg(crew, 'cannoneering') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='cleanliness average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='cleanliness average'>
                                             <span onClick={ () => this._sortBy('skills', 'cleanliness')}>
-                                                <GiBroom />
+                                            { getSkillAvg(crew, 'cleanliness') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='greed average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='greed average'>
                                             <span onClick={ () => this._sortBy('skills', 'greed')}>
-                                                <GiReceiveMoney />
+                                            { getSkillAvg(crew, 'greed') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='hand2HandCombat average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='hand2HandCombat average'>
                                             <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
-                                                <GiFist />
+                                            { getSkillAvg(crew, 'hand2HandCombat') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='sailing average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='sailing average'>
                                             <span onClick={ () => this._sortBy('skills', 'sailing')}>
-                                                <GiSailboat />
+                                            { getSkillAvg(crew, 'sailing') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' aria-label='teamwork average'>
+                                        <Col xs='2' className={ styles.clickable } aria-label='teamwork average'>
                                             <span onClick={ () => this._sortBy('skills', 'teamwork')}>
-                                                <RiTeamFill />
+                                            { getSkillAvg(crew, 'teamwork') }
                                             </span>
                                         </Col>
                                     </Row>
                                 </th>
                                 <th className="mr-3">
-                                    Morale <span onClick={ () => this._sortBy('morale')}><FaSort /></span>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Morale',
+                                            sortBy: () => this._sortBy('morale')
+                                        })
+                                    }
                                 </th>
                                 <th className="mr-3">
-                                    Concern <span onClick={ () => this._sortBy('concern')}><FaSort /></span>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Concern',
+                                            sortBy: () => this._sortBy('concern')
+                                        })
+                                    }
                                 </th>
                                 <th className="mr-3">
-                                    Pay Priority <span onClick={ () => this._sortBy('payOrder')}><FaSort /></span>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Pay Priority',
+                                            sortBy: () => this._sortBy('payOrder')
+                                        })
+                                    }
                                 </th>
                                 <th>
-                                    Status <span onClick={ () => this._sortBy('status')}><FaSort /></span>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Status',
+                                            sortBy: () => this._sortBy('status')
+                                        })
+                                    }
                                 </th>
                             </tr>
                         </thead>

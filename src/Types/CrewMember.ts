@@ -128,7 +128,7 @@ export interface CrewMember {
     hair: string;
     hairColor: string;
     seed: string;
- }
+}
 
 /**
  * All the skills a crew member has during gameplay.
