@@ -6,7 +6,7 @@ export class Title extends React.Component {
     public render() {
         return (
             <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
-                <Image className={styles.banner} src="pirate-flag.png" alt="Pirates Incorporated logo" fluid/>
+                <Image className={styles.banner} src="images/pirate-flag.png" alt="Pirates Incorporated logo" fluid/>
             </Col>
         );
     }

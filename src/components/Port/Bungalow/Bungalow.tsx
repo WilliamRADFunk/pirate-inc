@@ -49,91 +49,92 @@ export class Bungalow extends React.Component<Props, State> {
 
     public render() {
         const { portSceneState } = this.state;
-        return (<>
-            <Row className="border-white border-bottom mb-2">
-                <Col xs={{ span: 8, offset: 2 }}
-                    aria-label="Bungalow section"
-                    className="text-center">
-                    Bungalow
-                </Col>
-                <Button
-                    variant="outline-secondary"
-                    className="border-0 col-2"
-                    onClick={() => this.toggleMode()}>
-                    { portSceneState !== PortSceneState.BungalowOptions
-                        ? <Eye color="white" size={20}></Eye>
-                        : <EyeSlash color="white" size={20}></EyeSlash>
-                    }
-                </Button>
-            </Row>
-            { portSceneState !== PortSceneState.BungalowOptions ? null :
-                <Row>
+        return (
+            <div className='w-100 h-100' onClick={() => this.toggleMode()}>
+                <Row className="border-white border-bottom mb-2">
+                    <Col xs={{ span: 8, offset: 2 }}
+                        aria-label="Bungalow section"
+                        className="text-center">
+                        Bungalow
+                    </Col>
                     <Button
-                        aria-label="Open colonial office crew manifest section"
-                        variant="link"
-                        className="col-2 offset-2"
-                        onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowCrewManifest)}>
-                        Crew Manifest
-                    </Button>
-                    <Button
-                        aria-label="Open colonial office gather intel section"
-                        variant="link"
-                        className="col-2"
-                        onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowGatherIntel)}>
-                        Gather Intel
-                    </Button>
-                    <Button
-                        aria-label="Open colonial office purchase officer summaries section"
-                        variant="link"
-                        className="col-2"
-                        onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowOfficerSummaries)}>
-                        Officer Summaries
-                    </Button>
-                    <Button
-                        aria-label="Open colonial office purchase fleet manifest section"
-                        variant="link"
-                        className="col-2"
-                        onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowShipManifest)}>
-                        Fleet Manifest
+                        variant="outline-secondary"
+                        className="border-0 col-2">
+                        { portSceneState !== PortSceneState.BungalowOptions
+                            ? <Eye color="white" size={20}></Eye>
+                            : <EyeSlash color="white" size={20}></EyeSlash>
+                        }
                     </Button>
                 </Row>
-            }
-            { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
-                <Row>
-                    <Col
-                        aria-label="Bungalow buy suplies section description"
-                        className="fs-sm text-left">
-                        <CrewManifest></CrewManifest>
-                    </Col>
-                </Row>
-            }
-            { portSceneState !== PortSceneState.BungalowGatherIntel ? null :
-                <Row>
-                    <Col
-                        aria-label="Bungalow hire crew section description"
-                        className="fs-sm text-left">
-                        Here are a number of ways to get intelligence about various aspects of the pirate life.
-                    </Col>
-                </Row>
-            }
-            { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
-                <Row>
-                    <Col
-                        aria-label="Bungalow fire officers section description"
-                        className="fs-sm text-left">
-                        Here is the list of your officers. See their associated stats and backgrounds.
-                    </Col>
-                </Row>
-            }
-            { portSceneState !== PortSceneState.BungalowShipManifest ? null :
-                <Row>
-                    <Col
-                        aria-label="Bungalow hire officers section description"
-                        className="fs-sm text-left">
-                        This is your fleet. See all the details, armaments, and cargo carried for each ship.
-                    </Col>
-                </Row>
-            }
-        </>);
+                { portSceneState !== PortSceneState.BungalowOptions
+                    ? <img src='images/bungalow-icon.png' width='50%' height='50%' className='small-square-icon'/>
+                    : <Row>
+                        <Button
+                            aria-label="Open colonial office crew manifest section"
+                            variant="link"
+                            className="col-2 offset-2"
+                            onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowCrewManifest)}>
+                            Crew Manifest
+                        </Button>
+                        <Button
+                            aria-label="Open colonial office gather intel section"
+                            variant="link"
+                            className="col-2"
+                            onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowGatherIntel)}>
+                            Gather Intel
+                        </Button>
+                        <Button
+                            aria-label="Open colonial office purchase officer summaries section"
+                            variant="link"
+                            className="col-2"
+                            onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowOfficerSummaries)}>
+                            Officer Summaries
+                        </Button>
+                        <Button
+                            aria-label="Open colonial office purchase fleet manifest section"
+                            variant="link"
+                            className="col-2"
+                            onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowShipManifest)}>
+                            Fleet Manifest
+                        </Button>
+                    </Row>
+                }
+                { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
+                    <Row>
+                        <Col
+                            aria-label="Bungalow buy suplies section description"
+                            className="fs-sm text-left">
+                            <CrewManifest></CrewManifest>
+                        </Col>
+                    </Row>
+                }
+                { portSceneState !== PortSceneState.BungalowGatherIntel ? null :
+                    <Row>
+                        <Col
+                            aria-label="Bungalow hire crew section description"
+                            className="fs-sm text-left">
+                            Here are a number of ways to get intelligence about various aspects of the pirate life.
+                        </Col>
+                    </Row>
+                }
+                { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
+                    <Row>
+                        <Col
+                            aria-label="Bungalow fire officers section description"
+                            className="fs-sm text-left">
+                            Here is the list of your officers. See their associated stats and backgrounds.
+                        </Col>
+                    </Row>
+                }
+                { portSceneState !== PortSceneState.BungalowShipManifest ? null :
+                    <Row>
+                        <Col
+                            aria-label="Bungalow hire officers section description"
+                            className="fs-sm text-left">
+                            This is your fleet. See all the details, armaments, and cargo carried for each ship.
+                        </Col>
+                    </Row>
+                }
+            </div>);
     }
 }

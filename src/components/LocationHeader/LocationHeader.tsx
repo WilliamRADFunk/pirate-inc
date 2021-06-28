@@ -86,7 +86,7 @@ export class LocationHeader extends React.Component<Props, State> {
                     className={styles["end-turn-btn"]}
                     disabled={ !canPlay }
                     onClick={() => this.endTurn()}>End Turn</Button>
-                <img src="plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
+                <img src="images/plank.png" alt="Scene location hanging wood plank" width="400px" height="200px"></img>
                 <div className={styles.title}>{sceneState}</div>
             </Col>
         );

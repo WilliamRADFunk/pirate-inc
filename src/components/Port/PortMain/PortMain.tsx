@@ -48,16 +48,16 @@ export class PortMain extends React.Component<Props, State> {
                 <Row>
                     { portSceneState !== PortSceneState.Menu ? null :
                         <>
-                            <Col xs="12" lg="5" className="boundaries mt-5">
+                            <Col xs="12" lg="5" className="mt-5 rope-border-square small-square">
                                 <Shipyard></Shipyard>
                             </Col>
-                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="boundaries mt-5">
+                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
                                 <Tavern></Tavern>
                             </Col>
-                            <Col xs="12" lg="5" className="boundaries mt-5">
+                            <Col xs="12" lg="5" className="mt-5 rope-border-square small-square">
                                 <ColonialOffice></ColonialOffice>
                             </Col>
-                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="boundaries mt-5">
+                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
                                 <Bungalow></Bungalow>
                             </Col>
                         </>
