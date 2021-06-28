@@ -16,6 +16,14 @@
     line-height: 1.25px;
 }
 
+.pay-order-buttons {
+    left: 0;
+    padding-left: 10px;
+    position: absolute;
+    width: 120px;
+    z-index: 1;
+}
+
 .pay-order-cell {
     position: relative;
     width: 120px;

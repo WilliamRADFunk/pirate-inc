@@ -106,10 +106,8 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ playerBounty: formatter.format(bounty) });
                 }
             }),
-            gameManager.getFleetHealth().subscribe(health => {
-                if (!isNaN(health)) {
-                    this.setState({ fleetHealth: health });
-                }
+            gameManager.getFleetHUD().subscribe(fleetHUD => {
+                this.setState({ fleetHealth: fleetHUD.fleetHealth });
             }),
             playerManager.getCrownFavor().subscribe(fav => {
                 if (!isNaN(fav)) {

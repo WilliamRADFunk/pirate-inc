@@ -319,15 +319,13 @@ export class Crew {
      * @param isDown flag to determine which of the two direction the change moves in.
      */
     public updatePayPriority(payNumber: number, isDown: boolean): void {
+        const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => a.payOrder - b.payOrder);
+        const originalCrewMember = crew[payNumber];
         if (isDown) {
-            const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => b.payOrder - a.payOrder);
-            const originalCrewMember = crew[payNumber];
             const crewMemberToSwapWith = crew[payNumber - 1];
             originalCrewMember.payOrder -= 1;
             crewMemberToSwapWith.payOrder += 1;
         } else {
-            const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => a.payOrder - b.payOrder);
-            const originalCrewMember = crew[payNumber];
             const crewMemberToSwapWith = crew[payNumber + 1];
             originalCrewMember.payOrder += 1;
             crewMemberToSwapWith.payOrder -= 1;

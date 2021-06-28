@@ -6,6 +6,9 @@ import { playerManager } from './PlayerManager';
 import { portManager } from './PortManager';
 import { Crew } from '../Objects/Crew/Crew';
 import { CrewMember } from '../Types/CrewMember';
+import { Fleet } from '../Objects/Ships/Fleet';
+import { Barque } from '../Objects/Ships/Barque';
+import { ShipNameGenerator } from '../Helpers/ShipNameGenerator';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -32,7 +35,7 @@ class GameManager {
     /**
      * The crew object that manages all things crew.
      */
-    private crew: Crew = new Crew();
+    private _crew: Crew = new Crew();
 
     /**
      * The player's choice of game difficulty.
@@ -45,9 +48,9 @@ class GameManager {
     private doctorSalary: BehaviorSubject<number> = new BehaviorSubject(400);
 
     /**
-     * The overall health of the player's fleet (ship damage) in percentage.
+     * The ships the player owns.
      */
-    private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
+    private _fleet: Fleet = new Fleet();
 
     /**
      * The maximum number of crew members on player can employee (limited by size and number of ships owned).
@@ -76,11 +79,6 @@ class GameManager {
     private shipCount: BehaviorSubject<number> = new BehaviorSubject(3);
 
     /**
-     * The number of ships the player owns.
-     */
-    private ships: { health: number; }[] = [];
-
-    /**
      * List of active subscriptions within the service.
      */
     private subscriptions: Subscription[] = [];
@@ -99,13 +97,6 @@ class GameManager {
      */
     private updateOfficerSalaries(): void {
         this.officerSalaries.next(this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
-    }
-
-    /**
-     * Updates total health points of player's entire fleet.
-     */
-    private updateFleetHealth(): void {
-        this.fleetHealth.next(this.ships.filter(ship => !!ship).map(ship => ship.health).reduce((accum, val) => accum + val, 0) || 100);
     }
 
     /**
@@ -180,7 +171,7 @@ class GameManager {
                 }
 
                 // Apply wage affects and adjust crew morale accordingly.
-                this.balance.next(this.crew.payDay(this.balance.value));
+                this.balance.next(this._crew.payDay(this.balance.value));
                 
                 // Update port reputation
                 await zip(playerManager.getInfamy(), playerManager.getCrownFavor())
@@ -238,7 +229,7 @@ class GameManager {
      * @returns the clone of the crew list.
      */
     public getCrew(): Observable<CrewMember[]> {
-        return this.crew.getCrew();
+        return this._crew.getCrew();
     }
 
     /**
@@ -246,7 +237,7 @@ class GameManager {
      * @returns an observable of an object containing the relevant crew info for the HUD.
      */
     public getCrewHUD(): Observable<{[key: string]: number}> {
-        return this.crew.getHUD();
+        return this._crew.getHUD();
     }
 
     /**
@@ -258,11 +249,11 @@ class GameManager {
     }
 
     /**
-     * Gets the subscribable value of fleet health.
-     * @returns observable of player's monetary balance.
+     * Consolidates fleet info into a single observable for HUD use.
+     * @returns an observable of an object containing the relevant fleet info for the HUD.
      */
-    public getFleetHealth(): Observable<number> {
-        return this.fleetHealth.asObservable();
+    public getFleetHUD(): Observable<{[key: string]: number}> {
+        return this._fleet.getHUD();
     }
 
     /**
@@ -328,7 +319,7 @@ class GameManager {
      * @param asc whether to sort in ascending order or not.
      */
     public sortCrewManifest(key: string, secondaryKey: string, asc: boolean): void {
-        this.crew.sortCrewManifest(key, secondaryKey, asc);
+        this._crew.sortCrewManifest(key, secondaryKey, asc);
     }
 
     /**
@@ -337,8 +328,9 @@ class GameManager {
      */
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {
-            this.crew.updateCrewWage(this.difficulty.value);
-            this.crew.addCrew(new Array(48 / this.difficulty.value), true);
+            this._crew.updateCrewWage(this.difficulty.value);
+            this._crew.addCrew(new Array(48 / this.difficulty.value), true);
+            this._fleet.addShip(new Barque(ShipNameGenerator()));
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
             stateManager.changeGameState(GameState.Active);
             return true;
@@ -352,7 +344,7 @@ class GameManager {
      * @param isDown flag to determine which of the two direction the change moves in.
      */
     public updatePayPriority(payNumber: number, isDown: boolean): void {
-        this.crew.updatePayPriority(payNumber, isDown);
+        this._crew.updatePayPriority(payNumber, isDown);
     }
 }
 

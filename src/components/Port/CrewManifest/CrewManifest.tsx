@@ -76,7 +76,7 @@ export class CrewManifest extends React.Component<Props, State> {
     public componentDidMount() {
         this.subscriptions.push(
             gameManager.getCrew().subscribe(crew => {
-                this.setState({ crew: crew });
+                this.setState({ crew });
             }),
         );
     }
@@ -245,29 +245,31 @@ export class CrewManifest extends React.Component<Props, State> {
                                         </td>
                                         <td className={ styles['pay-order-cell'] }>
                                             { !c.isAlive ? <span>-1</span> : <>
-                                                <span className='float-left'>{ !hasPayUpBtn ? null :
-                                                    <Button
-                                                        variant='info'
-                                                        className={ styles['pay-order-button'] + ' py-1 px-1' }
-                                                        size='sm'
-                                                        aria-label='Increase priority of pay'
-                                                        onClick={() => this._payPriority(c.payOrder, false)}>
-                                                        <FaCaretUp />
-                                                    </Button>
-                                                }</span>
                                                 <span className={ styles['pay-order-text'] + ' text-center' }>
                                                     { c.payOrder }
                                                 </span>
-                                                <span className='float-right'> { !hasPayDownBtn ? null :
-                                                    <Button
-                                                        variant='info'
-                                                        className={ styles['pay-order-button'] + ' py-1 px-1' }
-                                                        size='sm'
-                                                        aria-label='Decrease priority of pay'
-                                                        onClick={() => this._payPriority(c.payOrder, true)}>
-                                                        <FaCaretDown />
-                                                    </Button>
-                                                }</span>
+                                                <span className={ styles['pay-order-buttons'] }>
+                                                    <span className='float-left'>{ !hasPayUpBtn ? null :
+                                                        <Button
+                                                            variant='info'
+                                                            className={ styles['pay-order-button'] + ' py-1 px-1' }
+                                                            size='sm'
+                                                            aria-label='Increase priority of pay'
+                                                            onClick={() => this._payPriority(c.payOrder, false)}>
+                                                            <FaCaretUp />
+                                                        </Button>
+                                                    }</span>
+                                                    <span className='float-right'> { !hasPayDownBtn ? null :
+                                                        <Button
+                                                            variant='info'
+                                                            className={ styles['pay-order-button'] + ' py-1 px-1' }
+                                                            size='sm'
+                                                            aria-label='Decrease priority of pay'
+                                                            onClick={() => this._payPriority(c.payOrder, true)}>
+                                                            <FaCaretDown />
+                                                        </Button>
+                                                    }</span>
+                                                </span>
                                             </>}
                                         </td>
                                         <td>
