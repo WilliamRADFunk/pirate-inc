@@ -44,20 +44,20 @@ export class PortMain extends React.Component<Props, State> {
     public render() {
         const { portSceneState } = this.state;
         return (
-            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
+            <Col xs="12" xl={{ span: 8, offset: 2 }} className="boundaries">
                 <Row>
-                    { portSceneState !== PortSceneState.Menu ? null :
+                    { portSceneState > PortSceneState.TavernOptions ? null :
                         <>
-                            <Col xs="12" lg="5" className="mt-5 rope-border-square small-square">
+                            <Col xs="12" xl="5" className="mt-5 rope-border-square small-square">
                                 <Shipyard></Shipyard>
                             </Col>
-                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
+                            <Col xs="12" xl={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
                                 <Tavern></Tavern>
                             </Col>
-                            <Col xs="12" lg="5" className="mt-5 rope-border-square small-square">
+                            <Col xs="12" xl="5" className="mt-5 rope-border-square small-square">
                                 <ColonialOffice></ColonialOffice>
                             </Col>
-                            <Col xs="12" lg={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
+                            <Col xs="12" xl={{ span: 5, offset: 2 }} className="mt-5 rope-border-square small-square">
                                 <Bungalow></Bungalow>
                             </Col>
                         </>
@@ -77,7 +77,7 @@ export class PortMain extends React.Component<Props, State> {
                             <Shipyard></Shipyard>
                         </Col>
                     }
-                    { (portSceneState < PortSceneState.TavernBuySupplies || PortSceneState.TavernOptions < portSceneState) ? null :
+                    { portSceneState < PortSceneState.TavernBuySupplies ? null :
                         <Col xs="12" className="boundaries mt-5">
                             <Tavern></Tavern>
                         </Col>

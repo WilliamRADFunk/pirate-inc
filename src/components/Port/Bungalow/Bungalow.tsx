@@ -1,10 +1,10 @@
-import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import { Eye, EyeSlash } from "react-bootstrap-icons";
+import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
-import { Subscription } from "rxjs";
-import { PortSceneState, stateManager } from "../../../Services/StateManager";
-import { CrewManifest } from "../CrewManifest/CrewManifest";
+import { Subscription } from 'rxjs';
+import { PortSceneState, stateManager } from '../../../Services/StateManager';
+import { CrewManifest } from '../CrewManifest/CrewManifest';
 
 interface Props {}
 
@@ -25,7 +25,7 @@ export class Bungalow extends React.Component<Props, State> {
 
     private toggleMode(): void {
         const currState = this.state.portSceneState;
-        if (currState === PortSceneState.Menu) {
+        if (currState !== PortSceneState.BungalowOptions) {
             stateManager.changePortSceneState(PortSceneState.BungalowOptions);
         } else {
             stateManager.changePortSceneState(PortSceneState.Menu);
@@ -50,50 +50,65 @@ export class Bungalow extends React.Component<Props, State> {
     public render() {
         const { portSceneState } = this.state;
         return (
-            <div className='w-100 h-100' onClick={() => this.toggleMode()}>
-                <Row className="border-white border-bottom mb-2">
-                    <Col xs={{ span: 8, offset: 2 }}
-                        aria-label="Bungalow section"
-                        className="text-center">
+            <div className='w-100 h-100 text-dark'>
+                <Row className='mb-2'>
+                    <Col xs={{ span: 6, offset: 3 }}
+                        aria-label='Bungalow section'
+                        className='text-center clickable'
+                        onClick={() => this.toggleMode()}>
                         Bungalow
                     </Col>
                     <Button
-                        variant="outline-secondary"
-                        className="border-0 col-2">
+                        variant='link'
+                        className='border-0 col-2 text-dark'
+                        onClick={() => this.toggleMode()}>
                         { portSceneState !== PortSceneState.BungalowOptions
-                            ? <Eye color="white" size={20}></Eye>
-                            : <EyeSlash color="white" size={20}></EyeSlash>
+                            ? <Eye></Eye>
+                            : <EyeSlash></EyeSlash>
                         }
                     </Button>
                 </Row>
-                { portSceneState !== PortSceneState.BungalowOptions
-                    ? <img src='images/bungalow-icon.png' width='50%' height='50%' className='small-square-icon'/>
-                    : <Row>
+                { (PortSceneState.BungalowCrewManifest <= portSceneState && portSceneState <= PortSceneState.BungalowShipManifest) || portSceneState === PortSceneState.BungalowOptions
+                    ? null
+                    : <img
+                        src='images/bungalow-icon.png'
+                        alt='bungalow icon'
+                        width='50%'
+                        height='50%'
+                        className='small-square-icon'
+                        onClick={() => this.toggleMode()}/>
+                }
+                { portSceneState !== PortSceneState.BungalowOptions ? null :
+                    <Row>
                         <Button
-                            aria-label="Open colonial office crew manifest section"
-                            variant="link"
-                            className="col-2 offset-2"
+                            aria-label='Open colonial office crew manifest section'
+                            variant='link'
+                            size="lg"
+                            className='col-4 col-xl-5 offset-1 text-dark my-4 fs-md text-xl-left'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowCrewManifest)}>
                             Crew Manifest
                         </Button>
                         <Button
-                            aria-label="Open colonial office gather intel section"
-                            variant="link"
-                            className="col-2"
+                            aria-label='Open colonial office gather intel section'
+                            variant='link'
+                            size="lg"
+                            className='col-4 col-xl-5 offset-2 offset-xl-1 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowGatherIntel)}>
                             Gather Intel
                         </Button>
                         <Button
-                            aria-label="Open colonial office purchase officer summaries section"
-                            variant="link"
-                            className="col-2"
+                            aria-label='Open colonial office purchase officer summaries section'
+                            variant='link'
+                            size="lg"
+                            className='col-xl-6 col-4 offset-1 text-dark my-4 fs-md text-xl-left mr-xl-0 ml-xl-4 pr-xl-0'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowOfficerSummaries)}>
                             Officer Summaries
                         </Button>
                         <Button
-                            aria-label="Open colonial office purchase fleet manifest section"
-                            variant="link"
-                            className="col-2"
+                            aria-label='Open colonial office purchase fleet manifest section'
+                            variant='link'
+                            size="lg"
+                            className='col-4 col-xl-5 offset-2 offset-xl-1 text-dark my-4 fs-md mx-xl-0'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowShipManifest)}>
                             Fleet Manifest
                         </Button>
@@ -102,8 +117,8 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
                     <Row>
                         <Col
-                            aria-label="Bungalow buy suplies section description"
-                            className="fs-sm text-left">
+                            aria-label='Bungalow buy suplies section description'
+                            className='fs-sm text-left'>
                             <CrewManifest></CrewManifest>
                         </Col>
                     </Row>
@@ -111,8 +126,8 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowGatherIntel ? null :
                     <Row>
                         <Col
-                            aria-label="Bungalow hire crew section description"
-                            className="fs-sm text-left">
+                            aria-label='Bungalow hire crew section description'
+                            className='fs-sm text-left'>
                             Here are a number of ways to get intelligence about various aspects of the pirate life.
                         </Col>
                     </Row>
@@ -120,8 +135,8 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
                     <Row>
                         <Col
-                            aria-label="Bungalow fire officers section description"
-                            className="fs-sm text-left">
+                            aria-label='Bungalow fire officers section description'
+                            className='fs-sm text-left'>
                             Here is the list of your officers. See their associated stats and backgrounds.
                         </Col>
                     </Row>
@@ -129,8 +144,8 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowShipManifest ? null :
                     <Row>
                         <Col
-                            aria-label="Bungalow hire officers section description"
-                            className="fs-sm text-left">
+                            aria-label='Bungalow hire officers section description'
+                            className='fs-sm text-left'>
                             This is your fleet. See all the details, armaments, and cargo carried for each ship.
                         </Col>
                     </Row>

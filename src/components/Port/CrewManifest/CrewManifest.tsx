@@ -30,7 +30,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
             placement="top"
             delay={{ show: 250, hide: 400 }}
             overlay={renderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
-            <span className={ [styles.clickable, 'ml-1'].join(' ') } onClick={ () => props.sortBy() }><FaSort /></span>
+            <span className='clickable ml-1' onClick={ () => props.sortBy() }><FaSort /></span>
         </OverlayTrigger>
     </>);
 }
@@ -115,64 +115,64 @@ export class CrewManifest extends React.Component<Props, State> {
                                         <Col xs='12'>Skills</Col>
                                     </Row>
                                     <Row>
-                                        <Col xs='2' className={ styles.clickable } aria-label='cannoneering'>
+                                        <Col xs='2' className='clickable' aria-label='cannoneering'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
                                                 <GiCannon />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='cleanliness'>
+                                        <Col xs='2' className='clickable' aria-label='cleanliness'>
                                             <span onClick={ () => this._sortBy('skills', 'cleanliness')}>
                                                 <GiBroom />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='greed'>
+                                        <Col xs='2' className='clickable' aria-label='greed'>
                                             <span onClick={ () => this._sortBy('skills', 'greed')}>
                                                 <GiReceiveMoney />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='hand2HandCombat'>
+                                        <Col xs='2' className='clickable' aria-label='hand2HandCombat'>
                                             <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
                                                 <GiFist />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='sailing'>
+                                        <Col xs='2' className='clickable' aria-label='sailing'>
                                             <span onClick={ () => this._sortBy('skills', 'sailing')}>
                                                 <GiSailboat />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='teamwork'>
+                                        <Col xs='2' className='clickable' aria-label='teamwork'>
                                             <span onClick={ () => this._sortBy('skills', 'teamwork')}>
                                                 <RiTeamFill />
                                             </span>
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col xs='2' className={ styles.clickable } aria-label='cannoneering average'>
+                                        <Col xs='2' className='clickable' aria-label='cannoneering average'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
                                                 { getSkillAvg(crew, 'cannoneering') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='cleanliness average'>
+                                        <Col xs='2' className='clickable' aria-label='cleanliness average'>
                                             <span onClick={ () => this._sortBy('skills', 'cleanliness')}>
                                             { getSkillAvg(crew, 'cleanliness') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='greed average'>
+                                        <Col xs='2' className='clickable' aria-label='greed average'>
                                             <span onClick={ () => this._sortBy('skills', 'greed')}>
                                             { getSkillAvg(crew, 'greed') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='hand2HandCombat average'>
+                                        <Col xs='2' className='clickable' aria-label='hand2HandCombat average'>
                                             <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
                                             { getSkillAvg(crew, 'hand2HandCombat') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='sailing average'>
+                                        <Col xs='2' className='clickable' aria-label='sailing average'>
                                             <span onClick={ () => this._sortBy('skills', 'sailing')}>
                                             { getSkillAvg(crew, 'sailing') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className={ styles.clickable } aria-label='teamwork average'>
+                                        <Col xs='2' className='clickable' aria-label='teamwork average'>
                                             <span onClick={ () => this._sortBy('skills', 'teamwork')}>
                                             { getSkillAvg(crew, 'teamwork') }
                                             </span>

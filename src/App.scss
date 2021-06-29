@@ -1,5 +1,10 @@
 @import "~bootstrap/scss/bootstrap";
 
+@font-face {
+  font-family: 'LobsterFont';
+  src: local('LobsterFont'), url(Assets/fonts/Lobster-Regular.ttf) format('truetype');
+}
+
 .App {
   color: white;
   font-size: calc(10px + 2vmin);
@@ -7,6 +12,10 @@
 
 .boundaries {
   border: 1px solid white;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .rope-border-square {
@@ -19,12 +28,54 @@
 }
 
 .small-square {
+  font-family: 'LobsterFont';
+  font-size: 2rem;
   min-height: 400px;
+  padding-top: 1.2em;
+
+  .btn.btn-link > svg {
+    font-size: 1.5rem;
+    line-height: 0.75rem;
+    padding: 0;
+    vertical-align: middle;
+  }
 }
 
 .small-square-icon {
   margin-top: auto;
   margin-bottom: auto;
   position: relative;
-  top: 12%;
+  top: calc(12% - 1.2em);
+}
+
+@media only screen and (max-width: 1200px) {
+  .small-square {
+    font-size: 3rem;
+    padding-top: 1.3em;
+
+    .btn.btn-link > svg {
+      font-size: 2.5rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  .small-square-icon {
+    top: calc(12% - 1.3em);
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .small-square {
+    font-size: 2.5rem;
+    padding-top: 1em;
+
+    .btn.btn-link > svg {
+      font-size: 2rem;
+      line-height: 1rem;
+    }
+  }
+
+  .small-square-icon {
+    top: calc(12% - 1em);
+  }
 }

@@ -1,9 +1,9 @@
-import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import { Eye, EyeSlash } from "react-bootstrap-icons";
+import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
-import { Subscription } from "rxjs";
-import { PortSceneState, stateManager } from "../../../Services/StateManager";
+import { Subscription } from 'rxjs';
+import { PortSceneState, stateManager } from '../../../Services/StateManager';
 
 interface Props {}
 
@@ -24,7 +24,7 @@ export class Tavern extends React.Component<Props, State> {
 
     private toggleMode(): void {
         const currState = this.state.portSceneState;
-        if (currState === PortSceneState.Menu) {
+        if (currState !== PortSceneState.TavernOptions) {
             stateManager.changePortSceneState(PortSceneState.TavernOptions);
         } else {
             stateManager.changePortSceneState(PortSceneState.Menu);
@@ -49,104 +49,84 @@ export class Tavern extends React.Component<Props, State> {
     public render() {
         const { portSceneState } = this.state;
         return (
-            <div className='w-100 h-100' onClick={() => this.toggleMode()}>
-                <Row className="border-white border-bottom mb-2">
-                    <Col xs={{ span: 8, offset: 2 }}
-                        aria-label="Tavern section"
-                        className="text-center">
+            <div className='w-100 h-100 text-dark'>
+                <Row className='mb-2'>
+                    <Col xs={{ span: 6, offset: 3 }}
+                        aria-label='Tavern section'
+                        className='text-center clickable'
+                        onClick={() => this.toggleMode()}>
                         Tavern
                     </Col>
                     <Button
-                        variant="outline-secondary"
-                        className="border-0 col-2"
+                        variant='link'
+                        className='border-0 col-2 text-dark'
                         onClick={() => this.toggleMode()}>
                         { portSceneState !== PortSceneState.TavernOptions
-                            ? <Eye color="white" size={20}></Eye>
-                            : <EyeSlash color="white" size={20}></EyeSlash>
+                            ? <Eye></Eye>
+                            : <EyeSlash></EyeSlash>
                         }
                     </Button>
                 </Row>
-                { portSceneState !== PortSceneState.TavernOptions
-                    ? <img src='images/tavern-icon.png' width='50%' height='50%' className='small-square-icon'/>
-                    : <Row>
+                { (PortSceneState.TavernBuySupplies <= portSceneState && portSceneState <= PortSceneState.TavernHireOfficers) || portSceneState === PortSceneState.TavernOptions
+                    ? null
+                    : <img
+                        src='images/tavern-icon.png'
+                        alt='tavern icon'
+                        width='50%'
+                        height='50%'
+                        className='small-square-icon'
+                        onClick={() => this.toggleMode()}/>
+                }
+                { portSceneState !== PortSceneState.TavernOptions ? null : <>
+                    <Row>
                         <Button
-                            aria-label="Open tavern buy supplies section"
-                            variant="link"
-                            className="col-2 offset-1"
+                            aria-label='Open tavern buy supplies section'
+                            variant='link'
+                            className='col-12 text-dark fs-md my-4'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.TavernBuySupplies)}>
                             Buy Supplies
                         </Button>
+                    </Row>
+                    <Row>
                         <Button
-                            aria-label="Open tavern fire crew section"
-                            variant="link"
-                            className="col-2"
-                            onClick={() => stateManager.changePortSceneState(PortSceneState.TavernFireCrew)}>
-                            Fire Crew
-                        </Button>
-                        <Button
-                            aria-label="Open tavern hire crew section"
-                            variant="link"
-                            className="col-2"
+                            aria-label='Open tavern hire crew section'
+                            variant='link'
+                            className='col-4 offset-1 text-dark fs-md my-4'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.TavernHireCrew)}>
                             Hire Crew
                         </Button>
                         <Button
-                            aria-label="Open tavern fire officers section"
-                            variant="link"
-                            className="col-2"
-                            onClick={() => stateManager.changePortSceneState(PortSceneState.TavernFireOfficers)}>
-                            Fire Officers
-                        </Button>
-                        <Button
-                            aria-label="Open tavern hire officers section"
-                            variant="link"
-                            className="col-2"
+                            aria-label='Open tavern hire officers section'
+                            variant='link'
+                            className='col-5 offset-1 text-dark fs-md my-4'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.TavernHireOfficers)}>
                             Hire Officers
                         </Button>
                     </Row>
-                }
+                </>}
                 { portSceneState !== PortSceneState.TavernBuySupplies ? null :
                     <Row>
                         <Col
-                            aria-label="Tavern buy suplies section description"
-                            className="fs-sm text-left">
+                            aria-label='Tavern buy suplies section description'
+                            className='fs-sm text-left'>
                             Buy some supplies
-                        </Col>
-                    </Row>
-                }
-                { portSceneState !== PortSceneState.TavernFireCrew ? null :
-                    <Row>
-                        <Col
-                            aria-label="Tavern fire crew section description"
-                            className="fs-sm text-left">
-                            Select specific crew members to let go, or let the quartermaster pick automatically given a number.
                         </Col>
                     </Row>
                 }
                 { portSceneState !== PortSceneState.TavernHireCrew ? null :
                     <Row>
                         <Col
-                            aria-label="Tavern hire crew section description"
-                            className="fs-sm text-left">
+                            aria-label='Tavern hire crew section description'
+                            className='fs-sm text-left'>
                             Select specific crew members to hire, or let the quartemaster pick automatically given a number.
-                        </Col>
-                    </Row>
-                }
-                { portSceneState !== PortSceneState.TavernFireOfficers ? null :
-                    <Row>
-                        <Col
-                            aria-label="Tavern fire officers section description"
-                            className="fs-sm text-left">
-                            Which of your officers would you let go?
                         </Col>
                     </Row>
                 }
                 { portSceneState !== PortSceneState.TavernHireOfficers ? null :
                     <Row>
                         <Col
-                            aria-label="Tavern hire officers section description"
-                            className="fs-sm text-left">
+                            aria-label='Tavern hire officers section description'
+                            className='fs-sm text-left'>
                             Which officer position are trying to fill?
                         </Col>
                     </Row>

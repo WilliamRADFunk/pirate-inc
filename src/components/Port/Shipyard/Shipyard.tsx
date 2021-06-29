@@ -24,7 +24,7 @@ export class Shipyard extends React.Component<Props, State> {
 
     private toggleMode(): void {
         const currState = this.state.portSceneState;
-        if (currState === PortSceneState.Menu) {
+        if (currState !== PortSceneState.ShipyardOptions) {
             stateManager.changePortSceneState(PortSceneState.ShipyardOptions);
         } else {
             stateManager.changePortSceneState(PortSceneState.Menu);
@@ -49,52 +49,67 @@ export class Shipyard extends React.Component<Props, State> {
     public render() {
         const { portSceneState } = this.state;
         return (
-            <div className='w-100 h-100' onClick={() => this.toggleMode()}>
-                <Row className='border-white border-bottom mb-2'>
-                    <Col xs={{ span: 8, offset: 2 }}
+            <div className='w-100 h-100 text-dark'>
+                <Row className='mb-2'>
+                    <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Shipyard section'
-                        className='text-center'>
+                        className='text-center clickable'
+                        onClick={() => this.toggleMode()}>
                         Shipyard
                     </Col>
                     <Button
-                        variant='outline-secondary'
-                        className='border-0 col-2'>
+                        variant='link'
+                        className='border-0 col-2 text-dark'
+                        onClick={() => this.toggleMode()}>
                         { portSceneState !== PortSceneState.ShipyardOptions
-                            ? <Eye color='white' size={20}></Eye>
-                            : <EyeSlash color='white' size={20}></EyeSlash>
+                            ? <Eye></Eye>
+                            : <EyeSlash></EyeSlash>
                         }
                     </Button>
                 </Row>
-                { portSceneState !== PortSceneState.ShipyardOptions
-                    ? <img src='images/shipyard-icon.png' width='50%' height='50%' className='small-square-icon'/>
-                    : <Row>
+                { (PortSceneState.ShipyardBuy <= portSceneState && portSceneState <= PortSceneState.ShipyardSell) || portSceneState === PortSceneState.ShipyardOptions
+                    ? null
+                    : <img
+                        src='images/shipyard-icon.png'
+                        alt='shipyard icon'
+                        width='50%'
+                        height='50%'
+                        className='small-square-icon clickable'
+                        onClick={() => this.toggleMode()}/>
+                }
+                { portSceneState !== PortSceneState.ShipyardOptions ? null :
+                    <Row>
                         <Button
                             aria-label='Open shipyard buy ships section'
                             variant='link'
-                            className='col-4 offset-1'
+                            className='col-4 offset-1 text-dark my-4 fs-md text-xl-left'
+                            size='lg'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.ShipyardBuy)}>
-                            Buy
+                            Buy Ships
                         </Button>
                         <Button
                             aria-label='Open shipyard sell ships section'
                             variant='link'
-                            className='col-4 offset-2'
+                            className='col-4 offset-2 text-dark my-4 fs-md'
+                            size='lg'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.ShipyardSell)}>
-                            Sell
+                            Sell Ships
                         </Button>
                         <Button
                             aria-label='Open shipyard repair ships section'
                             variant='link'
-                            className='col-4 offset-1'
+                            className='col-xl-5 col-4 offset-1 text-dark my-4 fs-md text-xl-left'
+                            size='lg'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.ShipyardRepair)}>
-                            Repair
+                            Repair Hull
                         </Button>
                         <Button
                             aria-label='Open shipyard outfit ships section'
                             variant='link'
-                            className='col-4 offset-2'
+                            className='col-4 offset-2 offset-xl-1 text-dark my-4 fs-md'
+                            size='lg'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.ShipyardOutfit)}>
-                            Outfit
+                            Outfitting
                         </Button>
                     </Row>
                 }
