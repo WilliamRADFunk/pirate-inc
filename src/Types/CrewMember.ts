@@ -105,6 +105,7 @@ export interface CrewMember {
     deathBenefit: number;
     features: CrewMemberFeatures;
     hasPaidDeathBenefit: boolean;
+    id: string;
     isAlive: boolean;
     mood: MoodToMouth;
     morale: number;

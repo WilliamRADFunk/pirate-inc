@@ -7,8 +7,9 @@ import { Hair } from '@dicebear/micah/lib/options';
 import { ConcernTypes, CrewMember, CrewMemberFeatures, getFeatures, MoodToEyebrows, MoodToEyes, MoodToMouth, MouthToMood } from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
+import { GUID } from '../../Helpers/GUID';
 
-const random = require('random-name');
+const random = require('random-name-redux');
 
 export class Crew {
     /**
@@ -79,11 +80,11 @@ export class Crew {
         this._crew.next(remainingCrew);
     }
 
-    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth): string {
+    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive?: boolean): string {
         return createAvatar(
             style,
             {
-                backgroundColor: '#555',
+                backgroundColor: isAlive ? '#555' : '#900',
                 seed: features.seed,
                 earringColor: [features.earringColor],
                 eyes: [MoodToEyes[MouthToMood[mood]]],
@@ -143,15 +144,18 @@ export class Crew {
             const theCrew = this._crew.value.slice();
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
             for (let i = 0; i < newCrew.length; i++) {
+                // TODO: Remove dead crew member when no longer testing.
+                const alive = Math.random() < 0.8;
                 const newMember = {
                     avatar: '',
-                    concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
-                    deathBenefit: 0,
+                    concern: (alive && Math.random() > 0.5) ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
+                    deathBenefit: alive ? 0 : this.crewWage.value * 10,
                     hasPaidDeathBenefit: false,
-                    isAlive: true,
+                    id: GUID(),
+                    isAlive: alive,
                     mood: MoodToMouth.Happy,
-                    morale: Math.floor((Math.random() * 50) + 50),
-                    nameFirst: random.middle(),
+                    morale: alive ? Math.floor((Math.random() * 50) + 50) : 0,
+                    nameFirst: random.firstMale(),
                     nameLast: random.last(),
                     nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
                     payOrder: i,
@@ -164,15 +168,47 @@ export class Crew {
                         sailing: Number(Math.random().toFixed(2)),
                         teamwork: Number(Math.random().toFixed(2))
                     },
-                    turnsSinceDeath: 0
+                    turnsSinceDeath: alive ? 0 : Math.floor(Math.random() * 10)
                 } as CrewMember;
                 newMember.mood = this._translateMood(newMember.morale);
                 newMember.features = this._getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
-                newMember.avatar = this._getAvatar(newMember.features, newMember.mood);
+                newMember.avatar = this._getAvatar(newMember.features, newMember.mood, newMember.isAlive);
                 theCrew.push(newMember);
             }
             this._crew.next(theCrew.reverse());
         }
+    }
+
+    /**
+     * Removes the selected members of the crew, and adjust morale accordingly.
+     * @param firedCrew the crew members to be 'let go' from the player's crew.
+     */
+    public fireCrew(firedCrew: CrewMember[]): void {
+        const remainingCrew = this._crew.value.filter(c => {
+            return !firedCrew.find(fCrew => fCrew.id === c.id);
+        });
+        remainingCrew.forEach(c => {
+            const random = Math.random();
+            // 50% morale will lower per crew member.
+            if (random < 0.5 && c.morale > 0) {
+                c.morale -= 1;
+                c.mood = this._translateMood(c.morale);
+                c.avatar = this._getAvatar(c.features, c.mood);
+                // 20% each crew member's main gripe will be the loss of crewmates.
+                if (random < 0.1) {
+                    c.concern = ConcernTypes.CrewmatesFired;
+                }
+            }
+        });
+        // Adjust payOrders to accomodate the new gap in the roster.
+        let payCounter = 0;
+        remainingCrew.slice()
+            .sort((a, b) => a.payOrder - b.payOrder)
+            .forEach(c => {
+                c.payOrder = payCounter;
+                payCounter++;
+            });
+        this._crew.next(remainingCrew);
     }
 
     /**

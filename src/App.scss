@@ -39,6 +39,37 @@
     padding: 0;
     vertical-align: middle;
   }
+
+  .double-line-headers {
+    text-align: center;
+  }
+
+  .double-line-headers span {
+    display: inline-block;
+    line-height: 0.75rem;
+    position: relative;  
+  }
+
+  .double-line-headers span:before,
+  .double-line-headers span:after {
+    content: "";
+    position: absolute;
+    height: 1.25rem;
+    border-bottom: 5px solid;
+    border-top: 5px solid;
+    top: -4px;
+    width: 40px;
+  }
+
+  .double-line-headers span:before {
+    right: 100%;
+    margin-right: 10px;
+  }
+
+  .double-line-headers span:after {
+    left: 100%;
+    margin-left: 10px;
+  }
 }
 
 .small-square-icon {
@@ -46,6 +77,22 @@
   margin-bottom: auto;
   position: relative;
   top: calc(12% - 1.2em);
+}
+
+
+@media only screen and (max-width: 1400px) {
+  .small-square {
+    font-size: 1.5rem;
+
+    .double-line-headers span:before,
+    .double-line-headers span:after {
+      border-bottom: 2px solid;
+      border-top: 2px solid;
+      height: 0.75rem;
+      width: 30px;
+      top: 2px;
+    }
+  }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -56,6 +103,15 @@
     .btn.btn-link > svg {
       font-size: 2.5rem;
       line-height: 1.25rem;
+    }
+
+    .double-line-headers span:before,
+    .double-line-headers span:after {
+      border-bottom: 5px solid;
+      border-top: 5px solid;
+      height: 1.5rem;
+      width: 40px;
+      top: -4px;
     }
   }
 
@@ -72,6 +128,12 @@
     .btn.btn-link > svg {
       font-size: 2rem;
       line-height: 1rem;
+    }
+
+    .double-line-headers span:before,
+    .double-line-headers span:after {
+      height: 1.25rem;
+      top: -2px;
     }
   }
 

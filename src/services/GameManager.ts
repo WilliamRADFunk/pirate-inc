@@ -172,6 +172,9 @@ class GameManager {
 
                 // Apply wage affects and adjust crew morale accordingly.
                 this.balance.next(this._crew.payDay(this.balance.value));
+
+                // TODO: Reduce morale for unpaid death benefits and increase the turnsSinceDeath for each dead member unpaid.
+                //      The amount owed should increase slightly for every turn player doesn't pay the death benefit.
                 
                 // Update port reputation
                 await zip(playerManager.getInfamy(), playerManager.getCrownFavor())
@@ -206,6 +209,14 @@ class GameManager {
             }
             // TODO: Need a blocking modal summary event to show all that happened (crew or officers leaving, etc.).
         }
+    }
+
+    /**
+     * Removes the selected members of the crew, and adjust morale accordingly.
+     * @param firedCrew the crew members to be 'let go' from the player's crew.
+     */
+    public fireCrew(firedCrew: CrewMember[]): void {
+        this._crew.fireCrew(firedCrew ?? []);
     }
 
     /**

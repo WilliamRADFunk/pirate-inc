@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button, Col, OverlayTrigger, Row, Table, Tooltip } from 'react-bootstrap';
-import { FaCaretDown, FaCaretUp, FaSort } from 'react-icons/fa';
+import { FaCaretDown, FaCaretUp, FaRegThumbsDown, FaSort } from 'react-icons/fa';
 import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
+import { GrMoney } from 'react-icons/gr';
 import { RiTeamFill } from 'react-icons/ri';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import styles from './CrewManifest.module.scss';
 import { gameManager } from '../../../Services/GameManager';
 import { ConcernTypes, CrewMember, MouthToMood } from '../../../Types/CrewMember';
+import { GUID } from '../../../Helpers/GUID';
 
 interface Props {}
 
@@ -27,11 +29,32 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
     return (<>
         { props.headerLabel }
         <OverlayTrigger
+            key={GUID()}
             placement="top"
             delay={{ show: 250, hide: 400 }}
             overlay={renderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
-            <span className='clickable ml-1' onClick={ () => props.sortBy() }><FaSort /></span>
+            {({ ref, ...triggerHandler }) => (
+                <span ref={ ref } {...triggerHandler} className='clickable ml-1' onClick={ () => props.sortBy() }><FaSort /></span>
+            )}
         </OverlayTrigger>
+    </>);
+}
+
+function renderDeathBenefits(props: { cMember: CrewMember }): JSX.Element {
+    if (props.cMember?.hasPaidDeathBenefit) {
+        return (
+            <span>Paid</span>
+        );
+    }
+    const benefitAmt = props.cMember?.deathBenefit;
+    const turnsSinceDeath = props.cMember?.turnsSinceDeath;
+    return (<>
+        <Button size='sm' variant='success' aria-label='Pay death benefits'>
+            <GrMoney color="white" />
+        </Button>
+        <div>
+            <span>${ benefitAmt }</span> <span>({ turnsSinceDeath })</span>
+        </div>
     </>);
 }
 
@@ -53,6 +76,10 @@ export class CrewManifest extends React.Component<Props, State> {
         this.state = {
             crew: []
         };
+    }
+
+    private _fireCrew(cMember: CrewMember): void {
+        gameManager.fireCrew([cMember]);
     }
 
     private _payPriority(payNumber: number, isDown: boolean): void {
@@ -207,9 +234,12 @@ export class CrewManifest extends React.Component<Props, State> {
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Status',
-                                            sortBy: () => this._sortBy('status')
+                                            sortBy: () => this._sortBy('isAlive')
                                         })
                                     }
+                                </th>
+                                <th>
+                                    Fire/Pay DB
                                 </th>
                             </tr>
                         </thead>
@@ -274,6 +304,18 @@ export class CrewManifest extends React.Component<Props, State> {
                                         </td>
                                         <td>
                                             { c.isAlive ? 'Alive' : 'Deceased' }
+                                        </td>
+                                        <td>
+                                            { c.isAlive 
+                                                ? <Button
+                                                    size='sm'
+                                                    variant='danger'
+                                                    aria-label='Fire crew member'
+                                                    onClick={ () => this._fireCrew(c) }>
+                                                    <FaRegThumbsDown/>
+                                                  </Button>
+                                                : renderDeathBenefits({ cMember: c})
+                                            }
                                         </td>
                                     </tr>);
                                 })

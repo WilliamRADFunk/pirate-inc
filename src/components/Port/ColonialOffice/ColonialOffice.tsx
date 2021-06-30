@@ -53,9 +53,9 @@ export class ColonialOffice extends React.Component<Props, State> {
                 <Row className='mb-2'>
                     <Col xs={{ span: 7, offset: 2 }}
                         aria-label='Colonial Office section'
-                        className='text-center clickable'
+                        className='text-center clickable double-line-headers'
                         onClick={() => this.toggleMode()}>
-                        Colonial Office
+                        <span>Colonial Office</span>
                     </Col>
                     <Button
                         variant='link'

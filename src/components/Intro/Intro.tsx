@@ -33,15 +33,12 @@ export class Intro extends React.Component<Props, State> {
     }
 
     private changedName(event: any): void{
-        console.log("Intro: changedName", event);
         const name = event.target.value;
         if (this.validateName(name)) {
             this.setState({ name: name, validName: true });
         } else {
             this.setState({ validName: false });
         }
-
-        console.log("Intro: changedName", this.state.validName);
     }
 
     private getIntro(): JSX.Element {
@@ -131,7 +128,6 @@ export class Intro extends React.Component<Props, State> {
     }
 
     private validateName(name: string): boolean {
-        console.log("Intro: validateName", name);
         // Make sure the name will actually work before enabling start button
         const reg = new RegExp('^[A-Za-z]+$');
         return !!(name && reg.test(name));

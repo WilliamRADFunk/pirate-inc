@@ -53,9 +53,9 @@ export class Shipyard extends React.Component<Props, State> {
                 <Row className='mb-2'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Shipyard section'
-                        className='text-center clickable'
+                        className='text-center clickable double-line-headers'
                         onClick={() => this.toggleMode()}>
-                        Shipyard
+                        <span className="border-dark">Shipyard</span>
                     </Col>
                     <Button
                         variant='link'

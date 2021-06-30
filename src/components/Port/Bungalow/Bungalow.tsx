@@ -54,9 +54,9 @@ export class Bungalow extends React.Component<Props, State> {
                 <Row className='mb-2'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Bungalow section'
-                        className='text-center clickable'
+                        className='text-center clickable double-line-headers'
                         onClick={() => this.toggleMode()}>
-                        Bungalow
+                        <span>Bungalow</span>
                     </Col>
                     <Button
                         variant='link'

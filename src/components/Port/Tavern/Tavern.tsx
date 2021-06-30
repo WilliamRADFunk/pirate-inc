@@ -53,9 +53,9 @@ export class Tavern extends React.Component<Props, State> {
                 <Row className='mb-2'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Tavern section'
-                        className='text-center clickable'
+                        className='text-center clickable double-line-headers'
                         onClick={() => this.toggleMode()}>
-                        Tavern
+                        <span>Tavern</span>
                     </Col>
                     <Button
                         variant='link'
