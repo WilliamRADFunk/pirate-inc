@@ -80,7 +80,7 @@ export class LocationHeader extends React.Component<Props, State> {
     public render() {
         const { canPlay, sceneState } = this.state;
         return (
-            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries">
+            <Col xs="12" lg={{ span: 10, offset: 1 }} className="boundaries">
                 <Button
                     variant="danger"
                     className={styles["end-turn-btn"]}

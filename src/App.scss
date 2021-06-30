@@ -18,13 +18,40 @@
     cursor: pointer;
 }
 
+.hud-bg {
+    background-color: transparent;
+    background-image: url('Assets/images/hud-background.png');
+    background-size: 100% 138%;
+    background-position-x: center;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+}
+
+.manifest {
+    background-color: transparent;
+    background-image: url('Assets/images/manifest.png');
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
+
+.port-bg-01 {
+    background-color: transparent;
+    background-image: url('Assets/images/port-background-01.jpg');
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
+
 .rope-border-square {
-  background-color: transparent;
-  background-image: url("Assets/images/rope-border-square.png");
-  background-size:100% 100%;
-  background-position-x: center;
-  background-position-y: center;
-  background-repeat: no-repeat;
+    background-color: transparent;
+    background-image: url("Assets/images/rope-border-square.png");
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
 }
 
 .small-square {
@@ -76,7 +103,7 @@
   margin-top: auto;
   margin-bottom: auto;
   position: relative;
-  top: calc(12% - 1.2em);
+  top: calc(20% - 1.2em);
 }
 
 
@@ -116,7 +143,7 @@
   }
 
   .small-square-icon {
-    top: calc(12% - 1.3em);
+    top: calc(20% - 1.3em);
   }
 }
 
@@ -138,6 +165,6 @@
   }
 
   .small-square-icon {
-    top: calc(12% - 1em);
+    top: calc(20% - 1em);
   }
 }

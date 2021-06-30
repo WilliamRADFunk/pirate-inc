@@ -40,7 +40,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
     </>);
 }
 
-function renderDeathBenefits(props: { cMember: CrewMember }): JSX.Element {
+function renderDeathBenefits(props: any): JSX.Element {
     if (props.cMember?.hasPaidDeathBenefit) {
         return (
             <span>Paid</span>
@@ -49,7 +49,11 @@ function renderDeathBenefits(props: { cMember: CrewMember }): JSX.Element {
     const benefitAmt = props.cMember?.deathBenefit;
     const turnsSinceDeath = props.cMember?.turnsSinceDeath;
     return (<>
-        <Button size='sm' variant='success' aria-label='Pay death benefits'>
+        <Button
+            size='sm'
+            variant='success'
+            aria-label='Pay death benefits'
+            onClick={ () => props.pay() }>
             <GrMoney color="white" />
         </Button>
         <div>
@@ -80,6 +84,10 @@ export class CrewManifest extends React.Component<Props, State> {
 
     private _fireCrew(cMember: CrewMember): void {
         gameManager.fireCrew([cMember]);
+    }
+
+    private _payDeathBenefits(cMember: CrewMember): void {
+        gameManager.payDeathBenefits([cMember]);
     }
 
     private _payPriority(payNumber: number, isDown: boolean): void {
@@ -314,7 +322,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                                     onClick={ () => this._fireCrew(c) }>
                                                     <FaRegThumbsDown/>
                                                   </Button>
-                                                : renderDeathBenefits({ cMember: c})
+                                                : renderDeathBenefits({ cMember: c, pay: () => this._payDeathBenefits(c)})
                                             }
                                         </td>
                                     </tr>);

@@ -324,6 +324,14 @@ class GameManager {
     }
 
     /**
+     * Pays the death benefits for all crew passed in up to available balance.
+     * @param cMembers the dead crew members the player wishes to pay the death benefits for.
+     */
+    public payDeathBenefits(cMembers: CrewMember[]): void {
+        this.balance.next(this._crew.payDeathBenefits(cMembers, this.balance.value));
+    }
+
+    /**
      * Sort the crew order based on the offered params.
      * @param key the first-level nested crewMember key to sort by.
      * @param secondaryKey the optional second-level nested crewMember key to sort by.

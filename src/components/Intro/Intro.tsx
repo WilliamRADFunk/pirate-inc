@@ -46,7 +46,7 @@ export class Intro extends React.Component<Props, State> {
             case 2: {
                 return (
                     <Row>
-                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
+                        <Col xs="12" lg={{ span: 10, offset: 1 }} className="text-left">
                             <p>
                                 It's the early 1700's and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of Glasgow about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
                             </p>

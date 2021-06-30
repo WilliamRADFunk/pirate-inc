@@ -59,7 +59,7 @@ class App extends React.Component<Props, State> {
   public render(): any {
     const { gameState, sceneState } = this.state;
     return (
-      <div className="App text-center">
+      <div className="App text-center port-bg-01">
         <Row>
           <Title></Title>
         </Row>

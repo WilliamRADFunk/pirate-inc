@@ -81,41 +81,41 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowOptions ? null :
                     <Row>
                         <Button
-                            aria-label='Open colonial office crew manifest section'
+                            aria-label='Open bungalow crew manifest section'
                             variant='link'
                             size="lg"
-                            className='col-4 col-xl-5 offset-1 text-dark my-4 fs-md text-xl-left'
+                            className='col-4 offset-1 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowCrewManifest)}>
-                            Crew Manifest
+                            Crew
                         </Button>
                         <Button
-                            aria-label='Open colonial office gather intel section'
+                            aria-label='Open bungalow intel section'
                             variant='link'
                             size="lg"
-                            className='col-4 col-xl-5 offset-2 offset-xl-1 text-dark my-4 fs-md'
+                            className='col-4 offset-2 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowGatherIntel)}>
-                            Gather Intel
+                            Intel
                         </Button>
                         <Button
-                            aria-label='Open colonial office purchase officer summaries section'
+                            aria-label='Open bungalow purchase officers section'
                             variant='link'
                             size="lg"
-                            className='col-xl-6 col-4 offset-1 text-dark my-4 fs-md text-xl-left mr-xl-0 ml-xl-4 pr-xl-0'
+                            className='col-4 offset-1 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowOfficerSummaries)}>
-                            Officer Summaries
+                            Officers
                         </Button>
                         <Button
-                            aria-label='Open colonial office purchase fleet manifest section'
+                            aria-label='Open bungalow purchase fleet section'
                             variant='link'
                             size="lg"
-                            className='col-4 col-xl-5 offset-2 offset-xl-1 text-dark my-4 fs-md mx-xl-0'
+                            className='col-4 offset-2 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowShipManifest)}>
-                            Fleet Manifest
+                            Fleet
                         </Button>
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
-                    <Row>
+                    <Row className="manifest">
                         <Col
                             aria-label='Bungalow buy suplies section description'
                             className='fs-sm text-left'>

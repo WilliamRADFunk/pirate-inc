@@ -80,7 +80,7 @@ export class Crew {
         this._crew.next(remainingCrew);
     }
 
-    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive?: boolean): string {
+    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean): string {
         return createAvatar(
             style,
             {
@@ -188,15 +188,17 @@ export class Crew {
             return !firedCrew.find(fCrew => fCrew.id === c.id);
         });
         remainingCrew.forEach(c => {
-            const random = Math.random();
-            // 50% morale will lower per crew member.
-            if (random < 0.5 && c.morale > 0) {
-                c.morale -= 1;
-                c.mood = this._translateMood(c.morale);
-                c.avatar = this._getAvatar(c.features, c.mood);
-                // 20% each crew member's main gripe will be the loss of crewmates.
-                if (random < 0.1) {
-                    c.concern = ConcernTypes.CrewmatesFired;
+            if (c.isAlive) {
+                const random = Math.random();
+                // 50% morale will lower per crew member.
+                if (random < 0.5 && c.morale > 0) {
+                    c.morale -= 1;
+                    c.mood = this._translateMood(c.morale);
+                    c.avatar = this._getAvatar(c.features, c.mood, c.isAlive);
+                    // 20% each crew member's main gripe will be the loss of crewmates.
+                    if (random < 0.1) {
+                        c.concern = ConcernTypes.CrewmatesFired;
+                    }
                 }
             }
         });
@@ -205,8 +207,10 @@ export class Crew {
         remainingCrew.slice()
             .sort((a, b) => a.payOrder - b.payOrder)
             .forEach(c => {
-                c.payOrder = payCounter;
-                payCounter++;
+                if (c.isAlive) {
+                    c.payOrder = payCounter;
+                    payCounter++;
+                }
             });
         this._crew.next(remainingCrew);
     }
@@ -293,7 +297,7 @@ export class Crew {
                         c.morale -= 1;
                         c.concern = ConcernTypes.NotPaid;
                         c.mood = this._translateMood(c.morale);
-                        c.avatar = this._getAvatar(c.features, c.mood);
+                        c.avatar = this._getAvatar(c.features, c.mood, c.isAlive);
                     }
                 });
             this._crew.next(crew);
@@ -302,6 +306,32 @@ export class Crew {
         // Determine if and how many crew will leave, starting with those having the lowest morale.
         this._calculateDesertion();
         return balance;
+    }
+
+    /**
+     * Pays the death benefits for all crew passed in up to available balance.
+     * @param cMembers the dead crew members the player wishes to pay the death benefits for.
+     * @param balance the amount of money player currently has.
+     * @returns the balance after paying crew death benefits.
+     */
+    public payDeathBenefits(cMembers: CrewMember[], balance: number): number {
+        const crew = this._crew.value;
+        const deadUnpaidCrew = crew.slice()
+            .filter(c => !c.isAlive && !c.hasPaidDeathBenefit)
+            .filter(c => cMembers.find(dCrew => dCrew.id === c.id));
+
+        let remainingBalance = balance;
+        // Pay those that the balance will allow.
+        deadUnpaidCrew.forEach(c => {
+                if (remainingBalance >= c.deathBenefit) {
+                    remainingBalance -= c.deathBenefit;
+                    c.hasPaidDeathBenefit = true;
+                    c.turnsSinceDeath = 0;
+                }
+            });
+
+        this._crew.next(crew);
+        return remainingBalance;
     }
 
     /**
