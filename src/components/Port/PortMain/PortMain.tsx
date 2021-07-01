@@ -45,7 +45,7 @@ export class PortMain extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <Col xs="12" xl={{ span: 10, offset: 1 }} className="boundaries">
-                <Row>
+                <Row className='no-gutters'>
                     { portSceneState > PortSceneState.TavernOptions ? null :
                         <>
                             <Col xs="12" xl="5" className="rope-border-square small-square">

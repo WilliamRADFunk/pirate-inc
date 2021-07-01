@@ -172,25 +172,25 @@ export class HUD extends React.Component<Props, State> {
 
         return (gameState !== GameState.Active ? null :
             <Col xs='12' lg={{ span: 10, offset: 1}} className='hud-bg text-left'>
-                <Row>
+                <Row className='no-gutters'>
                     <Col xs='12' lg='6'>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Action Points:</Col>
                             <Col xs='6' className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Treasury:</Col>
                             <Col xs='6' className={styles.itemValue}>{balance}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Crew:</Col>
                             <Col xs='6' className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
                             <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Provisions:</Col>
                             <Col xs='6' className={styles.itemValue}>
                                 <span className='text-red mr-3'>
@@ -204,43 +204,43 @@ export class HUD extends React.Component<Props, State> {
                                 </span>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Ships:</Col>
                             <Col xs='6' className={styles.itemValue}>{shipCount}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Fleet Health:</Col>
                             <Col xs='6' className={styles.itemValue}>{fleetHealth}%</Col>
                         </Row>
                     </Col>
                     {/* Right side of HUD */}
                     <Col xs='12' lg='6'>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Crew Morale:</Col>
                             <Col xs='6' className={styles.itemValue}>{crewMorale.toFixed(0)}%</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Officer Morale:</Col>
                             <Col xs='6' className={styles.itemValue}>NaN%</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Officer Salaries:</Col>
                             <Col xs='6' className={styles.itemValue}>{officerSalaries}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Infamy:</Col>
                             <Col xs='6' className={styles.itemValue}>{infamy}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Crown Favor:</Col>
                             <Col xs='6' className={styles.itemValue}>{crownFavor}</Col>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Col xs='6' className={styles.itemLabel}>Bounty:</Col>
                             <Col xs='6' className={styles.itemValue}>{playerBounty}</Col>
                         </Row>
                         { sceneState !== SceneState.Port ? null :
-                            <Row>
+                            <Row className='no-gutters'>
                                 <Col xs='6' className={styles.itemLabel}>Port Reputation:</Col>
                                 <Col xs='6' className={styles.itemValue}>{portReputation}</Col>
                             </Row>

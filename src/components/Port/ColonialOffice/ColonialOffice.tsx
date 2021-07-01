@@ -50,7 +50,7 @@ export class ColonialOffice extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2'>
+                <Row className='mb-2 no-gutters'>
                     <Col xs={{ span: 7, offset: 2 }}
                         aria-label='Colonial Office section'
                         className='text-center clickable double-line-headers'
@@ -78,7 +78,7 @@ export class ColonialOffice extends React.Component<Props, State> {
                         onClick={() => this.toggleMode()}/>
                 }
                 { portSceneState !== PortSceneState.ColonialOfficeOptions ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Button
                             aria-label='Open colonial office bribe officials section'
                             variant='link'
@@ -103,7 +103,7 @@ export class ColonialOffice extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ColonialOfficeBribe ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Colonial Office bribe officials section description'
                             className='fs-sm text-left'>
@@ -112,7 +112,7 @@ export class ColonialOffice extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ColonialOfficeRoyalPardon ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Colonial Office purchase royal pardon section description'
                             className='fs-sm text-left'>
@@ -121,7 +121,7 @@ export class ColonialOffice extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ColonialOfficeWritOfProtection ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Colonial Office writ of protection section description'
                             className='fs-sm text-left'>

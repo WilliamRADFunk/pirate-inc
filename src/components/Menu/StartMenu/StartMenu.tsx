@@ -64,28 +64,28 @@ export class StartMenu extends React.Component<Props, State> {
             <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
                 { menuState !== MenuState.MainMenu ? null :
                     <>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.startGame()}>Start Game
                             </Button>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.changeMenuState(MenuState.LoadGame)}>Load Game
                             </Button>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
                                 onClick={() => this.changeMenuState(MenuState.Difficulty)}>Change Difficulty
                             </Button>
                         </Row>
-                        <Row>
+                        <Row className='no-gutters'>
                             <Button
                                 variant="primary"
                                 className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"

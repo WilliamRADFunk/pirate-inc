@@ -125,7 +125,7 @@ export class CrewManifest extends React.Component<Props, State> {
     public render() {
         const { crew } = this.state;
         return (
-            <Row className='mb-2'>
+            <Row className='mb-2 no-gutters'>
                 <Col xs='12'
                     aria-label='Crew Manifest section'
                     className='text-center'>
@@ -146,10 +146,10 @@ export class CrewManifest extends React.Component<Props, State> {
                                     }
                                 </th>
                                 <th className="mr-3">
-                                    <Row>
+                                    <Row className='no-gutters'>
                                         <Col xs='12'>Skills</Col>
                                     </Row>
-                                    <Row>
+                                    <Row className='no-gutters'>
                                         <Col xs='2' className='clickable' aria-label='cannoneering'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
                                                 <GiCannon />
@@ -181,7 +181,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                             </span>
                                         </Col>
                                     </Row>
-                                    <Row>
+                                    <Row className='no-gutters'>
                                         <Col xs='2' className='clickable' aria-label='cannoneering average'>
                                             <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
                                                 { getSkillAvg(crew, 'cannoneering') }
@@ -266,7 +266,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                             { `${c.nameFirst}${ c.nameNick ? ` '${c.nameNick}' ` : ' '}${c.nameLast}` }
                                         </td>
                                         <td>
-                                            <Row>
+                                            <Row className='no-gutters'>
                                                 <Col xs='2'> { (c.skills.cannoneering * 100).toFixed(0) }</Col>
                                                 <Col xs='2'> { (c.skills.cleanliness * 100).toFixed(0) }</Col>
                                                 <Col xs='2'> { (c.skills.greed * 100).toFixed(0) }</Col>

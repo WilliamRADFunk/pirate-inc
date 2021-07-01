@@ -55,7 +55,7 @@ export class StartMenuLoad extends React.Component<Props, State> {
 
         return (
             <>
-                <Row>
+                <Row className='no-gutters'>
                     <Button
                         variant="primary"
                         className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
@@ -63,7 +63,7 @@ export class StartMenuLoad extends React.Component<Props, State> {
                         Back to Menu
                     </Button>
                 </Row>
-                <Row>
+                <Row className='no-gutters'>
                     <Col xs="12" lg={{ span: 6, offset: 3 }}>
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
@@ -83,7 +83,7 @@ export class StartMenuLoad extends React.Component<Props, State> {
                         </InputGroup>
                     </Col>
                 </Row>
-                <Row>
+                <Row className='no-gutters'>
                     <Button
                         variant="primary"
                         className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validLoadCode ? "" : " disabled"}`}

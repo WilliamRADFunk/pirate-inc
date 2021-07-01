@@ -44,7 +44,7 @@ export class StartMenuInstructions extends React.Component<Props, State> {
 
         return (
             <>
-                <Row>
+                <Row className='no-gutters'>
                     <Button
                         variant="primary"
                         className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
@@ -52,7 +52,7 @@ export class StartMenuInstructions extends React.Component<Props, State> {
                         Back to Menu
                     </Button>
                 </Row>
-                <Row>
+                <Row className='no-gutters'>
                     <DropdownButton
                         className={styles["instruction-dropdown-toggle"] + " col-6 offset-3 my-4 bg-info px-0"}
                         as={ButtonGroup}

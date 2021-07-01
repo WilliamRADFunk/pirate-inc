@@ -1,5 +1,6 @@
-import { BehaviorSubject, Observable } from "rxjs";
-import { take } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
+import { map, take } from "rxjs/operators";
+import { HireableCrew } from "../Objects/Crew/HireableCrew";
 
 import { Port, PortLocation } from "../Types/Port";
 import { playerManager } from "./PlayerManager";
@@ -9,18 +10,43 @@ class PortManager {
     /**
      * The port where the player is currently docked. Will be null when they leave a port.
      */
-    private currentPort: BehaviorSubject<Port | null> = new BehaviorSubject<Port | null>(null);
+    private currentPort: BehaviorSubject<Port>;
 
     /**
      * List of all the port object player can visit and interact with.
      */
     private ports: Port[] = [];
 
+    private subscriptions: Subscription[] = [];
+
     constructor() {
         // Creates all the ports.
         this.ports.push(
             // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                colonialOptions: {
+                    1: false, // Bribe
+                    2: false, // Writ of Protection
+                    3: false, // Royal Pardon
+                },
+                connectedPorts: [],
+                costScaleSize: 0,
+                hasArrestBeenAttempted: false,
+                isPiratePort: false,
+                name: PortLocation.AtSea,
+                reputation: 0,
+                shipyardOptions: {
+                    1: false, // Buy
+                    2: false, // Sell
+                    3: false, // Repair
+                    4: false // Outfit
+                },
+                willArrest: false
+            },
+            // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
+            {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: true, // Bribe
                     2: true, // Writ of Protection
@@ -42,6 +68,7 @@ class PortManager {
             },
             // A crown port with no love for pirates which is often attacked by pirates.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -63,6 +90,7 @@ class PortManager {
             },
             // While technically under the crown, it is the capital of the pirate republic under Benjamin Hornigold.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -84,6 +112,7 @@ class PortManager {
             },
             // A known pirate port with no love for the crown.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: true,
                     2: false,
@@ -105,6 +134,7 @@ class PortManager {
             },
             // THE Crown port. Pirates will find no love here, but it's also where the real money can be found.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -126,6 +156,7 @@ class PortManager {
             },
             // A pirate stronghold with its very own castle.
             {
+                availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -146,12 +177,19 @@ class PortManager {
                 willArrest: false
             }
         );
+        this.currentPort = new BehaviorSubject<Port>(this.ports[3]);
+        
+        this.subscriptions.push(
+            this.currentPort.subscribe(port => {
+                this._setupPortContent(port);
+            })
+        );
     }
 
     /**
      * Establishes whether arrest is imminent this turn or not.
      */
-    private rollForArrest(): void {
+    private _rollForArrest(): void {
         const port = this.currentPort.value;
         if (!port) {
             return;
@@ -172,6 +210,19 @@ class PortManager {
             // If the random roll is below player's cunning stat, they avoid imminent arrest.
             port.willArrest = Math.floor(Math.random() * 10) < cunningStat ? false : true;
         }
+    }
+
+    private _setupPortContent(port: Port): void {
+        
+        // TODO: Establish how much shipyard can spend on buying player ships.
+        // TODO: Establish how much money port is willing to spend on buying looted cargo.
+        // TODO: Establish local prices for buying each type of local cargo.
+        // TODO: Establish which special items player can buy.
+        // TODO: Establish the available crew for hire.
+        // TODO: Establish available officers for hire.
+        // TODO: Establish the ships available for purchase.
+        // TODO: Establish how many armor upgrades are available.
+        // TODO: Establish how many cannon of each type are available for purchase.
     }
 
     /**
@@ -196,7 +247,7 @@ class PortManager {
         }
         port.hasArrestBeenAttempted = false;
         port.willArrest = false;
-        this.currentPort.next(null);
+        this.currentPort.next(this.ports[0]);
         stateManager.changePortSceneState(PortSceneState.Menu, true);
     }
 
@@ -205,7 +256,8 @@ class PortManager {
      * @param portName name of the port where the player is docked.
      */
     public enterPort(portName: PortLocation): void {
-        const port = this.ports.find(p => p.name === portName) ?? null;
+        const port = this.ports.find(p => p.name === portName) ?? this.ports[0];
+        this._setupPortContent(port);
         this.currentPort.next(port);
     }
 
@@ -213,7 +265,7 @@ class PortManager {
      * Gets the port player is currently docked at or null if not at a port.
      * @returns the observable for current port to subscribe to while null means not at a port.
      */
-    public getCurrentPort(): Observable<Port | null> {
+    public getCurrentPort(): Observable<Port> {
         return this.currentPort.asObservable();
     }
 
@@ -239,7 +291,7 @@ class PortManager {
         }
         
         // Check arrest potential.
-        !hasWritOrBribe ? this.rollForArrest() : null;
+        !hasWritOrBribe ? this._rollForArrest() : null;
     }
 }
 

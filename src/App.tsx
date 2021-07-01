@@ -59,30 +59,30 @@ class App extends React.Component<Props, State> {
   public render(): any {
     const { gameState, sceneState } = this.state;
     return (
-      <div className="App text-center port-bg-01">
-        <Row>
+      <div className="App text-center port-bg-01 h-100 full-view-height">
+        <Row className='no-gutters'>
           <Title></Title>
         </Row>
         { gameState !== GameState.Start ? null :
-          <Row>
+          <Row className='no-gutters'>
             <StartMenu></StartMenu>
           </Row>
         }
         { gameState !== GameState.Intro ? null :
-          <Row>
+          <Row className='no-gutters'>
             <Intro></Intro>
           </Row>
         }
         { gameState !== GameState.Active ? null :
           <>
-            <Row>
+            <Row className='no-gutters'>
               <LocationHeader></LocationHeader>
             </Row>
-            <Row>
+            <Row className='no-gutters'>
               <HUD></HUD>
             </Row>
             { sceneState !== SceneState.Port ? null :
-              <Row>
+              <Row className='no-gutters'>
                 <PortMain></PortMain>
               </Row>
             }

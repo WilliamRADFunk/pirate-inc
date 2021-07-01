@@ -45,7 +45,7 @@ export class Intro extends React.Component<Props, State> {
         switch(this.state.difficulty) {
             case 2: {
                 return (
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col xs="12" lg={{ span: 10, offset: 1 }} className="text-left">
                             <p>
                                 It's the early 1700's and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of Glasgow about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
@@ -71,7 +71,7 @@ export class Intro extends React.Component<Props, State> {
             }
             case 3: {
                 return (
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             The Hard difficulty story
                         </Col>
@@ -80,7 +80,7 @@ export class Intro extends React.Component<Props, State> {
             }
             case 4: {
                 return (
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             <p>
                                 That disastrous day had arrived when your fleet met a force greater than it's own. You and the handful of men on the small row boat with you watch as the last of your ships sink beneath the waves. The storm took everything you'd built in but an hour.
@@ -100,7 +100,7 @@ export class Intro extends React.Component<Props, State> {
             }
             default: {
                 return (
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left">
                             <p>
                                 Passed up for promotion again, you’ve rallied the crew of a large English merchant vessel to turn on its captain and his worthless officers.
@@ -155,13 +155,13 @@ export class Intro extends React.Component<Props, State> {
 
         return (
             <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
-                <Row>
+                <Row className='no-gutters'>
                     <Col xs="12" lg={{ span: 8, offset: 2 }} className="mb-4">
                         <h2 className="font-italic">How your story begins...</h2>
                     </Col>
                 </Row>
                 {this.getIntro()}
-                <Row>
+                <Row className='no-gutters'>
                     <Col xs="12" lg={{ span: 6, offset: 3 }} className="my-4">
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
@@ -179,7 +179,7 @@ export class Intro extends React.Component<Props, State> {
                         </InputGroup>
                     </Col>
                 </Row>
-                <Row>
+                <Row className='no-gutters'>
                     <Button
                         variant="primary"
                         className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? "" : " disabled"}`}

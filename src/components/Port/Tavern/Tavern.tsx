@@ -50,7 +50,7 @@ export class Tavern extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2'>
+                <Row className='mb-2 no-gutters'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Tavern section'
                         className='text-center clickable double-line-headers'
@@ -78,7 +78,7 @@ export class Tavern extends React.Component<Props, State> {
                         onClick={() => this.toggleMode()}/>
                 }
                 { portSceneState !== PortSceneState.TavernOptions ? null : <>
-                    <Row>
+                    <Row className='no-gutters'>
                         <Button
                             aria-label='Open tavern buy supplies section'
                             variant='link'
@@ -87,7 +87,7 @@ export class Tavern extends React.Component<Props, State> {
                             Buy Supplies
                         </Button>
                     </Row>
-                    <Row>
+                    <Row className='no-gutters'>
                         <Button
                             aria-label='Open tavern hire crew section'
                             variant='link'
@@ -105,7 +105,7 @@ export class Tavern extends React.Component<Props, State> {
                     </Row>
                 </>}
                 { portSceneState !== PortSceneState.TavernBuySupplies ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Tavern buy suplies section description'
                             className='fs-sm text-left'>
@@ -114,7 +114,7 @@ export class Tavern extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.TavernHireCrew ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Tavern hire crew section description'
                             className='fs-sm text-left'>
@@ -123,7 +123,7 @@ export class Tavern extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.TavernHireOfficers ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Tavern hire officers section description'
                             className='fs-sm text-left'>

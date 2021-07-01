@@ -50,7 +50,7 @@ export class Shipyard extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2'>
+                <Row className='mb-2 no-gutters'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Shipyard section'
                         className='text-center clickable double-line-headers'
@@ -78,7 +78,7 @@ export class Shipyard extends React.Component<Props, State> {
                         onClick={() => this.toggleMode()}/>
                 }
                 { portSceneState !== PortSceneState.ShipyardOptions ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Button
                             aria-label='Open shipyard buy ships section'
                             variant='link'
@@ -114,7 +114,7 @@ export class Shipyard extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ShipyardBuy ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Shipyard buy ships section description'
                             className='fs-sm text-left'>
@@ -124,7 +124,7 @@ export class Shipyard extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ShipyardSell ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Shipyard sell ships section description'
                             className='fs-sm text-left'>
@@ -134,7 +134,7 @@ export class Shipyard extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ShipyardRepair ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Shipyard repair ships section description'
                             className='fs-sm text-left'>
@@ -144,7 +144,7 @@ export class Shipyard extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.ShipyardOutfit ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Shipyard outfit ships section description'
                             className='fs-sm text-left'>

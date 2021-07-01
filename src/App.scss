@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.full-view-height {
+  min-height: 100vh;
+}
+
 .hud-bg {
     background-color: transparent;
     background-image: url('Assets/images/hud-background.png');
@@ -39,7 +43,7 @@
 .port-bg-01 {
     background-color: transparent;
     background-image: url('Assets/images/port-background-01.jpg');
-    background-size: 100% 100%;
+    background-size: cover;
     background-position-x: center;
     background-position-y: center;
     background-repeat: no-repeat;

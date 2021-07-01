@@ -51,7 +51,7 @@ export class Bungalow extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2'>
+                <Row className='mb-2 no-gutters'>
                     <Col xs={{ span: 6, offset: 3 }}
                         aria-label='Bungalow section'
                         className='text-center clickable double-line-headers'
@@ -79,7 +79,7 @@ export class Bungalow extends React.Component<Props, State> {
                         onClick={() => this.toggleMode()}/>
                 }
                 { portSceneState !== PortSceneState.BungalowOptions ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Button
                             aria-label='Open bungalow crew manifest section'
                             variant='link'
@@ -115,7 +115,7 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
-                    <Row className="manifest">
+                    <Row className="manifest no-gutters">
                         <Col
                             aria-label='Bungalow buy suplies section description'
                             className='fs-sm text-left'>
@@ -124,7 +124,7 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowGatherIntel ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Bungalow hire crew section description'
                             className='fs-sm text-left'>
@@ -133,7 +133,7 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Bungalow fire officers section description'
                             className='fs-sm text-left'>
@@ -142,7 +142,7 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowShipManifest ? null :
-                    <Row>
+                    <Row className='no-gutters'>
                         <Col
                             aria-label='Bungalow hire officers section description'
                             className='fs-sm text-left'>
