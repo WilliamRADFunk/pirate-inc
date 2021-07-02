@@ -39,7 +39,7 @@ export class HireableCrew extends Crew {
             } as CrewMember;
             newMember.mood = translateMood(newMember.morale);
             newMember.features = getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
-            newMember.avatar = getAvatar(newMember.features, newMember.mood, newMember.isAlive);
+            newMember.avatar = getAvatar(newMember.features, newMember.mood, newMember.isAlive, true);
             recruits.push(newMember);
         }
         super.addCrew(recruits, false);

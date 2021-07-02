@@ -1,16 +1,18 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HireableCrew } from '../../../Objects/Crew/HireableCrew';
 import { portManager } from '../../../Services/PortManager';
 
+import styles from './HireCrew.module.scss';
 import { CrewMember } from '../../../Types/CrewMember';
 import { Port } from '../../../Types/Port';
 
 interface Props {}
 
 interface State {
+    currentIndex: number;
     currentPort: Port | null;
     hireableCrew: HireableCrew;
     recruits: CrewMember[];
@@ -23,6 +25,7 @@ export class HireCrew extends React.Component<Props, State> {
         super(props);
 
         this.state = {
+            currentIndex: 0,
             hireableCrew: new HireableCrew(),
             currentPort: null,
             recruits: []
@@ -39,10 +42,10 @@ export class HireCrew extends React.Component<Props, State> {
         this.subscriptions[0] = portManager.getCurrentPort()
             .pipe(filter(port => !!port))
             .subscribe(port => {
-                this.subscriptions[1].unsubscribe();
+                this.subscriptions[1]?.unsubscribe();
                 this.setState({ currentPort: port });
                 this.subscriptions[1] = port.availableCrewToHire.subscribe(hireableCrew => {
-                    this.subscriptions[2].unsubscribe();
+                    this.subscriptions[2]?.unsubscribe();
                     this.setState({ hireableCrew: hireableCrew });
                     this.subscriptions[2] = hireableCrew.getCrew().subscribe(recruits => {
                         this.setState({ recruits });
@@ -61,11 +64,17 @@ export class HireCrew extends React.Component<Props, State> {
         const { recruits } = this.state;
         return (
             <Row className='mb-2 no-gutters'>
-                <Col xs='12' aria-label='Crew Manifest section' className='text-center'>
+                <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
                     Hire Crew
                     <br/><br/>
                     Select specific crew members to hire, or let the quartemaster pick automatically given a number.
                     <br/><br/>
+                    { !recruits?.length ? null :
+                        <div
+                            className={ styles['avatar-sizing'] }
+                            dangerouslySetInnerHTML={{__html: recruits[0].avatar}}></div>
+                    }
+                    <img src='images/tavern-table.svg' alt='tavern table'></img>
                 </Col>
             </Row>
         );

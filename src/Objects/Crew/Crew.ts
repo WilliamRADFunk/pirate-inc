@@ -23,11 +23,11 @@ import { GUID } from '../../Helpers/GUID';
 
 const random = require('random-name-redux');
 
-export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean): string {
+export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean, isForHire?: boolean): string {
     return createAvatar(
         style,
         {
-            backgroundColor: isAlive ? '#555' : '#900',
+            backgroundColor: isForHire ? 'transparent' : (isAlive ? '#555' : '#900'),
             seed: features.seed,
             earringColor: [features.earringColor],
             eyes: [MoodToEyes[MouthToMood[mood]]],
