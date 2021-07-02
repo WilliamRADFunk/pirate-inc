@@ -9,6 +9,7 @@ import { CrewMember } from '../Types/CrewMember';
 import { Fleet } from '../Objects/Ships/Fleet';
 import { Barque } from '../Objects/Ships/Barque';
 import { ShipNameGenerator } from '../Helpers/ShipNameGenerator';
+import { PortLocation } from '../Types/Port';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -351,6 +352,7 @@ class GameManager {
             this._crew.addCrew(new Array(48 / this.difficulty.value), true);
             this._fleet.addShip(new Barque(ShipNameGenerator()));
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
+            portManager.enterPort(PortLocation.Nassau);
             stateManager.changeGameState(GameState.Active);
             return true;
         }

@@ -4,6 +4,7 @@ import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
 import { Subscription } from 'rxjs';
 import { PortSceneState, stateManager } from '../../../Services/StateManager';
+import { HireCrew } from '../HireCrew/HireCrew';
 
 interface Props {}
 
@@ -107,7 +108,7 @@ export class Tavern extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.TavernBuySupplies ? null :
                     <Row className='no-gutters'>
                         <Col
-                            aria-label='Tavern buy suplies section description'
+                            aria-label='Tavern buy supplies section description'
                             className='fs-sm text-left'>
                             Buy some supplies
                         </Col>
@@ -118,7 +119,7 @@ export class Tavern extends React.Component<Props, State> {
                         <Col
                             aria-label='Tavern hire crew section description'
                             className='fs-sm text-left'>
-                            Select specific crew members to hire, or let the quartemaster pick automatically given a number.
+                            <HireCrew></HireCrew>
                         </Col>
                     </Row>
                 }

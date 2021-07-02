@@ -4,12 +4,91 @@ import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
 import { Hair } from '@dicebear/micah/lib/options';
 
-import { ConcernTypes, CrewMember, CrewMemberFeatures, getFeatures, MoodToEyebrows, MoodToEyes, MoodToMouth, MouthToMood } from '../../Types/CrewMember';
+import {
+    ConcernTypes,
+    CrewMember,
+    CrewMemberFeatures,
+    EarringColor,
+    EyeColors,
+    HairColors,
+    HairStyles,
+    MoodToEyebrows,
+    MoodToEyes,
+    MoodToMouth,
+    MouthToMood
+} from '../../Types/CrewMember';
 import { BasePirateWage } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 import { GUID } from '../../Helpers/GUID';
 
 const random = require('random-name-redux');
+
+export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean): string {
+    return createAvatar(
+        style,
+        {
+            backgroundColor: isAlive ? '#555' : '#900',
+            seed: features.seed,
+            earringColor: [features.earringColor],
+            eyes: [MoodToEyes[MouthToMood[mood]]],
+            eyebrows: [MoodToEyebrows[MouthToMood[mood]]],
+            eyebrowColor: [features.facialHairColor],
+            facialHairColor: [features.facialHairColor],
+            facialHairProbability: features.facialHairProbability ? 100 : 0,
+            glassesProbability: 0,
+            hair: [features.hair] as Hair,
+            hairColor: [features.hairColor],
+            mouth: [mood]
+        });
+}
+
+export function getAvatarFeatures(first: string, nick: string, last: string): CrewMemberFeatures {
+    const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures() as CrewMemberFeatures;
+    const seed =  `${first}-${nick}-${last}`;
+    return {
+        earringColor,
+        eyeColor,
+        facialHairColor,
+        facialHairProbability,
+        hair,
+        hairColor,
+        seed
+    };
+}
+
+/**
+ * Picks a hair color, style, etc. from the list at random and applies it to both head and facial hair to keep them consistent.
+ * @returns The partial style settings for the avatar generator to use for hair.
+ */
+ export function getFeatures(): Partial<CrewMemberFeatures> {
+    // To keep head and facial hair consistent color.
+    const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
+    const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
+    const earringColorIndex = Math.floor(Math.random() * (EarringColor.length - 0.001));
+    const eyeColorIndex = Math.floor(Math.random() * (EyeColors.length - 0.001));
+    return {
+        earringColor: EarringColor[earringColorIndex],
+        eyeColor: EyeColors[eyeColorIndex],
+        facialHairColor: HairColors[hairColorIndex],
+        facialHairProbability: Math.random() < 0.65,
+        hair: HairStyles[hairStyleIndex],
+        hairColor: HairColors[hairColorIndex]
+    };
+};
+
+export function translateMood(morale: number): MoodToMouth {
+    if (morale < 20) {
+        return MoodToMouth.Angry;
+    } else if (morale < 40) {
+        return MoodToMouth.Disgruntled;
+    } else if (morale < 60) {
+        return MoodToMouth.Uncertain;
+    } else if (morale < 80) {
+        return MoodToMouth.Pleased;
+    } else {
+        return MoodToMouth.Happy;
+    }
+}
 
 export class Crew {
     /**
@@ -80,53 +159,6 @@ export class Crew {
         this._crew.next(remainingCrew);
     }
 
-    private _getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean): string {
-        return createAvatar(
-            style,
-            {
-                backgroundColor: isAlive ? '#555' : '#900',
-                seed: features.seed,
-                earringColor: [features.earringColor],
-                eyes: [MoodToEyes[MouthToMood[mood]]],
-                eyebrows: [MoodToEyebrows[MouthToMood[mood]]],
-                eyebrowColor: [features.facialHairColor],
-                facialHairColor: [features.facialHairColor],
-                facialHairProbability: features.facialHairProbability ? 100 : 0,
-                glassesProbability: 0,
-                hair: [features.hair] as Hair,
-                hairColor: [features.hairColor],
-                mouth: [mood]
-            });
-    }
-
-    private _getAvatarFeatures(first: string, nick: string, last: string): CrewMemberFeatures {
-        const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures();
-        const seed =  `${first}-${nick}-${last}`;
-        return {
-            earringColor,
-            eyeColor,
-            facialHairColor,
-            facialHairProbability,
-            hair,
-            hairColor,
-            seed
-        };
-    }
-
-    private _translateMood(morale: number): MoodToMouth {
-        if (morale < 20) {
-            return MoodToMouth.Angry;
-        } else if (morale < 40) {
-            return MoodToMouth.Disgruntled;
-        } else if (morale < 60) {
-            return MoodToMouth.Uncertain;
-        } else if (morale < 80) {
-            return MoodToMouth.Pleased;
-        } else {
-            return MoodToMouth.Happy;
-        }
-    }
-
     /**
      * Updates base wage for the total crew, caused primarily when the amount of crew has changed.
      */
@@ -140,8 +172,8 @@ export class Crew {
      * @param isRandom if true, make up the crew at random.
      */
     public addCrew(newCrew: CrewMember[], isRandom?: boolean): void {
+        const theCrew = this._crew.value.slice();
         if (isRandom) {
-            const theCrew = this._crew.value.slice();
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
             for (let i = 0; i < newCrew.length; i++) {
                 // TODO: Remove dead crew member when no longer testing.
@@ -170,12 +202,15 @@ export class Crew {
                     },
                     turnsSinceDeath: alive ? 0 : Math.floor(Math.random() * 10)
                 } as CrewMember;
-                newMember.mood = this._translateMood(newMember.morale);
-                newMember.features = this._getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
-                newMember.avatar = this._getAvatar(newMember.features, newMember.mood, newMember.isAlive);
+                newMember.mood = translateMood(newMember.morale);
+                newMember.features = getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
+                newMember.avatar = getAvatar(newMember.features, newMember.mood, newMember.isAlive);
                 theCrew.push(newMember);
             }
             this._crew.next(theCrew.reverse());
+        } else {
+            theCrew.push(...newCrew);
+            this._crew.next(theCrew);
         }
     }
 
@@ -193,8 +228,8 @@ export class Crew {
                 // 50% morale will lower per crew member.
                 if (random < 0.5 && c.morale > 0) {
                     c.morale -= 1;
-                    c.mood = this._translateMood(c.morale);
-                    c.avatar = this._getAvatar(c.features, c.mood, c.isAlive);
+                    c.mood = translateMood(c.morale);
+                    c.avatar = getAvatar(c.features, c.mood, c.isAlive);
                     // 20% each crew member's main gripe will be the loss of crewmates.
                     if (random < 0.1) {
                         c.concern = ConcernTypes.CrewmatesFired;
@@ -229,6 +264,14 @@ export class Crew {
      */
     public getCrewMorale(): number {
         return this.crewMorale.value;
+    }
+
+    /**
+     * Gets the value of crew wage.
+     * @returns value of crew wage.
+     */
+    public getCrewWage(): number {
+        return this.crewWage.value;
     }
 
     /**
@@ -296,8 +339,8 @@ export class Crew {
                     } else if (c.morale > 0) {
                         c.morale -= 1;
                         c.concern = ConcernTypes.NotPaid;
-                        c.mood = this._translateMood(c.morale);
-                        c.avatar = this._getAvatar(c.features, c.mood, c.isAlive);
+                        c.mood = translateMood(c.morale);
+                        c.avatar = getAvatar(c.features, c.mood, c.isAlive);
                     }
                 });
             this._crew.next(crew);

@@ -77,26 +77,6 @@ export const EyeColors = ['apricot', 'coast', 'topaz', 'lavender', 'sky', 'salmo
 export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
 
 /**
- * Picks a hair color, style, etc. from the list at random and applies it to both head and facial hair to keep them consistent.
- * @returns The partial style settings for the avatar generator to use for hair.
- */
-export const getFeatures = () => {
-    // To keep head and facial hair consistent color.
-    const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
-    const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
-    const earringColorIndex = Math.floor(Math.random() * (EarringColor.length - 0.001));
-    const eyeColorIndex = Math.floor(Math.random() * (EyeColors.length - 0.001));
-    return {
-        earringColor: EarringColor[earringColorIndex],
-        eyeColor: EyeColors[eyeColorIndex],
-        facialHairColor: HairColors[hairColorIndex],
-        facialHairProbability: Math.random() < 0.65,
-        hair: HairStyles[hairStyleIndex],
-        hairColor: HairColors[hairColorIndex]
-    };
-};
-
-/**
  * All the attributes every member of the crew must have.
  */
 export interface CrewMember {

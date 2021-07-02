@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { map, take } from "rxjs/operators";
+import { take } from "rxjs/operators";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
 
 import { Port, PortLocation } from "../Types/Port";
@@ -213,7 +213,7 @@ class PortManager {
     }
 
     private _setupPortContent(port: Port): void {
-        
+        port.availableCrewToHire.next(new HireableCrew(Math.floor(Math.random() * 90 + 10)));
         // TODO: Establish how much shipyard can spend on buying player ships.
         // TODO: Establish how much money port is willing to spend on buying looted cargo.
         // TODO: Establish local prices for buying each type of local cargo.
@@ -257,7 +257,6 @@ class PortManager {
      */
     public enterPort(portName: PortLocation): void {
         const port = this.ports.find(p => p.name === portName) ?? this.ports[0];
-        this._setupPortContent(port);
         this.currentPort.next(port);
     }
 
