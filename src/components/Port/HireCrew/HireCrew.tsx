@@ -65,16 +65,22 @@ export class HireCrew extends React.Component<Props, State> {
         return (
             <Row className='mb-2 no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
-                    Hire Crew
                     <br/><br/>
-                    Select specific crew members to hire, or let the quartemaster pick automatically given a number.
+                    Hire Crew
                     <br/><br/>
                     { !recruits?.length ? null :
                         <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: recruits[0].avatar}}></div>
                     }
-                    <img src='images/tavern-table.svg' alt='tavern table'></img>
+                    <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
+                        <div style={{ marginLeft: '5%', minHeight: '50px', position: 'absolute', top: 0, width: '90%', zIndex: 10 }}>
+                            <img src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
+                        </div>
+                        <div style={{ marginLeft: '5%', minHeight: '50px', position: 'absolute', top: '-38px', width: '90%', zIndex: 20 }}>
+                            <img src='images/rope-border-square.png' alt='recruit stat parchment' style={{ transform: 'rotateX(30deg)', width: '25%' }}/>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         );

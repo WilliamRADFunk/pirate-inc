@@ -63,7 +63,7 @@ export class PortMain extends React.Component<Props, State> {
                         </>
                     }
                     { (portSceneState < PortSceneState.BungalowCrewManifest || PortSceneState.BungalowShipManifest < portSceneState) ? null :
-                        <Col xs="12" className="boundaries">
+                        <Col xs="12">
                             <Bungalow></Bungalow>
                         </Col>
                     }

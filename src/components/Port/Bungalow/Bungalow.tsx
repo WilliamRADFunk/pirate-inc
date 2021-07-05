@@ -49,25 +49,28 @@ export class Bungalow extends React.Component<Props, State> {
 
     public render() {
         const { portSceneState } = this.state;
+        console.log('portSceneState', portSceneState);
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2 no-gutters'>
-                    <Col xs={{ span: 6, offset: 3 }}
-                        aria-label='Bungalow section'
-                        className='text-center clickable double-line-headers'
-                        onClick={() => this.toggleMode()}>
-                        <span>Bungalow</span>
-                    </Col>
-                    <Button
-                        variant='link'
-                        className='border-0 col-2 text-dark'
-                        onClick={() => this.toggleMode()}>
-                        { portSceneState !== PortSceneState.BungalowOptions
-                            ? <Eye></Eye>
-                            : <EyeSlash></EyeSlash>
-                        }
-                    </Button>
-                </Row>
+                { (PortSceneState.BungalowCrewManifest >= portSceneState || portSceneState <= PortSceneState.BungalowShipManifest) ? null :
+                    <Row className='no-gutters'>
+                        <Col xs={{ span: 6, offset: 3 }}
+                            aria-label='Bungalow section'
+                            className='text-center clickable double-line-headers'
+                            onClick={() => this.toggleMode()}>
+                            <span>Bungalow</span>
+                        </Col>
+                        <Button
+                            variant='link'
+                            className='border-0 col-2 text-dark'
+                            onClick={() => this.toggleMode()}>
+                            { portSceneState !== PortSceneState.BungalowOptions
+                                ? <Eye></Eye>
+                                : <EyeSlash></EyeSlash>
+                            }
+                        </Button>
+                    </Row>
+                }
                 { (PortSceneState.BungalowCrewManifest <= portSceneState && portSceneState <= PortSceneState.BungalowShipManifest) || portSceneState === PortSceneState.BungalowOptions
                     ? null
                     : <img

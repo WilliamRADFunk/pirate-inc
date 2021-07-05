@@ -51,23 +51,25 @@ export class Tavern extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                <Row className='mb-2 no-gutters'>
-                    <Col xs={{ span: 6, offset: 3 }}
-                        aria-label='Tavern section'
-                        className='text-center clickable double-line-headers'
-                        onClick={() => this.toggleMode()}>
-                        <span>Tavern</span>
-                    </Col>
-                    <Button
-                        variant='link'
-                        className='border-0 col-2 text-dark'
-                        onClick={() => this.toggleMode()}>
-                        { portSceneState !== PortSceneState.TavernOptions
-                            ? <Eye></Eye>
-                            : <EyeSlash></EyeSlash>
-                        }
-                    </Button>
-                </Row>
+                { (PortSceneState.TavernBuySupplies >= portSceneState || portSceneState <= PortSceneState.TavernHireOfficers) ? null :
+                    <Row className='mb-2 no-gutters'>
+                        <Col xs={{ span: 6, offset: 3 }}
+                            aria-label='Tavern section'
+                            className='text-center clickable double-line-headers'
+                            onClick={() => this.toggleMode()}>
+                            <span>Tavern</span>
+                        </Col>
+                        <Button
+                            variant='link'
+                            className='border-0 col-2 text-dark'
+                            onClick={() => this.toggleMode()}>
+                            { portSceneState !== PortSceneState.TavernOptions
+                                ? <Eye></Eye>
+                                : <EyeSlash></EyeSlash>
+                            }
+                        </Button>
+                    </Row>
+                }
                 { (PortSceneState.TavernBuySupplies <= portSceneState && portSceneState <= PortSceneState.TavernHireOfficers) || portSceneState === PortSceneState.TavernOptions
                     ? null
                     : <img
@@ -114,15 +116,27 @@ export class Tavern extends React.Component<Props, State> {
                         </Col>
                     </Row>
                 }
-                { portSceneState !== PortSceneState.TavernHireCrew ? null :
-                    <Row className='no-gutters'>
+                { portSceneState !== PortSceneState.TavernHireCrew ? null : <>
+                    <div style={{ position: 'absolute', top: '2em', left: '-1.35em' }}>
+                        <img src="images/torch.png" style={{ width: '7em', height: '4em' }}></img>
+                    </div>
+                    <div style={{ position: 'absolute', top: '2em', right: '-1.6em' }}>
+                        <img src="images/torch.png" style={{ width: '7em', height: '4em' }}></img>
+                    </div>
+                    <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                        <img src="images/fire-65.gif" style={{ width: '4em', height: '4em' }}></img>
+                    </div>
+                    <div style={{ position: 'absolute', top: 0, right: 0 }}>
+                        <img src="images/fire-65.gif" style={{ width: '4em', height: '4em' }}></img>
+                    </div>
+                    <Row className='no-gutters bg-dark text-light'>
                         <Col
                             aria-label='Tavern hire crew section description'
                             className='fs-sm text-left'>
                             <HireCrew></HireCrew>
                         </Col>
                     </Row>
-                }
+                </>}
                 { portSceneState !== PortSceneState.TavernHireOfficers ? null :
                     <Row className='no-gutters'>
                         <Col

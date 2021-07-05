@@ -124,16 +124,29 @@ export class CrewManifest extends React.Component<Props, State> {
 
     public render() {
         const { crew } = this.state;
-        return (
-            <Row className='mb-2 no-gutters'>
+        return (<>
+            <div className={ styles['scroll-top'] }>
+                <img
+                    src="images/scroll-top.png"
+                    width='100%'
+                    height='auto'
+                    style={{ width: '100%', height: 'auto' }}></img>
+            </div>
+            <div className={ styles['scroll-bottom'] }>
+                <img
+                    src="images/scroll-bottom.png"
+                    width='100%'
+                    height='auto'
+                    style={{ width: '100%', height: 'auto' }}></img>
+            </div>
+            <Row className='mb-2 no-gutters' style={{ position: 'relative', zIndex: 3 }}>
                 <Col xs='12'
                     aria-label='Crew Manifest section'
                     className='text-center'>
+                    <br/><br/>
                     Crew Manifest
                     <br/><br/>
-                    See the full compliment of your crew and their associated stats.
-                    <br/><br/>
-                    <Table variant='dark' striped className={ styles["min-headers"] }>
+                    <Table className={ styles["manifest"] + ' table-striped px-5' }>
                         <thead>
                             <tr>
                                 <th className="mr-3">Avatar</th>
@@ -262,7 +275,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                                 className={ styles['avatar-sizing'] }
                                                 dangerouslySetInnerHTML={{__html: c.avatar}}></span>
                                         </td>
-                                        <td>
+                                        <td className={ styles['middle'] }>
                                             { `${c.nameFirst}${ c.nameNick ? ` '${c.nameNick}' ` : ' '}${c.nameLast}` }
                                         </td>
                                         <td>
@@ -332,7 +345,7 @@ export class CrewManifest extends React.Component<Props, State> {
                     </Table>
                 </Col>
             </Row>
-        );
+        </>);
     }
 
 }

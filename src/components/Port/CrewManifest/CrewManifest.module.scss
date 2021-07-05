@@ -3,9 +3,30 @@
     width: 100px;
 }
 
-.min-headers thead th,
-.min-headers tbody td.no-break {
+.manifest {
+    margin-top: 50px;
+}
+
+.manifest.table thead th,
+.manifest.table tbody td.no-break {
+    background-color: 'transparent';
     white-space: nowrap;
+}
+
+.manifest thead th {
+    border-bottom: 1px solid black;
+    border-top: none;
+}
+
+.manifest tbody td {
+    border-bottom: 1px solid black;
+    border-top: none;
+    vertical-align: middle;
+}
+
+.middle {
+    line-height: 100%;
+    vertical-align: middle;
 }
 
 .pay-order-button {
@@ -27,9 +48,20 @@
 
 .pay-order-text {
     left: 0;
-    position: absolute;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
     z-index: 0;
+}
+
+.scroll-bottom {
+    position: absolute;
+    bottom: -225px;
+    z-index: 2;
+}
+
+.scroll-top {
+    position: absolute;
+    top: -40px;
+    z-index: 2;
 }

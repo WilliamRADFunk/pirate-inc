@@ -5,8 +5,14 @@
   src: local('LobsterFont'), url(Assets/fonts/Lobster-Regular.ttf) format('truetype');
 }
 
+table {
+  border-collapse: unset;
+  border-spacing: 0;
+}
+
 .App {
   color: white;
+  font-family: 'LobsterFont';
   font-size: calc(10px + 2vmin);
 }
 
@@ -34,10 +40,12 @@
 .manifest {
     background-color: transparent;
     background-image: url('Assets/images/manifest.png');
-    background-size: 100% 100%;
+    background-size: contain;
     background-position-x: center;
     background-position-y: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
+    margin-bottom: 225px;
+    margin-top: 40px;
 }
 
 .port-bg-01 {
