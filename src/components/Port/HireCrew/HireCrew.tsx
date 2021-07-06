@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HireableCrew } from '../../../Objects/Crew/HireableCrew';
@@ -8,6 +8,12 @@ import { portManager } from '../../../Services/PortManager';
 import styles from './HireCrew.module.scss';
 import { CrewMember } from '../../../Types/CrewMember';
 import { Port } from '../../../Types/Port';
+import { FaHireAHelper } from 'react-icons/fa';
+import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
+import { IoArrowRedoCircleOutline, IoArrowUndoCircleOutline } from 'react-icons/io5';
+import { RiTeamFill } from 'react-icons/ri';
+import { GUID } from '../../../Helpers/GUID';
+import { gameManager } from '../../../Services/GameManager';
 
 interface Props {}
 
@@ -16,6 +22,14 @@ interface State {
     currentPort: Port | null;
     hireableCrew: HireableCrew;
     recruits: CrewMember[];
+}
+
+function renderTooltip(props: any): JSX.Element {
+    return (
+        <Tooltip id="button-tooltip" {...props}>
+            { props.children }
+        </Tooltip>
+    );
 }
 
 export class HireCrew extends React.Component<Props, State> {
@@ -32,10 +46,24 @@ export class HireCrew extends React.Component<Props, State> {
         };
     }
 
-    private hireCrew(crew: CrewMember[]): CrewMember[] {
+    private _changeIndex(dir: number): void {
+        const newIndex = dir + this.state.currentIndex;
+        if (newIndex >= 0 && newIndex < this.state.recruits.length) {
+            this.setState({ currentIndex: newIndex });
+        }
+    }
+
+    private _hireCrew(crew: CrewMember[]): void {
+        const currIndex = this.state.currentIndex;
+        const recruits = this.state.recruits;
+        if (currIndex >= recruits.length - 1 - crew.length) {
+            this.setState({ currentIndex: currIndex - crew.length});
+        }
         // TODO: Make sure the suggested crew member are actually present.
         // TODO: Remove the listed crew members from the eligibleCrew.
-        return crew.slice();
+        gameManager.addCrew(crew);
+        this.state.hireableCrew?.removeCrew(crew);
+        
     }
 
     public componentDidMount() {
@@ -61,26 +89,146 @@ export class HireCrew extends React.Component<Props, State> {
     }
 
     public render() {
-        const { recruits } = this.state;
+        const { currentIndex, recruits } = this.state;
         return (
             <Row className='mb-2 no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
+                    <h2 className={ styles['hire-crew-header'] }>Hire Recruits</h2>
                     <br/><br/>
-                    Hire Crew
-                    <br/><br/>
-                    { !recruits?.length ? null :
+                    { !recruits?.length ? null : <>
                         <div
                             className={ styles['avatar-sizing'] }
-                            dangerouslySetInnerHTML={{__html: recruits[0].avatar}}></div>
-                    }
-                    <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
-                        <div style={{ marginLeft: '5%', minHeight: '50px', position: 'absolute', top: 0, width: '90%', zIndex: 10 }}>
-                            <img src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
+                            dangerouslySetInnerHTML={{__html: recruits[currentIndex].avatar}}></div>
+                        <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
+                            <div className={ styles['table-bg-wrapper'] + ' no-select' }>
+                                <img src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
+                            </div>
+                            <div className={ styles['stats-bg-wrapper'] }>
+                                <img src='images/rope-border-square.png' alt='recruit stat parchment' className={ styles['stats-bg'] + ' no-select' }/>
+                            </div>
+                            <div className={ styles['beer-mug-wrapper'] + ' no-select' }>
+                                <img src='images/beer-mug.png' alt='mug of beer' className={ styles['beer-mug'] }/>
+                            </div>
+                            <div className={ styles['ink-quill-wrapper'] + ' no-select' }>
+                                <img src='images/tavern-ink-quill.png' alt='ink and quill' className={ styles['ink-quill'] }/>
+                            </div>
+                            <div className={ styles['move-icon-wrapper-prev'] + ' text-info'}>
+                                { currentIndex <= 0 ? null :
+                                    <span
+                                        className={ styles['move-icon-prev']}
+                                        onClick={ () => { this._changeIndex(-1) } }>
+                                        <IoArrowUndoCircleOutline />
+                                    </span>
+                                }
+                            </div>
+                            <div className={ styles['move-icon-wrapper-next'] + ' text-info'}>
+                                { currentIndex >= recruits.length - 1 ? null :
+                                    <span
+                                        className={ styles['move-icon-next']}
+                                        onClick={ () => { this._changeIndex(1) } }>
+                                        <IoArrowRedoCircleOutline />
+                                    </span>
+                                }
+                            </div>
+                            <div className={ styles['hire-icon-wrapper'] + ' text-info'}>
+                                { currentIndex >= recruits.length - 1 ? null :
+                                    <span
+                                        className={ styles['hire-icon']}
+                                        onClick={ () => { this._hireCrew([recruits[currentIndex]]) } }>
+                                        <FaHireAHelper />
+                                    </span>
+                                }
+                            </div>
+                            <div className={ styles['stats-wrapper'] + ' text-dark' }>
+                                <Row className={ styles['stats'] + ' mx-auto'}>
+                                    <Col className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'cannoneering' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><GiCannon aria-label='cannoneering' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col  className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'cleanliness' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><GiBroom aria-label='cleanliness' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col  className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'greed' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><GiReceiveMoney aria-label='greed' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.cannoneering }
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.cleanliness }
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.greed }
+                                    </Col>
+                                    <Col  className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'hand to hand combat' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><GiFist aria-label='hand2HandCombat' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col  className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'sailing' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><GiSailboat aria-label='sailing' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col  className={ styles['stats-icon'] + ' col-4'}>
+                                        <OverlayTrigger
+                                            key={GUID()}
+                                            placement="top"
+                                            delay={{ show: 100, hide: 250 }}
+                                            overlay={renderTooltip({ children: 'teamwork' })}>
+                                            {({ ref, ...triggerHandler }) => (
+                                                <span ref={ ref } {...triggerHandler}><RiTeamFill aria-label='teamwork' /></span>
+                                            )}
+                                        </OverlayTrigger>
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.hand2HandCombat }
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.sailing }
+                                    </Col>
+                                    <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                                        { recruits[currentIndex].skills.teamwork }
+                                    </Col>
+                                </Row>
+                            </div>
                         </div>
-                        <div style={{ marginLeft: '5%', minHeight: '50px', position: 'absolute', top: '-38px', width: '90%', zIndex: 20 }}>
-                            <img src='images/rope-border-square.png' alt='recruit stat parchment' style={{ transform: 'rotateX(30deg)', width: '25%' }}/>
-                        </div>
-                    </div>
+                    </>}
                 </Col>
             </Row>
         );

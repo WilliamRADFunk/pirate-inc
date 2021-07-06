@@ -44,8 +44,16 @@ table {
     background-position-x: center;
     background-position-y: center;
     background-repeat: repeat-y;
-    margin-bottom: 225px;
+    margin-bottom: 122px;
     margin-top: 40px;
+}
+
+.no-select {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .port-bg-01 {

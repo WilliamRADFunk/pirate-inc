@@ -31,7 +31,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
         <OverlayTrigger
             key={GUID()}
             placement="top"
-            delay={{ show: 250, hide: 400 }}
+            delay={{ show: 100, hide: 250 }}
             overlay={renderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
             {({ ref, ...triggerHandler }) => (
                 <span ref={ ref } {...triggerHandler} className='clickable ml-1' onClick={ () => props.sortBy() }><FaSort /></span>
@@ -130,6 +130,7 @@ export class CrewManifest extends React.Component<Props, State> {
                     src="images/scroll-top.png"
                     width='100%'
                     height='auto'
+                    alt='Top of crew manifest scroll'
                     style={{ width: '100%', height: 'auto' }}></img>
             </div>
             <div className={ styles['scroll-bottom'] }>
@@ -137,14 +138,14 @@ export class CrewManifest extends React.Component<Props, State> {
                     src="images/scroll-bottom.png"
                     width='100%'
                     height='auto'
+                    alt='Bottom of crew manifest scroll'
                     style={{ width: '100%', height: 'auto' }}></img>
             </div>
-            <Row className='mb-2 no-gutters' style={{ position: 'relative', zIndex: 3 }}>
+            <Row className='mb-2 mx-1' style={{ position: 'relative', zIndex: 3 }}>
                 <Col xs='12'
                     aria-label='Crew Manifest section'
                     className='text-center'>
-                    <br/><br/>
-                    Crew Manifest
+                    <h2 className={ styles['manifest-header'] }>Crew Manifest</h2>
                     <br/><br/>
                     <Table className={ styles["manifest"] + ' table-striped px-5' }>
                         <thead>
@@ -295,7 +296,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                             { c.concern !== ConcernTypes.Empty ? c.concern : '---' }
                                         </td>
                                         <td className={ styles['pay-order-cell'] }>
-                                            { !c.isAlive ? <span>-1</span> : <>
+                                            { !c.isAlive ? <span>---</span> : <>
                                                 <span className={ styles['pay-order-text'] + ' text-center' }>
                                                     { c.payOrder }
                                                 </span>

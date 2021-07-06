@@ -49,10 +49,9 @@ export class Bungalow extends React.Component<Props, State> {
 
     public render() {
         const { portSceneState } = this.state;
-        console.log('portSceneState', portSceneState);
         return (
             <div className='w-100 h-100 text-dark'>
-                { (PortSceneState.BungalowCrewManifest >= portSceneState || portSceneState <= PortSceneState.BungalowShipManifest) ? null :
+                { portSceneState !== PortSceneState.BungalowOptions && (portSceneState >= PortSceneState.BungalowCrewManifest && portSceneState <= PortSceneState.BungalowShipManifest) ? null :
                     <Row className='no-gutters'>
                         <Col xs={{ span: 6, offset: 3 }}
                             aria-label='Bungalow section'

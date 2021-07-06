@@ -44,4 +44,12 @@ export class HireableCrew extends Crew {
         }
         super.addCrew(recruits, false);
     }
+
+    /**
+     * Removes the hired crew member(s) from the eligible list of recruits.
+     * @param crew the members of the recruit roster to remove from eligible crew.
+     */
+    public removeCrew(crew: CrewMember[]): void {
+        const ogCrew = super.fireCrew(crew, true);
+    }
 }

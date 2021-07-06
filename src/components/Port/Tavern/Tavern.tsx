@@ -51,7 +51,7 @@ export class Tavern extends React.Component<Props, State> {
         const { portSceneState } = this.state;
         return (
             <div className='w-100 h-100 text-dark'>
-                { (PortSceneState.TavernBuySupplies >= portSceneState || portSceneState <= PortSceneState.TavernHireOfficers) ? null :
+                { (portSceneState !== PortSceneState.TavernOptions && portSceneState >= PortSceneState.TavernBuySupplies) ? null :
                     <Row className='mb-2 no-gutters'>
                         <Col xs={{ span: 6, offset: 3 }}
                             aria-label='Tavern section'
@@ -118,16 +118,16 @@ export class Tavern extends React.Component<Props, State> {
                 }
                 { portSceneState !== PortSceneState.TavernHireCrew ? null : <>
                     <div style={{ position: 'absolute', top: '2em', left: '-1.35em' }}>
-                        <img src="images/torch.png" style={{ width: '7em', height: '4em' }}></img>
+                        <img src="images/torch.png" alt='tavern background torch' style={{ width: '7em', height: '4em' }}></img>
                     </div>
                     <div style={{ position: 'absolute', top: '2em', right: '-1.6em' }}>
-                        <img src="images/torch.png" style={{ width: '7em', height: '4em' }}></img>
+                        <img src="images/torch.png" alt='tavern background torch' style={{ width: '7em', height: '4em' }}></img>
                     </div>
                     <div style={{ position: 'absolute', top: 0, left: 0 }}>
-                        <img src="images/fire-65.gif" style={{ width: '4em', height: '4em' }}></img>
+                        <img src="images/torch-fire.gif" alt='tavern background torch flame' style={{ width: '4em', height: '4em' }}></img>
                     </div>
                     <div style={{ position: 'absolute', top: 0, right: 0 }}>
-                        <img src="images/fire-65.gif" style={{ width: '4em', height: '4em' }}></img>
+                        <img src="images/torch-fire.gif" alt='tavern background torch flame' style={{ width: '4em', height: '4em' }}></img>
                     </div>
                     <Row className='no-gutters bg-dark text-light'>
                         <Col

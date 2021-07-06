@@ -124,6 +124,14 @@ class GameManager {
     }
 
     /**
+     * Adds existing crew members to the crew.
+     * @param newCrew the new crew members to add to the roster.
+     */
+    public addCrew(newCrew: CrewMember[]): void {
+        this._crew.addCrew(newCrew, false);
+    }
+
+    /**
      * Update the difficulty setting to the user's new choice.
      * @param newDiff new difficulty setting for the game.
      */

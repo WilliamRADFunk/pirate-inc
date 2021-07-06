@@ -27,7 +27,7 @@ export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAli
     return createAvatar(
         style,
         {
-            backgroundColor: isForHire ? 'transparent' : (isAlive ? '#555' : '#900'),
+            backgroundColor: isForHire ? 'transparent' : (isAlive ? '#5554' : '#9004'),
             seed: features.seed,
             earringColor: [features.earringColor],
             eyes: [MoodToEyes[MouthToMood[mood]]],
@@ -175,9 +175,11 @@ export class Crew {
         const theCrew = this._crew.value.slice();
         if (isRandom) {
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
+            let payOrder = 0;
             for (let i = 0; i < newCrew.length; i++) {
                 // TODO: Remove dead crew member when no longer testing.
                 const alive = Math.random() < 0.8;
+                payOrder = alive ? payOrder + 1 : payOrder;
                 const newMember = {
                     avatar: '',
                     concern: (alive && Math.random() > 0.5) ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
@@ -190,7 +192,7 @@ export class Crew {
                     nameFirst: random.firstMale(),
                     nameLast: random.last(),
                     nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
-                    payOrder: i,
+                    payOrder: alive ? payOrder : Infinity,
                     ship: null,
                     skills: {
                         cannoneering: Number(Math.random().toFixed(2)),
@@ -217,26 +219,31 @@ export class Crew {
     /**
      * Removes the selected members of the crew, and adjust morale accordingly.
      * @param firedCrew the crew members to be 'let go' from the player's crew.
+     * @param preventMoraleEffect allows the removal of crew without affecting morale (usually the hiring crew version).
      */
-    public fireCrew(firedCrew: CrewMember[]): void {
+    public fireCrew(firedCrew: CrewMember[], preventMoraleEffect?: boolean): void {
         const remainingCrew = this._crew.value.filter(c => {
             return !firedCrew.find(fCrew => fCrew.id === c.id);
         });
-        remainingCrew.forEach(c => {
-            if (c.isAlive) {
-                const random = Math.random();
-                // 50% morale will lower per crew member.
-                if (random < 0.5 && c.morale > 0) {
-                    c.morale -= 1;
-                    c.mood = translateMood(c.morale);
-                    c.avatar = getAvatar(c.features, c.mood, c.isAlive);
-                    // 20% each crew member's main gripe will be the loss of crewmates.
-                    if (random < 0.1) {
-                        c.concern = ConcernTypes.CrewmatesFired;
+
+        if (!preventMoraleEffect) {
+            remainingCrew.forEach(c => {
+                if (c.isAlive) {
+                    const random = Math.random();
+                    // 50% morale will lower per crew member.
+                    if (random < 0.5 && c.morale > 0) {
+                        c.morale -= 1;
+                        c.mood = translateMood(c.morale);
+                        c.avatar = getAvatar(c.features, c.mood, c.isAlive);
+                        // 20% each crew member's main gripe will be the loss of crewmates.
+                        if (random < 0.1) {
+                            c.concern = ConcernTypes.CrewmatesFired;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+
         // Adjust payOrders to accomodate the new gap in the roster.
         let payCounter = 0;
         remainingCrew.slice()
