@@ -1,0 +1,30 @@
+.exit-icon {
+    font-size: 1.75em;
+}
+
+@media only screen and (max-width: 1400px) {
+    // .exit-icon {
+    //     top: -1vw;
+    // }
+}
+
+@media only screen and (max-width: 992px) {
+    .exit-icon {
+        font-size: 1.25em;
+        // top: -2.5vw;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    // .exit-icon {
+    //     font-size: 1.25em;
+    //     top: -4vw;
+    // }
+}
+
+@media only screen and (max-width: 576px) {
+    // .exit-icon {
+    //     font-size: 1.25em;
+    //     top: -6.25vw;
+    // }
+}

@@ -13,6 +13,11 @@
     top: -0.5vw;
 }
 
+.manifest-exit {
+    position: relative;
+    top: -1vw;
+}
+
 .manifest.table thead th,
 .manifest.table tbody td.no-break {
     background-color: 'transparent';
@@ -76,12 +81,20 @@
     .manifest-header {
         top: -1vw;
     }
+
+    .manifest-exit {
+        top: -1.5vw;
+    }
 }
 
 @media only screen and (max-width: 992px) {
     .manifest-header {
         font-size: 1.5em;
         top: -2.5vw;
+    }
+
+    .manifest-exit {
+        top: -3vw;
     }
 }
 
@@ -90,11 +103,19 @@
         font-size: 1.25em;
         top: -4vw;
     }
+
+    .manifest-exit {
+        top: -5.5vw;
+    }
 }
 
 @media only screen and (max-width: 576px) {
     .manifest-header {
         font-size: 1.25em;
         top: -6.25vw;
+    }
+
+    .manifest-exit {
+        top: -7.75vw;
     }
 }

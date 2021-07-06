@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import { ImExit } from 'react-icons/im';
 
+import styles from './Tavern.module.scss';
 import { Subscription } from 'rxjs';
 import { PortSceneState, stateManager } from '../../../Services/StateManager';
 import { HireCrew } from '../HireCrew/HireCrew';
@@ -133,7 +135,15 @@ export class Tavern extends React.Component<Props, State> {
                         <Col
                             aria-label='Tavern hire crew section description'
                             className='fs-sm text-left'>
-                            <HireCrew></HireCrew>
+                            <HireCrew>
+                                <Button
+                                    variant='link'
+                                    aria-label='Return to port options'
+                                    className={ styles['exit-icon'] + ' border-0 text-light' }
+                                    onClick={() => this.toggleMode()}>
+                                    <ImExit></ImExit>
+                                </Button>
+                            </HireCrew>
                         </Col>
                     </Row>
                 </>}

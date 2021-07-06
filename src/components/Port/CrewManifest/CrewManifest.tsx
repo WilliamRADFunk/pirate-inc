@@ -124,6 +124,7 @@ export class CrewManifest extends React.Component<Props, State> {
 
     public render() {
         const { crew } = this.state;
+        const props = this.props;
         return (<>
             <div className={ styles['scroll-top'] }>
                 <img
@@ -145,8 +146,16 @@ export class CrewManifest extends React.Component<Props, State> {
                 <Col xs='12'
                     aria-label='Crew Manifest section'
                     className='text-center'>
-                    <h2 className={ styles['manifest-header'] }>Crew Manifest</h2>
-                    <br/><br/>
+                    <Row className='no-gutters mb-5'>
+                        <Col className='col-6 offset-3'>
+                            <h2 className={ styles['manifest-header'] }>Crew Manifest</h2>
+                        </Col>
+                        <Col className='col-3'>
+                            <div className={ styles['manifest-exit'] + ' text-center' }>
+                                { props.children }
+                            </div>
+                        </Col>
+                    </Row>
                     <Table className={ styles["manifest"] + ' table-striped px-5' }>
                         <thead>
                             <tr>
@@ -159,7 +168,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3">
+                                <th className="mr-3" style={{ minWidth: '172px', width: '160px' }}>
                                     <Row className='no-gutters'>
                                         <Col xs='12'>Skills</Col>
                                     </Row>

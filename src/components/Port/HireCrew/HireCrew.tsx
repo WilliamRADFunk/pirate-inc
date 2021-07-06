@@ -90,11 +90,20 @@ export class HireCrew extends React.Component<Props, State> {
 
     public render() {
         const { currentIndex, recruits } = this.state;
+        const props = this.props;
         return (
             <Row className='mb-2 no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
-                    <h2 className={ styles['hire-crew-header'] }>Hire Recruits</h2>
-                    <br/><br/>
+                    <Row className='no-gutters mb-5'>
+                        <Col className='col-6 offset-3'>
+                            <h2 className={ styles['hire-crew-header'] }>Hire Recruits</h2>
+                        </Col>
+                        <Col className='col-3'>
+                            <div className={ styles['hire-crew-exit'] + ' text-center' }>
+                                { props.children }
+                            </div>
+                        </Col>
+                    </Row>
                     { !recruits?.length ? null : <>
                         <div
                             className={ styles['avatar-sizing'] }
@@ -115,6 +124,7 @@ export class HireCrew extends React.Component<Props, State> {
                             <div className={ styles['move-icon-wrapper-prev'] + ' text-info'}>
                                 { currentIndex <= 0 ? null :
                                     <span
+                                        aria-label='Move to next recruit'
                                         className={ styles['move-icon-prev']}
                                         onClick={ () => { this._changeIndex(-1) } }>
                                         <IoArrowUndoCircleOutline />
@@ -124,6 +134,7 @@ export class HireCrew extends React.Component<Props, State> {
                             <div className={ styles['move-icon-wrapper-next'] + ' text-info'}>
                                 { currentIndex >= recruits.length - 1 ? null :
                                     <span
+                                        aria-label='Move to previous recruit'
                                         className={ styles['move-icon-next']}
                                         onClick={ () => { this._changeIndex(1) } }>
                                         <IoArrowRedoCircleOutline />
@@ -133,6 +144,7 @@ export class HireCrew extends React.Component<Props, State> {
                             <div className={ styles['hire-icon-wrapper'] + ' text-info'}>
                                 { currentIndex >= recruits.length - 1 ? null :
                                     <span
+                                        aria-label='Hire the recruit'
                                         className={ styles['hire-icon']}
                                         onClick={ () => { this._hireCrew([recruits[currentIndex]]) } }>
                                         <FaHireAHelper />

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import { ImExit } from 'react-icons/im';
 
+import styles from './Bungalow.module.scss';
 import { Subscription } from 'rxjs';
 import { PortSceneState, stateManager } from '../../../Services/StateManager';
 import { CrewManifest } from '../CrewManifest/CrewManifest';
@@ -121,7 +123,15 @@ export class Bungalow extends React.Component<Props, State> {
                         <Col
                             aria-label='Bungalow buy suplies section description'
                             className='fs-sm text-left'>
-                            <CrewManifest></CrewManifest>
+                            <CrewManifest>
+                                <Button
+                                    variant='link'
+                                    aria-label='Return to port options'
+                                    className={ styles['exit-icon'] + ' border-0 text-dark' }
+                                    onClick={() => this.toggleMode()}>
+                                    <ImExit></ImExit>
+                                </Button>
+                            </CrewManifest>
                         </Col>
                     </Row>
                 }
