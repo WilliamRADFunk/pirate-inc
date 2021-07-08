@@ -70,6 +70,16 @@
     z-index: 50;
 }
 
+.recruit-count-wrapper {
+    font-size: 40px;
+    min-height: 18px;
+    margin-left: 10%;
+    position: absolute;
+    top: 5.25vw;
+    width: 150px;
+    z-index: 50;
+}
+
 .move-icon-wrapper-next {
     margin-right: 20%;
     right: 0;
@@ -130,8 +140,8 @@
     z-index: 50;
 }
 
-.hire-icon {
-    cursor: pointer;
+.hire-icon,
+.recruit-count-text {
     float: right;
     transform: rotateX(60deg);
 }
@@ -141,6 +151,12 @@
     .move-icon-wrapper-prev {
         font-size: 40px;
         top: -1.5vw;
+    }
+
+    .recruit-count-wrapper {
+        font-size: 40px;
+        margin-left: 7%;
+        top: 4.5vw;
     }
 
     .stats-wrapper {
@@ -163,6 +179,12 @@
 }
 
 @media only screen and (max-width: 1200px) {
+    .recruit-count-wrapper {
+        font-size: 35px;
+        margin-left: 7%;
+        top: 5.75vw;
+    }
+
     .stats-bg-wrapper {
         top: -88px;
     }
@@ -191,6 +213,12 @@
     .move-icon-wrapper-next,
     .move-icon-wrapper-prev {
         top: -2vw;
+    }
+
+    .recruit-count-wrapper {
+        font-size: 27px;
+        margin-left: 4%;
+        top: 6vw;
     }
 
     .stats-bg-wrapper {
@@ -222,6 +250,11 @@
     .move-icon-wrapper-prev {
         font-size: 30px;
         top: -1.5vw;
+    }
+
+    .recruit-count-wrapper {
+        font-size: 20px;
+        margin-left: -1%;
     }
 
     .stats-bg-wrapper {
@@ -257,6 +290,11 @@
     .move-icon-wrapper-prev {
         font-size: 25px;
         top: -1.75vw;
+    }
+
+    .recruit-count-wrapper {
+        font-size: 16px;
+        margin-left: -8%;
     }
 
     .stats-bg-wrapper {

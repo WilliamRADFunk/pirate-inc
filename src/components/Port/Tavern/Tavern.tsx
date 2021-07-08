@@ -16,6 +16,8 @@ interface Props {}
 
 interface State {
     actionPoints: number;
+    crewCount: number;
+    maxCrew: number;
     portSceneState: PortSceneState;
 }
 
@@ -36,6 +38,8 @@ export class Tavern extends React.Component<Props, State> {
 
         this.state = {
             actionPoints: 0,
+            crewCount: 0,
+            maxCrew: 0,
             portSceneState: PortSceneState.Menu
         };
     }
@@ -61,6 +65,12 @@ export class Tavern extends React.Component<Props, State> {
             }),
             playerManager.getRemainingActionPoints().subscribe(ac => {
                 this.setState({ actionPoints: ac });
+            }),
+            gameManager.getMaxCrewCount().subscribe(maxC => {
+                this.setState({ maxCrew: maxC });
+            }),
+            gameManager.getCrew().subscribe(crew => {
+                this.setState({ crewCount: crew.length });
             })
         );
     }
@@ -72,7 +82,8 @@ export class Tavern extends React.Component<Props, State> {
     }
 
     public render() {
-        const { portSceneState } = this.state;
+        const { crewCount, maxCrew, portSceneState } = this.state;
+        const maxCrewReached = crewCount >= maxCrew;
         const actionPoints = this._hasActionPoints();
         return (
             <div className='w-100 h-100 text-dark'>
@@ -123,11 +134,14 @@ export class Tavern extends React.Component<Props, State> {
                             overlay={renderTooltip({
                                 children: `${ actionPoints
                                     ? 'Hire crew one at a time, and risk using an action point per recruit'
-                                    : 'You need at least 1 Action Point to hire crew' }`
+                                    : maxCrewReached
+                                        ? 'You have reached the maximum crew your ships can carry'
+                                        : 'You need at least 1 Action Point to hire crew' }`
                             })}>
                             {({ ref, ...triggerHandler }) => (
                                 <div className='col-4 offset-1 my-4'>
                                     <Button ref={ ref } {...triggerHandler}
+                                        aria-disabled={ (actionPoints || maxCrewReached) ? false : true }
                                         aria-label='Open tavern hire crew section'
                                         variant='link'
                                         className={ actionPoints ? 'fs-md text-dark' : styles['no-action-points'] + ' fs-md text-dark' }
@@ -149,6 +163,7 @@ export class Tavern extends React.Component<Props, State> {
                             {({ ref, ...triggerHandler }) => (
                                 <span className='col-5 offset-1 my-4'>
                                     <Button ref={ ref } {...triggerHandler}
+                                        aria-disabled={ actionPoints ? false : true }
                                         aria-label='Open tavern hire officers section'
                                         variant='link'
                                         className={ actionPoints ? 'fs-md text-dark' : styles['no-action-points'] + ' fs-md text-dark' }
