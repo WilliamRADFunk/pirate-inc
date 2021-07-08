@@ -1,7 +1,30 @@
+.end-turn-btn-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.hud-txt-bg {
+    background-color: #cccb;
+    border-radius: 13.5px;
+}
+
 .itemLabel {
     display: inline-block;
 }
 
 .itemValue {
     display: inline-block;
+}
+
+.rotate-text {
+    position: absolute;
+    transform: translate(-50%, 32%) rotateZ(-15deg);
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 768px) {
+    .rotate-text {
+        transform: translate(-28%, 36%) rotateZ(-27deg);
+    }
 }

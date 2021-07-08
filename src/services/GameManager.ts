@@ -234,6 +234,8 @@ class GameManager {
             }
             // TODO: Need a blocking modal summary event to show all that happened (crew or officers leaving, etc.).
         }
+        
+        this.canPlayTurn.next(true);
     }
 
     /**
@@ -387,6 +389,7 @@ class GameManager {
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
             portManager.enterPort(PortLocation.Nassau);
             stateManager.changeGameState(GameState.Active);
+            this.canPlayTurn.next(true);
             return true;
         }
         return false;

@@ -13,7 +13,7 @@ table {
 .App {
   color: white;
   font-family: 'LobsterFont';
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 1vmin);
 }
 
 .boundaries {
@@ -31,7 +31,7 @@ table {
 .hud-bg {
     background-color: transparent;
     background-image: url('Assets/images/hud-background.png');
-    background-size: 100% 138%;
+    background-size: 100% 100%;
     background-position-x: center;
     background-position-y: bottom;
     background-repeat: no-repeat;
@@ -57,17 +57,26 @@ table {
 }
 
 .port-bg-01 {
-    background-color: transparent;
-    background-image: url('Assets/images/port-background-01.jpg');
-    background-size: cover;
-    background-position-x: center;
-    background-position-y: center;
-    background-repeat: no-repeat;
+    // background-color: transparent;
+    // background-image: url('Assets/images/port-background-01.jpg');
+    // background-size: cover;
+    // background-position-x: center;
+    // background-position-y: center;
+    // background-repeat: no-repeat;
 }
 
 .rope-border-square {
     background-color: transparent;
     background-image: url("Assets/images/rope-border-square.png");
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
+
+.silver-ribbon {
+    background-color: transparent;
+    background-image: url("Assets/images/silver-ribbon.png");
     background-size: 100% 100%;
     background-position-x: center;
     background-position-y: center;

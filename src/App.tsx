@@ -76,9 +76,6 @@ class App extends React.Component<Props, State> {
         { gameState !== GameState.Active ? null :
           <>
             <Row className='no-gutters'>
-              <LocationHeader></LocationHeader>
-            </Row>
-            <Row className='no-gutters'>
               <HUD></HUD>
             </Row>
             { sceneState !== SceneState.Port ? null :

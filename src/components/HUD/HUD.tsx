@@ -13,6 +13,10 @@ interface Props {}
 
 interface State {
     balance: string;
+    /**
+     * Whether or not player should be able to interact with controls (otherwise disabled between turns).
+     */
+    canPlay: boolean;
     crewMorale: number;
     crewWages: string;
     crownFavor: number;
@@ -45,6 +49,7 @@ export class HUD extends React.Component<Props, State> {
 
         this.state = {
             balance: '$0',
+            canPlay: true,
             crewMorale: 100,
             crewWages: '$0',
             crownFavor: 0,
@@ -64,6 +69,16 @@ export class HUD extends React.Component<Props, State> {
         };
     }
 
+    /**
+     * Signals user's click of the end turn button to the game manager for processing.
+     */
+    private async _endTurn(): Promise<void> {
+        if (!this.state.canPlay) {
+            return;
+        }
+        await gameManager.endTurn();
+    }
+
     public componentDidMount() {
         // subscribe to all relevant player HUD data
         this.subscriptions.push(
@@ -71,6 +86,9 @@ export class HUD extends React.Component<Props, State> {
                 if (!isNaN(bal)) {
                     this.setState({ balance: formatter.format(bal) });
                 }
+            }),
+            gameManager.getCanPlayTurn().subscribe(canPlay => {
+                this.setState({ canPlay: !!canPlay });
             }),
             gameManager.getCrewHUD().subscribe(crewHUD => {
                 if (crewHUD) {
@@ -152,6 +170,7 @@ export class HUD extends React.Component<Props, State> {
     public render() {
         const {
             balance,
+            canPlay,
             crewMorale,
             crewWages,
             crownFavor,
@@ -171,28 +190,27 @@ export class HUD extends React.Component<Props, State> {
         } = this.state;
 
         return (gameState !== GameState.Active ? null :
-            <Col xs='12' lg={{ span: 10, offset: 1}} className='hud-bg text-left'>
-                <Row className='no-gutters'>
-                    <Col xs='12' lg='6'>
+            <Col xs='12' lg={{ span: 10, offset: 1}} className='hud-bg text-left' style={{ color: '#000', textShadow: '0.5px 0.5px #720058', letterSpacing: '0.1em' }}>
+                <Row className='no-gutters my-5'>
+                    <Col
+                        xs={{ span: 7, offset: 1}}
+                        lg={{ span: 4, offset: 1}}
+                        className={ styles['hud-txt-bg'] + ' p-3' }>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Action Points:</Col>
-                            <Col xs='6' className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Action Points:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Treasury:</Col>
-                            <Col xs='6' className={styles.itemValue}>{balance}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Treasury:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{balance}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Crew:</Col>
-                            <Col xs='6' className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Crew Wages:</Col>
-                            <Col xs='6' className={styles.itemValue}>{crewWages}</Col>
-                        </Row>
-                        <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Provisions:</Col>
-                            <Col xs='6' className={styles.itemValue}>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Provisions:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>
                                 <span className='text-red mr-3'>
                                     {provisions[0]}
                                 </span>
@@ -205,46 +223,50 @@ export class HUD extends React.Component<Props, State> {
                             </Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Ships:</Col>
-                            <Col xs='6' className={styles.itemValue}>{shipCount}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Ship Count/Health:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{shipCount} / {fleetHealth}%</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Fleet Health:</Col>
-                            <Col xs='6' className={styles.itemValue}>{fleetHealth}%</Col>
-                        </Row>
-                    </Col>
-                    {/* Right side of HUD */}
-                    <Col xs='12' lg='6'>
-                        <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Crew Morale:</Col>
-                            <Col xs='6' className={styles.itemValue}>{crewMorale.toFixed(0)}%</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew/Officer Morale:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{crewMorale.toFixed(0)}% / {NaN}%</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Officer Morale:</Col>
-                            <Col xs='6' className={styles.itemValue}>NaN%</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew/Officer Pay:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{crewWages} / {officerSalaries}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Officer Salaries:</Col>
-                            <Col xs='6' className={styles.itemValue}>{officerSalaries}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Infamy/Crown Favor:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{infamy} / {crownFavor}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Infamy:</Col>
-                            <Col xs='6' className={styles.itemValue}>{infamy}</Col>
-                        </Row>
-                        <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Crown Favor:</Col>
-                            <Col xs='6' className={styles.itemValue}>{crownFavor}</Col>
-                        </Row>
-                        <Row className='no-gutters'>
-                            <Col xs='6' className={styles.itemLabel}>Bounty:</Col>
-                            <Col xs='6' className={styles.itemValue}>{playerBounty}</Col>
+                            <Col xs='6' lg='5' className={styles.itemLabel}>Bounty:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{playerBounty}</Col>
                         </Row>
                         { sceneState !== SceneState.Port ? null :
                             <Row className='no-gutters'>
-                                <Col xs='6' className={styles.itemLabel}>Port Reputation:</Col>
-                                <Col xs='6' className={styles.itemValue}>{portReputation}</Col>
+                                <Col xs='6' lg='5' className={styles.itemLabel}>Port Reputation:</Col>
+                                <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{portReputation.toFixed(0)}</Col>
                             </Row>
                         }
+                    </Col>
+                    <Col xs={{ span: 3 }} lg={{ span: 2, offset: 1}}>
+                        <Row className='no-gutters h-25' role='button'>
+                            <Col
+                                className='silver-ribbon text-center'
+                                aria-disabled={ !canPlay }
+                                onClick={ () => this._endTurn() }>
+                                <span className={ (!canPlay ? (styles['end-turn-btn-disabled'] + ' ') : '') + styles['rotate-text'] + ' no-select h-100'}>
+                                    End Turn
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className='no-gutters h-25 mt-5'>
+                            <Col className='silver-ribbon text-center'>
+                                <span className={ styles['rotate-text'] + ' no-select h-100'}>
+                                    {sceneState}
+                                </span>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Col>
