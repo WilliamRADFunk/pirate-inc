@@ -266,6 +266,14 @@ export class Crew {
     }
 
     /**
+     * Gets the current number of crew under player's employ.
+     * @returns the number of crew player has employed.
+     */
+    public getCrewCount(): number {
+        return this._crew.value.filter(c => c.isAlive).length;
+    }
+
+    /**
      * Gets the value of crew morale.
      * @returns value of the crew morale.
      */

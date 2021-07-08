@@ -113,7 +113,6 @@ export class HireCrew extends React.Component<Props, State> {
         const { crewCount, currentIndex, maxCrew, recruits } = this.state;
         const children = React.Children.toArray(this.props.children);
         const maxCrewReached = crewCount >= maxCrew;
-        console.log(maxCrewReached, crewCount, maxCrew);
         return (
             <Row className='mb-2 no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>

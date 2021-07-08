@@ -134,6 +134,13 @@ class GameManager {
      * @param isHire flag to signal that the new crew is result of a hire.
      */
     public addCrew(newCrew: CrewMember[], isHire?: boolean): void {
+        const crewCount = this._crew.getCrewCount() + newCrew.length;
+        const maxCrew = this.maxCrewCount.value;
+        if (crewCount >= maxCrew) {
+            const excessCrewCount = crewCount - maxCrew;
+            console.log('GameManager', 'addCrew', `Added crew exceeds player's maximum crew capacity by ${excessCrewCount}`);
+            newCrew.length -= excessCrewCount;
+        }
         this._crew.addCrew(newCrew, false);
         if (Math.random() < 0.05) {
             playerManager.removeActionPoints(1);
