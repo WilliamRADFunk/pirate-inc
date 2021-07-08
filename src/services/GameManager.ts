@@ -91,6 +91,11 @@ class GameManager {
 
     // constructor() {
     //     // TODO: When there are officer slots to subscribe to, updateOfficerSalaries when they change.
+    //     this.subscriptions.push(
+    //         playerManager.getRemainingActionPoints().subscribe(ac => {
+
+    //         })
+    //     );
     // }
 
     /**
@@ -126,9 +131,13 @@ class GameManager {
     /**
      * Adds existing crew members to the crew.
      * @param newCrew the new crew members to add to the roster.
+     * @param isHire flag to signal that the new crew is result of a hire.
      */
-    public addCrew(newCrew: CrewMember[]): void {
+    public addCrew(newCrew: CrewMember[], isHire?: boolean): void {
         this._crew.addCrew(newCrew, false);
+        if (Math.random() < 0.05) {
+            playerManager.removeActionPoints(1);
+        }
     }
 
     /**
@@ -330,6 +339,15 @@ class GameManager {
      */
     public loadGame(code: string): void {
         // Verify code and then load game.
+    }
+
+    /**
+     * Opens a modal with a deeper description of the section requested in the param.
+     * @param helpTitle the title of the help section to populate the help modal with.
+     */
+    public openHelpModal(helpTitle: string): void {
+        // TODO: Open help modal
+        console.log('openHelpModal', helpTitle);
     }
 
     /**

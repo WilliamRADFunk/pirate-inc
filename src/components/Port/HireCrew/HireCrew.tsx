@@ -25,8 +25,9 @@ interface State {
 }
 
 function renderTooltip(props: any): JSX.Element {
+    const id = `tooltip-${GUID()}`;
     return (
-        <Tooltip id="button-tooltip" {...props}>
+        <Tooltip id={ id }>
             { props.children }
         </Tooltip>
     );
@@ -61,7 +62,7 @@ export class HireCrew extends React.Component<Props, State> {
         }
         // TODO: Make sure the suggested crew member are actually present.
         // TODO: Remove the listed crew members from the eligibleCrew.
-        gameManager.addCrew(crew);
+        gameManager.addCrew(crew, true);
         this.state.hireableCrew?.removeCrew(crew);
         
     }
@@ -90,7 +91,7 @@ export class HireCrew extends React.Component<Props, State> {
 
     public render() {
         const { currentIndex, recruits } = this.state;
-        const props = this.props;
+        const children = React.Children.toArray(this.props.children);
         return (
             <Row className='mb-2 no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
@@ -98,9 +99,14 @@ export class HireCrew extends React.Component<Props, State> {
                         <Col className='col-6 offset-3'>
                             <h2 className={ styles['hire-crew-header'] }>Hire Recruits</h2>
                         </Col>
-                        <Col className='col-3'>
-                            <div className={ styles['hire-crew-exit'] + ' text-center' }>
-                                { props.children }
+                        <Col className='col-1'>
+                            <div className={ styles['hire-crew-help'] + ' text-right' }>
+                                { children[0] }
+                            </div>
+                        </Col>
+                        <Col className='col-2'>
+                            <div className={ styles['hire-crew-exit'] + ' text-left' }>
+                                { children[1] }
                             </div>
                         </Col>
                     </Row>
@@ -187,13 +193,13 @@ export class HireCrew extends React.Component<Props, State> {
                                         </OverlayTrigger>
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.cannoneering }
+                                        { (recruits[currentIndex].skills.cannoneering * 100).toFixed(0) }
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.cleanliness }
+                                        { (recruits[currentIndex].skills.cleanliness * 100).toFixed(0) }
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.greed }
+                                        { (recruits[currentIndex].skills.greed * 100).toFixed(0) }
                                     </Col>
                                     <Col  className={ styles['stats-icon'] + ' col-4'}>
                                         <OverlayTrigger
@@ -229,13 +235,13 @@ export class HireCrew extends React.Component<Props, State> {
                                         </OverlayTrigger>
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.hand2HandCombat }
+                                        { (recruits[currentIndex].skills.hand2HandCombat * 100).toFixed(0) }
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.sailing }
+                                        { (recruits[currentIndex].skills.sailing * 100).toFixed(0) }
                                     </Col>
                                     <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                        { recruits[currentIndex].skills.teamwork }
+                                        { (recruits[currentIndex].skills.teamwork * 100).toFixed(0) }
                                     </Col>
                                 </Row>
                             </div>

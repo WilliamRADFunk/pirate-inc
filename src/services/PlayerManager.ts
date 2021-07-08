@@ -138,6 +138,11 @@ class PlayerManager {
             Paranoid: statCheck(stats.Paranoid)
         });
     }
+
+    public removeActionPoints(ac: number): void {
+        const currAC = this.remainingActionPoints.value;
+        this.remainingActionPoints.next(currAC > 0 ? currAC - 1 : 0);
+    }
 }
 
 function statCheck(stat: number): number {

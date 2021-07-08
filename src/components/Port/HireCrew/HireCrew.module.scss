@@ -10,7 +10,8 @@
     top: 2.7vw;
 }
 
-.hire-crew-exit {
+.hire-crew-exit,
+.hire-crew-help {
     position: relative;
     top: 2vw;
 }
@@ -245,7 +246,8 @@
         font-size: 22px;
     }
 
-    .hire-crew-exit {
+    .hire-crew-exit,
+    .hire-crew-help {
         top: 1vw;
     }
 }

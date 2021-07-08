@@ -1,17 +1,29 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { ImExit } from 'react-icons/im';
+import { MdHelpOutline } from 'react-icons/md';
 
 import styles from './Bungalow.module.scss';
 import { Subscription } from 'rxjs';
 import { PortSceneState, stateManager } from '../../../Services/StateManager';
 import { CrewManifest } from '../CrewManifest/CrewManifest';
+import { GUID } from '../../../Helpers/GUID';
+import { gameManager } from '../../../Services/GameManager';
 
 interface Props {}
 
 interface State {
     portSceneState: PortSceneState;
+}
+
+function renderTooltip(props: any): JSX.Element {
+    const id = `tooltip-${GUID()}`;
+    return (
+        <Tooltip id={ id }>
+            { props.children }
+        </Tooltip>
+    );
 }
 
 export class Bungalow extends React.Component<Props, State> {
@@ -124,13 +136,44 @@ export class Bungalow extends React.Component<Props, State> {
                             aria-label='Bungalow buy suplies section description'
                             className='fs-sm text-left'>
                             <CrewManifest>
-                                <Button
-                                    variant='link'
-                                    aria-label='Return to port options'
-                                    className={ styles['exit-icon'] + ' border-0 text-dark' }
-                                    onClick={() => this.toggleMode()}>
-                                    <ImExit></ImExit>
-                                </Button>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={renderTooltip({
+                                        children: 'Access help for this section'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Open help modal for deeper description of crew manifest section'
+                                            className={ styles['help-icon'] + ' border-0 text-dark' }
+                                            onClick={() => gameManager.openHelpModal('Crew Manifest - Port')}>
+                                            <MdHelpOutline></MdHelpOutline>
+                                        </Button>
+                                     )}
+                                </OverlayTrigger>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={renderTooltip({
+                                        children: 'Return to main port options'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Return to port options'
+                                            className={ styles['exit-icon'] + ' border-0 text-dark' }
+                                            onClick={() => this.toggleMode()}>
+                                            <ImExit></ImExit>
+                                        </Button>
+                                     )}
+                                </OverlayTrigger>
                             </CrewManifest>
                         </Col>
                     </Row>

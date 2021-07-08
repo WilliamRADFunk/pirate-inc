@@ -124,7 +124,7 @@ export class CrewManifest extends React.Component<Props, State> {
 
     public render() {
         const { crew } = this.state;
-        const props = this.props;
+        const children = React.Children.toArray(this.props.children);
         return (<>
             <div className={ styles['scroll-top'] }>
                 <img
@@ -150,9 +150,14 @@ export class CrewManifest extends React.Component<Props, State> {
                         <Col className='col-6 offset-3'>
                             <h2 className={ styles['manifest-header'] }>Crew Manifest</h2>
                         </Col>
-                        <Col className='col-3'>
-                            <div className={ styles['manifest-exit'] + ' text-center' }>
-                                { props.children }
+                        <Col className='col-1'>
+                            <div className={ styles['manifest-help'] + ' text-right' }>
+                                { children[0] }
+                            </div>
+                        </Col>
+                        <Col className='col-2'>
+                            <div className={ styles['manifest-exit'] + ' text-left' }>
+                                { children[1] }
                             </div>
                         </Col>
                     </Row>
