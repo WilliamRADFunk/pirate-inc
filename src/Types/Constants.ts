@@ -1,4 +1,22 @@
 /** 
+ * The price of a carpenter at port per turn on the easiest difficulty.
+ * Difficulty x this number. Their skill rankings will also mutiply.
+ */
+export const BaseCarpenterSalary = 100;
+
+/** 
+ * The price of a doctor at port per turn on the easiest difficulty.
+ * Difficulty x this number. Their skill rankings will also mutiply.
+ */
+export const BaseDoctorSalary = 200;
+ 
+/** 
+ * The price of a quartermaster at port per turn on the easiest difficulty.
+ * Difficulty x this number. Their skill rankings will also mutiply.
+ */
+export const BaseQuartermasterSalary = 250;
+
+/** 
  * The price of a pirate at port per turn on the easiest difficulty. Difficulty x this number.
  */
 export const BasePirateWage = 2;

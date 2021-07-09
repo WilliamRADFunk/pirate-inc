@@ -7,6 +7,7 @@ export interface OfficerSkill<T> {
 
 export interface Officer {
     avatar: string;
+    background: string;
     concern: ConcernTypes;
     features: Features;
     id: string;
@@ -16,6 +17,7 @@ export interface Officer {
     nameFirst: string;
     nameLast: string;
     nameNick: string;
+    salary: number;
     skills: { [key: string]: OfficerSkill<string> }
 }
 
@@ -34,7 +36,8 @@ export interface Doctor extends Officer {
 
 export interface Quartermaster extends Officer {
     skills: {
+        cargoDistribution: OfficerSkill<'Cargo Distribution'>;
         humanResourcing: OfficerSkill<'Human Resources'>;
-        medicine: OfficerSkill<'Medicine'>;
+        moraleManagement: OfficerSkill<'Morale Management'>;
     };
 }

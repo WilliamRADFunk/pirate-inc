@@ -1,8 +1,8 @@
 import { GUID } from '../../Helpers/GUID';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 import { CrewMember } from '../../Types/CrewMember';
-import { ConcernTypes, MoodToMouth } from '../../Types/People';
-import { Crew, getAvatar, getAvatarFeatures, translateMood } from './Crew';
+import { ConcernTypes, getAvatar, getAvatarFeatures, MoodToMouth, translateMood } from '../../Types/People';
+import { Crew } from './Crew';
 
 const random = require('random-name-redux');
 
