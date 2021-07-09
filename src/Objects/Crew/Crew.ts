@@ -4,26 +4,26 @@ import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
 import { Hair } from '@dicebear/micah/lib/options';
 
+import { CrewMember } from '../../Types/CrewMember';
 import {
     ConcernTypes,
-    CrewMember,
-    CrewMemberFeatures,
     EarringColor,
     EyeColors,
+    Features,
     HairColors,
     HairStyles,
     MoodToEyebrows,
     MoodToEyes,
     MoodToMouth,
     MouthToMood
-} from '../../Types/CrewMember';
+} from '../../Types/People';
 import { BasePirateWage } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 import { GUID } from '../../Helpers/GUID';
 
 const random = require('random-name-redux');
 
-export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAlive: boolean, isForHire?: boolean): string {
+export function getAvatar(features: Features, mood: MoodToMouth, isAlive: boolean, isForHire?: boolean): string {
     return createAvatar(
         style,
         {
@@ -42,8 +42,8 @@ export function getAvatar(features: CrewMemberFeatures, mood: MoodToMouth, isAli
         });
 }
 
-export function getAvatarFeatures(first: string, nick: string, last: string): CrewMemberFeatures {
-    const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures() as CrewMemberFeatures;
+export function getAvatarFeatures(first: string, nick: string, last: string): Features {
+    const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures() as Features;
     const seed =  `${first}-${nick}-${last}`;
     return {
         earringColor,
@@ -60,7 +60,7 @@ export function getAvatarFeatures(first: string, nick: string, last: string): Cr
  * Picks a hair color, style, etc. from the list at random and applies it to both head and facial hair to keep them consistent.
  * @returns The partial style settings for the avatar generator to use for hair.
  */
- export function getFeatures(): Partial<CrewMemberFeatures> {
+ export function getFeatures(): Partial<Features> {
     // To keep head and facial hair consistent color.
     const hairColorIndex = Math.floor(Math.random() * (HairColors.length - 0.001));
     const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));

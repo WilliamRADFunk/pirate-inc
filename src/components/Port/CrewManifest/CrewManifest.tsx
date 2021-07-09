@@ -8,7 +8,8 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 
 import styles from './CrewManifest.module.scss';
 import { gameManager } from '../../../Services/GameManager';
-import { ConcernTypes, CrewMember, MouthToMood } from '../../../Types/CrewMember';
+import { CrewMember } from '../../../Types/CrewMember';
+import { ConcernTypes, MouthToMood } from '../../../Types/People';
 import { GUID } from '../../../Helpers/GUID';
 
 interface Props {}

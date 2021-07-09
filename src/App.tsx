@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import './App.scss';
 import { HUD } from './Components/HUD/HUD';
 import { Intro } from './Components/Intro/Intro';
-import { LocationHeader } from './Components/LocationHeader/LocationHeader';
 import { StartMenu } from './Components/Menu/StartMenu/StartMenu';
 import { PortMain } from './Components/Port/PortMain/PortMain';
 import { Title } from './Components/Title/Title';
