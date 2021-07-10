@@ -24,7 +24,8 @@ interface State {
     fleetHealth: number;
     infamy: number;
     maxCrew: number;
-    officerSalaries: string;
+    officersMorale: number;
+    officersSalaries: string;
     playerBounty: string;
     portReputation: number;
     provisions: [number, number, number];
@@ -57,7 +58,8 @@ export class HUD extends React.Component<Props, State> {
             fleetHealth: 100,
             infamy: 0,
             maxCrew: 0,
-            officerSalaries: '$0',
+            officersMorale: 100,
+            officersSalaries: '$0',
             playerBounty: '$0',
             portReputation: 0,
             provisions: [0, 0, 0],
@@ -109,9 +111,12 @@ export class HUD extends React.Component<Props, State> {
                     this.setState({ provisions: [...provs] });
                 }
             }),
-            gameManager.getOfficerSalaries().subscribe(salaries => {
-                if (!isNaN(salaries)) {
-                    this.setState({ officerSalaries: formatter.format(salaries) });
+            gameManager.getOfficersHUD().subscribe(officersHUD => {
+                if (officersHUD) {
+                    this.setState({
+                        officersMorale: officersHUD.officersMorale,
+                        officersSalaries: formatter.format(officersHUD.officersSalaries)
+                    });
                 }
             }),
             gameManager.getShipCount().subscribe(ships => {
@@ -179,7 +184,8 @@ export class HUD extends React.Component<Props, State> {
             fleetHealth,
             gameState,
             maxCrew,
-            officerSalaries,
+            officersMorale,
+            officersSalaries,
             playerBounty,
             portReputation,
             provisions,
@@ -197,20 +203,20 @@ export class HUD extends React.Component<Props, State> {
                         lg={{ span: 4, offset: 1}}
                         className={ styles['hud-txt-bg'] + ' p-3' }>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Action Points:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Action Points:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{remActionPoints}/{totalActionPoints}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Treasury:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{balance}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Treasury:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{balance}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Crew:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{currentCrew}/{maxCrew}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Provisions:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Provisions:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>
                                 <span className='text-red mr-3'>
                                     {provisions[0]}
                                 </span>
@@ -223,29 +229,29 @@ export class HUD extends React.Component<Props, State> {
                             </Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Ship Count/Health:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{shipCount} / {fleetHealth}%</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Ship Count/Health:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{shipCount} / { isNaN(fleetHealth) ? 0 : fleetHealth }%</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew/Officer Morale:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{crewMorale.toFixed(0)}% / {NaN}%</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Crew/Officer Morale:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{crewMorale.toFixed(0)}% / { isNaN(officersMorale) ? 0 : officersMorale }%</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Crew/Officer Pay:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{crewWages} / {officerSalaries}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Crew/Officer Pay:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{crewWages} / {officersSalaries}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Infamy/Crown Favor:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{infamy} / {crownFavor}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Infamy/Crown Favor:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{infamy} / {crownFavor}</Col>
                         </Row>
                         <Row className='no-gutters'>
-                            <Col xs='6' lg='5' className={styles.itemLabel}>Bounty:</Col>
-                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{playerBounty}</Col>
+                            <Col xs='6' lg='6' className={styles.itemLabel}>Bounty:</Col>
+                            <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{playerBounty}</Col>
                         </Row>
                         { sceneState !== SceneState.Port ? null :
                             <Row className='no-gutters'>
-                                <Col xs='6' lg='5' className={styles.itemLabel}>Port Reputation:</Col>
-                                <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 3}} className={styles.itemValue}>{portReputation.toFixed(0)}</Col>
+                                <Col xs='6' lg='6' className={styles.itemLabel}>Port Reputation:</Col>
+                                <Col xs={{ span: 5, offset: 1}} lg={{ span: 4, offset: 2}} className={styles.itemValue}>{portReputation.toFixed(0)}</Col>
                             </Row>
                         }
                     </Col>

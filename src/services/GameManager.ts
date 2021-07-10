@@ -10,6 +10,8 @@ import { Fleet } from '../Objects/Ships/Fleet';
 import { Barque } from '../Objects/Ships/Barque';
 import { ShipNameGenerator } from '../Helpers/ShipNameGenerator';
 import { PortLocation } from '../Types/Port';
+import { Officers, OfficerType } from '../Objects/Officers/Officers';
+import { Carpenter, Doctor, Quartermaster } from '../Types/Officers';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -29,11 +31,6 @@ class GameManager {
     private canPlayTurn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     /**
-     * The salary paid per turn to your fleet's carpenter.
-     */
-    private carpenterSalary: BehaviorSubject<number> = new BehaviorSubject(200);
-
-    /**
      * The crew object that manages all things crew.
      */
     private _crew: Crew = new Crew();
@@ -42,11 +39,6 @@ class GameManager {
      * The player's choice of game difficulty.
      */
     private difficulty: BehaviorSubject<number> = new BehaviorSubject(2);
-
-    /**
-     * The salary paid per turn to your fleet's doctor.
-     */
-    private doctorSalary: BehaviorSubject<number> = new BehaviorSubject(400);
 
     /**
      * The ships the player owns.
@@ -59,20 +51,9 @@ class GameManager {
     private maxCrewCount: BehaviorSubject<number> = new BehaviorSubject(25);
 
     /**
-     * The salary paid per turn to your fleet's quartermaster.
+     * The officers object that manages all things officers.
      */
-    private quartermasterSalary: BehaviorSubject<number> = new BehaviorSubject(300);
-
-    /**
-     * The morale of the officers.
-     */
-    private officersMorale: BehaviorSubject<number> = new BehaviorSubject(100);
-
-    /**
-     * The combined total of the officer's salaries.
-     */
-    private officerSalaries: BehaviorSubject<number> = new BehaviorSubject(
-        this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
+    private _officers: Officers = new Officers();
 
     /**
      * The number of ships the player owns.
@@ -97,13 +78,6 @@ class GameManager {
     //         })
     //     );
     // }
-
-    /**
-     * Updates combined salaries for all officers.
-     */
-    private updateOfficerSalaries(): void {
-        this.officerSalaries.next(this.carpenterSalary.value + this.doctorSalary.value  + this.quartermasterSalary.value);
-    }
 
     /**
      * Checks against list of profane and vulgar words to cut down on the number of offensive name choices.
@@ -163,37 +137,8 @@ class GameManager {
 
         switch(currState) {
             case SceneState.Port.toString(): {
-                // Deduct officer salaries
-                let oMorale = this.officersMorale.value;
-                const oSalaries = this.officerSalaries.value;
-                let balance = this.balance.value;
-                let remainingBalance = balance - oSalaries;
-                this.balance.next(remainingBalance >= 0 ? remainingBalance : 0);
-
-                // Adjust officers' morale
-                if (remainingBalance < 0) {
-                    oMorale -= Math.ceil(Math.abs(remainingBalance / 1000));
-                    this.officersMorale.next(oMorale);
-                }
-                
-                // Roll officers morale event (leave)
-                // If officers morale is below 50%, a random check is made on a 1d100.
-                // If the score + current morale is higher than 50%, then no loass of officers.
-                if (oMorale < 50 && ((Math.random() * 100) + oMorale) <= 50) {
-                    // The order of officers leaving are (doctor, carpenter, and then quartermaster).
-                    // TODO: should have actual slots for these officers and not simply salaries.
-                    if (this.doctorSalary.value) {
-                        // TODO: remove doctor from slot
-                        this.doctorSalary.next(0);
-                    } else if (this.carpenterSalary.value) {
-                        // TODO: remove carpenter from slot
-                        this.carpenterSalary.next(0);
-                    } else if (this.quartermasterSalary.value) {
-                        // TODO: remove quartermaster from slot
-                        this.quartermasterSalary.next(0);
-                        this.officersMorale.next(100);
-                    }
-                }
+                // Apply salary affects and adjust officer morale accordingly.
+                this.balance.next(this._officers.payDay(this.balance.value));
 
                 // Apply wage affects and adjust crew morale accordingly.
                 this.balance.next(this._crew.payDay(this.balance.value));
@@ -247,6 +192,14 @@ class GameManager {
     }
 
     /**
+     * Removes the selected officer, and adjusts morale accordingly.
+     * @param officerType the type of officer to let go: carpenter, doctor, quartermaster.
+     */
+    public fireOfficer(firedOfficerType: OfficerType): void {
+        this._officers.fireOfficer(firedOfficerType);
+    }
+
+    /**
      * Gets the subscribable value of balance.
      * @returns observable of player's monetary balance.
      */
@@ -260,6 +213,14 @@ class GameManager {
      */
     public getCanPlayTurn(): Observable<boolean> {
         return this.canPlayTurn.asObservable();
+    }
+
+    /**
+     * Get a clone of the carpenter to be used in populating the officer manifest and similar uses.
+     * @returns the clone of the carpenter.
+     */
+    public getCarpenter(): Observable<Carpenter | null> {
+        return this._officers.getCarpenter();
     }
 
     /**
@@ -287,6 +248,14 @@ class GameManager {
     }
 
     /**
+     * Get a clone of the doctor to be used in populating the officer manifest and similar uses.
+     * @returns the clone of the doctor.
+     */
+    public getDoctor(): Observable<Doctor | null> {
+        return this._officers.getDoctor();
+    }
+
+    /**
      * Consolidates fleet info into a single observable for HUD use.
      * @returns an observable of an object containing the relevant fleet info for the HUD.
      */
@@ -303,19 +272,11 @@ class GameManager {
     }
 
     /**
-     * Gets the subscribable value of officers morale.
-     * @returns observable of the officers morale.
+     * Consolidates officers info into a single observable for HUD use.
+     * @returns an observable of an object containing the relevant officers info for the HUD.
      */
-    public getOfficersMorale(): Observable<number> {
-        return this.officersMorale.asObservable();
-    }
-
-    /**
-     * Gets the subscribable value of officer combined salaries.
-     * @returns observable of player's monetary balance.
-     */
-    public getOfficerSalaries(): Observable<number> {
-        return this.officerSalaries.asObservable();
+    public getOfficersHUD(): Observable<{[key: string]: number}> {
+        return this._officers.getHUD();
     }
 
     /**
@@ -332,6 +293,14 @@ class GameManager {
      */
     public getProvisions(): Observable<[number, number, number]> {
         return this.totalProvisions.asObservable();
+    }
+
+    /**
+     * Get a clone of the quartermaster to be used in populating the officer manifest and similar uses.
+     * @returns the clone of the quartermaster.
+     */
+    public getQuartermaster(): Observable<Quartermaster | null> {
+        return this._officers.getQuartermaster();
     }
 
     /**
@@ -385,7 +354,14 @@ class GameManager {
         if (this.verifyPlayerName(name)) {
             this._crew.updateCrewWage(this.difficulty.value);
             this._crew.addCrew(new Array(48 / this.difficulty.value), true);
+
             this._fleet.addShip(new Barque(ShipNameGenerator()));
+            
+            this._officers.updateOfficerSalaryBase(this.difficulty.value);
+            this._officers.addOfficer(null, OfficerType.Carpenter, true);
+            this._officers.addOfficer(null, OfficerType.Doctor, true);
+            this._officers.addOfficer(null, OfficerType.Quartermaster, true);
+
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
             portManager.enterPort(PortLocation.Nassau);
             stateManager.changeGameState(GameState.Active);

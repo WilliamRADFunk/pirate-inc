@@ -1,12 +1,11 @@
 import { BehaviorSubject, Observable, Subscription, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CrewMember } from '../../Types/CrewMember';
 import { ConcernTypes, getAvatar, getAvatarFeatures, MoodToMouth, translateMood } from '../../Types/People';
-import { BasePirateWage } from '../../Types/Constants';
+import { BaseCarpenterSalary, BaseDoctorSalary, BaseQuartermasterSalary } from '../../Types/Constants';
 import { NickNameGenerator } from '../../Helpers/NickNameGenerator';
 import { GUID } from '../../Helpers/GUID';
-import { Carpenter, Doctor, Officer, Quartermaster } from '../../Types/Officers';
+import { Carpenter, Doctor, Officer, OfficerSkill, Quartermaster } from '../../Types/Officers';
 
 const random = require('random-name-redux');
 
@@ -20,43 +19,48 @@ export class Officers {
     /**
      * The carpenter employed by the player.
      */
-    private _carpenter: BehaviorSubject<Carpenter | null> = new BehaviorSubject(null);
+    private _carpenter: BehaviorSubject<Carpenter | null> = new BehaviorSubject<Carpenter | null> (null);
 
     /**
      * The cloned carpenter employed by the player.
      */
-    private carpenter: BehaviorSubject<Carpenter | null> = new BehaviorSubject(this._carpenter.value);
+    private carpenter: BehaviorSubject<Carpenter | null> = new BehaviorSubject<Carpenter | null> (this._carpenter.value);
 
     /**
      * The doctor employed by the player.
      */
-    private _doctor: BehaviorSubject<Doctor | null> = new BehaviorSubject(null);
+    private _doctor: BehaviorSubject<Doctor | null> = new BehaviorSubject<Doctor | null>(null);
 
     /**
      * The cloned doctor employed by the player.
      */
-    private doctor: BehaviorSubject<Doctor | null> = new BehaviorSubject(this._doctor.value);
+    private doctor: BehaviorSubject<Doctor | null> = new BehaviorSubject<Doctor | null>(this._doctor.value);
 
     /**
      * The quartermaster employed by the player.
      */
-    private _quartermaster: BehaviorSubject<Quartermaster | null> = new BehaviorSubject(null);
+    private _quartermaster: BehaviorSubject<Quartermaster | null> = new BehaviorSubject<Quartermaster | null>(null);
 
     /**
      * The cloned quartermaster employed by the player.
      */
-    private quartermaster: BehaviorSubject<Quartermaster | null> = new BehaviorSubject(this._quartermaster.value);
+    private quartermaster: BehaviorSubject<Quartermaster | null> = new BehaviorSubject<Quartermaster | null>(this._quartermaster.value);
 
     /**
      * The average morale of the officers.
      */
-    private officersMorale: BehaviorSubject<number> = new BehaviorSubject(100);
+    private officersMorale: BehaviorSubject<number> = new BehaviorSubject<number>(100);
 
     /**
      * The combined total of the officers' salaries.
      */
-    private officerSalaries: BehaviorSubject<number> = new BehaviorSubject(
+    private officerSalaries: BehaviorSubject<number> = new BehaviorSubject<number>(
         (this._carpenter.value?.salary ?? 0) + (this._doctor.value?.salary ?? 0) + (this._quartermaster.value?.salary ?? 0));
+
+    /**
+     * The salary modifier associated with the difficulty level.
+     */
+    private _salaryBase: number = 0;
 
     /**
      * List of subscriptions class instance is listening on.
@@ -93,6 +97,7 @@ export class Officers {
         if (carpenter && morale < 50 && ((Math.random() * 100) + morale) <= 50) {
             // TODO: Alert player the carpenter has left their employ.
             this._carpenter.next(null);
+            console.log('Officers', '_calculateDesertion', 'Carpenter deserted due to low morale.');
         }
 
         const doctor = this._doctor.value;
@@ -100,6 +105,7 @@ export class Officers {
         if (doctor && morale < 50 && ((Math.random() * 100) + morale) <= 50) {
             // TODO: Alert player the doctor has left their employ.
             this._doctor.next(null);
+            console.log('Officers', '_calculateDesertion', 'Doctor deserted due to low morale.');
         }
         
         const quartermaster = this._quartermaster.value;
@@ -107,6 +113,7 @@ export class Officers {
         if (quartermaster && morale < 50 && ((Math.random() * 100) + morale) <= 50) {
             // TODO: Alert player the quartermaster has left their employ.
             this._quartermaster.next(null);
+            console.log('Officers', '_calculateDesertion', 'Quartermaster deserted due to low morale.');
         }
     }
 
@@ -138,45 +145,87 @@ export class Officers {
      * @param officerType the type of officer to add: carpenter, doctor, quartermaster.
      * @param isRandom if true, make up the officer at random.
      */
-    public addOfficer(newOfficer: Officer, officerType: OfficerType, isRandom?: boolean): void {
-        const theCrew = this._crew.value.slice();
+    public addOfficer(newOfficer: Officer | null, officerType: OfficerType, isRandom?: boolean): void {
+        let officerToHire;
+        let skills: { [key: string]: OfficerSkill<string> } = {};
+        let salary = 0;
+        switch(officerType) {
+            case OfficerType.Carpenter: {
+                officerToHire = this._carpenter;
+                skills = {
+                    repair: {
+                        label: 'Repair',
+                        rank: Math.ceil(Math.random() * 10)
+                    },
+                    diyMedicine: {
+                        label: 'DIY Medicine',
+                        rank: Math.ceil(Math.random() * 10)
+                    }
+                };
+                salary = BaseCarpenterSalary * this._salaryBase * Math.floor((skills.repair.rank + skills.diyMedicine.rank) / 2);
+                break;
+            }
+            case OfficerType.Doctor: {
+                officerToHire = this._doctor;
+                skills = {
+                    medicine: {
+                        label: 'Medicine',
+                        rank: Math.ceil(Math.random() * 10)
+                    }
+                };
+                salary = BaseDoctorSalary * this._salaryBase * skills.medicine.rank;
+                break;
+            }
+            case OfficerType.Quartermaster: {
+                officerToHire = this._quartermaster;
+                skills = {
+                    cargoDistribution: {
+                        label: 'Cargo Distribution',
+                        rank: Math.ceil(Math.random() * 10)
+                    },
+                    humanResourcing: {
+                        label: 'Human Resources',
+                        rank: Math.ceil(Math.random() * 10)
+                    },
+                    moraleManagement: {
+                        label: 'Morale Management',
+                        rank: Math.ceil(Math.random() * 10)
+                    }
+                };
+                salary = BaseQuartermasterSalary * this._salaryBase * Math.floor((skills.cargoDistribution.rank + skills.humanResourcing.rank + skills.moraleManagement.rank) / 3);
+                break;
+            }
+        }
         if (isRandom) {
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
-            let payOrder = 0;
-            for (let i = 0; i < newCrew.length; i++) {
-                // TODO: Remove dead crew member when no longer testing.
-                const alive = Math.random() < 0.8;
-                payOrder = alive ? payOrder + 1 : payOrder;
-                const newMember = {
-                    avatar: '',
-                    concern: (alive && Math.random() > 0.5) ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
-                    id: GUID(),
-                    mood: MoodToMouth.Happy,
-                    morale: alive ? Math.floor((Math.random() * 50) + 50) : 0,
-                    nameFirst: random.firstMale(),
-                    nameLast: random.last(),
-                    nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
-                    skills: {}
-                } as CrewMember;
-                newMember.mood = translateMood(newMember.morale);
-                newMember.features = getAvatarFeatures(newMember.nameFirst, newMember.nameNick, newMember.nameLast)
-                newMember.avatar = getAvatar(newMember.features, newMember.mood, newMember.isAlive);
-                theCrew.push(newMember);
-            }
-            this._crew.next(theCrew.reverse());
-        } else {
-            theCrew.push(...newCrew);
-            this._crew.next(theCrew);
+            const newOfficer = {
+                avatar: '',
+                background: 'placeholder background story',
+                concern: Math.random() > 0.5 ? concernTypes[Math.floor(Math.random() * (concernTypes.length - 0.001))] : ConcernTypes.Empty,
+                id: GUID(),
+                mood: MoodToMouth.Happy,
+                morale: Math.floor((Math.random() * 50) + 50),
+                nameFirst: random.firstMale(),
+                nameLast: random.last(),
+                nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
+                salary: salary,
+                skills: skills
+            } as Officer;
+            newOfficer.mood = translateMood(newOfficer.morale);
+            newOfficer.features = getAvatarFeatures(newOfficer.nameFirst, newOfficer.nameNick, newOfficer.nameLast)
+            newOfficer.avatar = getAvatar(newOfficer.features, newOfficer.mood, true);
+            officerToHire.next(newOfficer as any);
+        } else if (newOfficer) {
+            officerToHire.next(newOfficer as any);
         }
     }
 
     /**
      * Removes the selected officer, and adjusts morale accordingly.
-     * @param firedOfficer the officer to be 'let go' from the player's employ.
      * @param officerType the type of officer to let go: carpenter, doctor, quartermaster.
      * @param preventMoraleEffect allows the removal of an officer without affecting morale (usually the hiring officer version).
      */
-    public fireOfficer(firedOfficer: Officer, officerType: OfficerType, preventMoraleEffect?: boolean): void {
+    public fireOfficer(officerType: OfficerType, preventMoraleEffect?: boolean): void {
         let officerToFire;
         let otherOfficers: BehaviorSubject<Officer>[] = [];
         switch(officerType) {
@@ -212,8 +261,8 @@ export class Officers {
                 if (random < 0.5 && officer.morale > 0) {
                     officer.morale -= 1;
                     officer.mood = translateMood(officer.morale);
-                    officer.avatar = getAvatar(officer.features, officer.mood, officer.isAlive);
-                    // 20% each officer's main gripe will be the loss of an officer.
+                    officer.avatar = getAvatar(officer.features, officer.mood, true);
+                    // 10% each officer's main gripe will be the loss of an officer.
                     if (random < 0.1) {
                         officer.concern = ConcernTypes.CrewmatesFired;
                     }
@@ -265,146 +314,57 @@ export class Officers {
     }
 
     /**
-     * Consolidates crew info into a single observable for HUD use.
-     * @returns an observable of an object containing the relevant crew info for the HUD.
+     * Consolidates officer info into a single observable for HUD use.
+     * @returns an observable of an object containing the relevant officer info for the HUD.
      */
     public getHUD(): Observable<{[key: string]: number}> {
-        return zip(this.crewCountLiving, this.crewMorale, this.crewWages)
+        return zip(this.officersMorale, this.officerSalaries)
             .pipe(map(val => {
                 return {
-                    crewCountLiving: val[0],
-                    crewMorale: val[1],
-                    crewWages: val[2]
+                    officersMorale: val[0],
+                    officersSalaries: val[1]
                 };
             }));
     }
 
     /**
-     * Caclulates how much to pay crew, how much is left over, and how many of the crew will leave.
-     * @param balance the current amount of money the player possses.
-     * @returns the amount of money player will possess after paying their crew.
+     * Caclulates how much to pay officers, how much is left over, and how many of the officers will leave.
+     * @param balance the current amount of money the player possesses.
+     * @returns the amount of money player will possess after paying their officers.
      */
     public payDay(balance: number): number {
-        // Deduct crew wages
-        const cWages = this.crewWages.value;
-        const remainingBalance = balance - cWages;
-        balance = remainingBalance >= 0 ? remainingBalance : 0;
-
-        // Positive amount means player could pay in full. Negative will lower morale.
-        if (remainingBalance < 0) {
-            const wage = this.crewWage.value;
-            let amountToSpend = cWages - balance;
-            const crew = this._crew.value.filter(c => c.isAlive);
-            const sortedCrew = crew.sort((a, b) => a.payOrder - b.payOrder);
-            sortedCrew.forEach(c => {
-                    if (amountToSpend >= wage) {
-                        amountToSpend -= wage;
-                        if (c.concern === ConcernTypes.NotPaid) {
-                            c.concern = ConcernTypes.Empty;
-                        }
-                    } else if (c.morale > 0) {
-                        c.morale -= 1;
-                        c.concern = ConcernTypes.NotPaid;
-                        c.mood = translateMood(c.morale);
-                        c.avatar = getAvatar(c.features, c.mood, c.isAlive);
-                    }
-                });
-            this._crew.next(crew);
-        }
-
-        // Determine if and how many crew will leave, starting with those having the lowest morale.
-        this._calculateDesertion();
-        return balance;
-    }
-
-    /**
-     * Pays the death benefits for all crew passed in up to available balance.
-     * @param cMembers the dead crew members the player wishes to pay the death benefits for.
-     * @param balance the amount of money player currently has.
-     * @returns the balance after paying crew death benefits.
-     */
-    public payDeathBenefits(cMembers: CrewMember[], balance: number): number {
-        const crew = this._crew.value;
-        const deadUnpaidCrew = crew.slice()
-            .filter(c => !c.isAlive && !c.hasPaidDeathBenefit)
-            .filter(c => cMembers.find(dCrew => dCrew.id === c.id));
-
+        const carpenter = this._carpenter.value;
+        const doctor = this._doctor.value;
+        const quartermaster = this._quartermaster.value;
+        const officers = [quartermaster, doctor, carpenter].filter(off => !!off) as unknown as Officer[];
         let remainingBalance = balance;
-        // Pay those that the balance will allow.
-        deadUnpaidCrew.forEach(c => {
-                if (remainingBalance >= c.deathBenefit) {
-                    remainingBalance -= c.deathBenefit;
-                    c.hasPaidDeathBenefit = true;
-                    c.turnsSinceDeath = 0;
-                }
-            });
 
-        this._crew.next(crew);
+        officers.forEach(off => {
+            if (off.salary <= remainingBalance) {
+                remainingBalance -= off.salary;
+                return;
+            }
+
+            // The more owed to the officer the worse of a hit to morale it will be.
+            remainingBalance -= off.salary;
+            const morale = off.morale - Math.ceil(Math.abs(remainingBalance / 1000));
+            off.morale = morale < 0 ? 0 : morale;
+
+            // Prevent negative values for clean calculation of next officer's morale.
+            remainingBalance = 0;
+        });
+
+        // Determine if and how many officers will leave, starting with those having the lowest morale.
+        this._calculateDesertion();
         return remainingBalance;
     }
 
     /**
-     * Sort the crew order based on the offered params.
-     * @param key the first-level nested crewMember key to sort by.
-     * @param secondaryKey the optional second-level nested crewMember key to sort by.
-     * @param asc whether to sort in ascending order or not.
-     */
-    public sortCrewManifest(key: string, secondaryKey: string, asc: boolean): void {
-        let crew = this._crew.value.slice();
-        if (secondaryKey) {
-            crew = crew.sort((a: any, b: any) => {
-                const aVal = a[key][secondaryKey];
-                const bVal = b[key][secondaryKey];
-                if (aVal < bVal) {
-                    return asc ? -1 : 1;
-                }
-                if (aVal > bVal) {
-                    return asc ? 1 : -1;
-                }
-                return 0;
-            });
-        } else {
-            crew = crew.sort((a: any, b: any) => {
-                const aVal = a[key];
-                const bVal = b[key];
-                if (aVal < bVal) {
-                    return asc ? -1 : 1;
-                }
-                if (aVal > bVal) {
-                    return asc ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        this._crew.next(crew);
-    }
-
-    /**
-     * Updates base wage for a single crew member, caused primarily when the difficulty has changed.
+     * Updates base salary modifier for any officer, caused primarily when the difficulty has changed.
      * @param difficulty the game difficulty level the player chose at start.
      */
     public updateOfficerSalaryBase(difficulty: number): void {
-        this.salaryBase.next(BaseOfficerSalary * difficulty);
+        this._salaryBase = difficulty;
         this._updateOfficerSalaries();
-    }
-
-    /**
-     * Alters the pay priority of one crew member in the list.
-     * @param payNumber the payOrder index of the crew member whose position is being altered.
-     * @param isDown flag to determine which of the two direction the change moves in.
-     */
-    public updatePayPriority(payNumber: number, isDown: boolean): void {
-        const crew = this._crew.value.filter(c => c.isAlive).sort((a, b) => a.payOrder - b.payOrder);
-        const originalCrewMember = crew[payNumber];
-        if (isDown) {
-            const crewMemberToSwapWith = crew[payNumber - 1];
-            originalCrewMember.payOrder -= 1;
-            crewMemberToSwapWith.payOrder += 1;
-        } else {
-            const crewMemberToSwapWith = crew[payNumber + 1];
-            originalCrewMember.payOrder += 1;
-            crewMemberToSwapWith.payOrder -= 1;
-        }
-        this._crew.next(this._crew.value);
     }
 }

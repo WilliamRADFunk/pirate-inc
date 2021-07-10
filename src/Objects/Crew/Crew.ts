@@ -154,7 +154,7 @@ export class Crew {
                         c.morale -= 1;
                         c.mood = translateMood(c.morale);
                         c.avatar = getAvatar(c.features, c.mood, c.isAlive);
-                        // 20% each crew member's main gripe will be the loss of crewmates.
+                        // 10% each crew member's main gripe will be the loss of crewmates.
                         if (random < 0.1) {
                             c.concern = ConcernTypes.CrewmatesFired;
                         }

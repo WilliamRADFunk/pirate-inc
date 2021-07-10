@@ -11,7 +11,6 @@ export interface Officer {
     concern: ConcernTypes;
     features: Features;
     id: string;
-    isAlive: boolean;
     mood: MoodToMouth;
     morale: number;
     nameFirst: string;
