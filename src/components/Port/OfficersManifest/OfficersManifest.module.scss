@@ -1,6 +1,16 @@
+.avatar-icon-wrapper {
+    border-radius: 50%;
+    height: 40px;
+    left: 10px;
+    padding-top: 4px;
+    position: absolute;
+    top: 10px; 
+    width: 40px;
+}
+
 .avatar-sizing {
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
 }
 
 .manifest {
@@ -43,7 +53,7 @@
 
 .scroll-bottom {
     position: absolute;
-    bottom: -122px;
+    bottom: -108px;
     z-index: 2;
 }
 

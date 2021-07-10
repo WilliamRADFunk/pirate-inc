@@ -1,6 +1,6 @@
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
-import { Hair } from '@dicebear/micah/lib/options';
+import { Hair, Nose } from '@dicebear/micah/lib/options';
 
 /**
  * A mapping to set facial expression (eyes) of avatar generated image to based off morale setting.
@@ -54,6 +54,7 @@ export enum ConcernTypes {
     Bored = 'Bored',
     CrewmatesFired = 'Crewmates Fired',
     Empty = 'Empty',
+    NoFood = 'No Food',
     NotPaid = 'Not Paid',
     UntendedInjury = 'Untended Injury'
 }
@@ -74,9 +75,14 @@ export const EarringColor = ['mellow', 'silver'];
 export const EyeColors = ['apricot', 'coast', 'topaz', 'lavender', 'sky', 'salmon', 'canary', 'calm', 'azure', 'seashell', 'mellow'];
 
 /**
- * List of possible hairstyles the avatar generator supports.
+ * List of possible hair styles the avatar generator supports.
  */
 export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
+
+/**
+ * List of possible nose styles the avatar generator supports.
+ */
+export const NoseStyles = ['curve', 'pointed', 'round'];
 
 /**
  * All the physcial attributes all crew members have in their avatar.
@@ -88,6 +94,7 @@ export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
     facialHairProbability: boolean;
     hair: string;
     hairColor: string;
+    nose: string;
     seed: string;
 }
 
@@ -101,13 +108,15 @@ export const HairStyles = ['dougFunny', 'fonze', 'mrClean', 'mrT'];
     const hairStyleIndex = Math.floor(Math.random() * (HairStyles.length - 0.001));
     const earringColorIndex = Math.floor(Math.random() * (EarringColor.length - 0.001));
     const eyeColorIndex = Math.floor(Math.random() * (EyeColors.length - 0.001));
+    const noseIndex = Math.floor(Math.random() * (NoseStyles.length - 0.001));
     return {
         earringColor: EarringColor[earringColorIndex],
         eyeColor: EyeColors[eyeColorIndex],
         facialHairColor: HairColors[hairColorIndex],
         facialHairProbability: Math.random() < 0.65,
         hair: HairStyles[hairStyleIndex],
-        hairColor: HairColors[hairColorIndex]
+        hairColor: HairColors[hairColorIndex],
+        nose: NoseStyles[noseIndex]
     };
 };
 
@@ -140,12 +149,13 @@ export function getAvatar(features: Features, mood: MoodToMouth, isAlive: boolea
             glassesProbability: 0,
             hair: [features.hair] as Hair,
             hairColor: [features.hairColor],
-            mouth: [mood]
+            mouth: [mood],
+            nose: [features.nose] as Nose
         });
 }
 
 export function getAvatarFeatures(first: string, nick: string, last: string): Features {
-    const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor } = getFeatures() as Features;
+    const { earringColor, eyeColor, facialHairColor, facialHairProbability, hair, hairColor, nose } = getFeatures() as Features;
     const seed =  `${first}-${nick}-${last}`;
     return {
         earringColor,
@@ -154,6 +164,7 @@ export function getAvatarFeatures(first: string, nick: string, last: string): Fe
         facialHairProbability,
         hair,
         hairColor,
+        nose,
         seed
     };
 }

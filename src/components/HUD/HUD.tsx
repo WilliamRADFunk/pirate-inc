@@ -8,6 +8,7 @@ import { gameManager } from '../../Services/GameManager';
 import { playerManager } from '../../Services/PlayerManager';
 import { GameState, SceneState, stateManager } from '../../Services/StateManager';
 import { portManager } from '../../Services/PortManager';
+import { formatter } from '../../Helpers/Format';
 
 interface Props {}
 
@@ -35,12 +36,6 @@ interface State {
     shipCount: number;
     totalActionPoints: number;
 }
-
-const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-});
 
 export class HUD extends React.Component<Props, State> {
     private subscriptions: Subscription[] = [];

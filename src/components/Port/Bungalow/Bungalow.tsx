@@ -189,7 +189,7 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
-                    <Row className='no-gutters'>
+                    <Row className='manifest no-gutters'>
                         <Col
                             aria-label='Bungalow officers manifest section'
                             className='fs-sm text-left'>
