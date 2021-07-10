@@ -10,6 +10,7 @@ import { PortSceneState, stateManager } from '../../../Services/StateManager';
 import { CrewManifest } from '../CrewManifest/CrewManifest';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
+import { OfficersManifest } from '../OfficersManifest/OfficersManifest';
 
 interface Props {}
 
@@ -133,7 +134,7 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
                     <Row className="manifest no-gutters">
                         <Col
-                            aria-label='Bungalow buy suplies section description'
+                            aria-label='Bungalow crew manifest section'
                             className='fs-sm text-left'>
                             <CrewManifest>
                                 <OverlayTrigger rootClose
@@ -190,9 +191,48 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowOfficerSummaries ? null :
                     <Row className='no-gutters'>
                         <Col
-                            aria-label='Bungalow fire officers section description'
+                            aria-label='Bungalow officers manifest section'
                             className='fs-sm text-left'>
-                            Here is the list of your officers. See their associated stats and backgrounds.
+                            <OfficersManifest>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={renderTooltip({
+                                        children: 'Access help for this section'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Open help modal for deeper description of officers manifest section'
+                                            className={ styles['help-icon'] + ' border-0 text-dark' }
+                                            onClick={() => gameManager.openHelpModal('Officers Manifest - Port')}>
+                                            <MdHelpOutline></MdHelpOutline>
+                                        </Button>
+                                    )}
+                                </OverlayTrigger>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={renderTooltip({
+                                        children: 'Return to main port options'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Return to port options'
+                                            className={ styles['exit-icon'] + ' border-0 text-dark' }
+                                            onClick={() => this.toggleMode()}>
+                                            <ImExit></ImExit>
+                                        </Button>
+                                    )}
+                                </OverlayTrigger>
+                            </OfficersManifest>
                         </Col>
                     </Row>
                 }
