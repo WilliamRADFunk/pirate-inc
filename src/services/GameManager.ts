@@ -116,6 +116,7 @@ class GameManager {
             newCrew.length -= excessCrewCount;
         }
         this._crew.addCrew(newCrew, false);
+        //TODO: Make sure the payorder increments appropriately.
         if (Math.random() < 0.05) {
             playerManager.removeActionPoints(1);
         }

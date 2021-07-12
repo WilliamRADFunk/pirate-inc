@@ -2,11 +2,10 @@ import React from 'react';
 import { Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { HireableCrew } from '../../../Objects/Crew/HireableCrew';
+import { HireableOfficers } from '../../../Objects/Officers/HireableOfficers';
 import { portManager } from '../../../Services/PortManager';
 
-import styles from './HireCrew.module.scss';
-import { CrewMember } from '../../../Types/CrewMember';
+import styles from './HireOfficers.module.scss';
 import { Port } from '../../../Types/Port';
 import { FaHireAHelper } from 'react-icons/fa';
 import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
@@ -14,16 +13,21 @@ import { IoArrowRedoCircleOutline, IoArrowUndoCircleOutline } from 'react-icons/
 import { RiTeamFill } from 'react-icons/ri';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
+import { Carpenter, Doctor, Quartermaster } from '../../../Types/Officers';
+import { OfficerType } from '../../../Objects/Officers/Officers';
 
 interface Props {}
 
 interface State {
-    crewCount: number;
+    carpenter: Carpenter | null;
+    doctor: Doctor | null;
+    quartermaster: Quartermaster | null;
     currentIndex: number;
     currentPort: Port | null;
-    hireableCrew: HireableCrew;
-    maxCrew: number;
-    recruits: CrewMember[];
+    hireableOfficers: HireableOfficers;
+    recruitableCarpenter: Carpenter | null;
+    recruitableDoctor: Doctor | null;
+    recruitableQuartermaster: Quartermaster | null;
 }
 
 function renderTooltip(props: any): JSX.Element {
@@ -35,30 +39,33 @@ function renderTooltip(props: any): JSX.Element {
     );
 }
 
-export class HireCrew extends React.Component<Props, State> {
-    private subscriptions: Subscription[] = []; // [Port, HireableCrew, Recruits]
+export class HireOfficers extends React.Component<Props, State> {
+    private subscriptions: Subscription[] = [];
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            crewCount: 0,
+            carpenter: null,
+            doctor: null,
+            quartermaster: null,
             currentIndex: 0,
-            hireableCrew: new HireableCrew(),
             currentPort: null,
-            maxCrew: 0,
-            recruits: []
+            hireableOfficers: new HireableOfficers(),
+            recruitableCarpenter: null,
+            recruitableDoctor: null,
+            recruitableQuartermaster: null
         };
     }
 
     private _changeIndex(dir: number): void {
         const newIndex = dir + this.state.currentIndex;
-        if (newIndex >= 0 && newIndex < this.state.recruits.length) {
+        if (newIndex >= 0 && newIndex < 3) {
             this.setState({ currentIndex: newIndex });
         }
     }
 
-    private _hireCrew(crew: CrewMember[]): void {
+    private _hireOfficers(officer: (Carpenter | Doctor | Quartermaster)): void {
         const currIndex = this.state.currentIndex;
         const recruits = this.state.recruits;
 
@@ -74,29 +81,32 @@ export class HireCrew extends React.Component<Props, State> {
 
         gameManager.addCrew(existingChoices, true);
         // Remove the listed crew members from the eligibleCrew.
-        this.state.hireableCrew?.removeCrew(existingChoices);
+        this.state.hireableOfficers?.removeOfficer(existingChoices);
         
     }
 
     public componentDidMount() {
         this.subscriptions.push(
-            gameManager.getMaxCrewCount().subscribe(maxC => {
-                this.setState({ maxCrew: maxC });
+            gameManager.getCarpenter().subscribe(carp => {
+                this.setState({ carpenter: carp });
             }),
-            gameManager.getCrew().subscribe(crew => {
-                this.setState({ crewCount: crew.filter(c => c.isAlive).length });
-            })
+            gameManager.getDoctor().subscribe(doc => {
+                this.setState({ doctor: doc });
+            }),
+            gameManager.getQuartermaster().subscribe(qmc => {
+                this.setState({ quartermaster: qmc });
+            }),
         );
 
-        this.subscriptions[2] = portManager.getCurrentPort()
+        this.subscriptions[3] = portManager.getCurrentPort()
             .pipe(filter(port => !!port))
             .subscribe(port => {
-                this.subscriptions[3]?.unsubscribe();
+                this.subscriptions[4]?.unsubscribe();
                 this.setState({ currentPort: port });
-                this.subscriptions[3] = port.availableCrewToHire.subscribe(hireableCrew => {
-                    this.subscriptions[4]?.unsubscribe();
-                    this.setState({ hireableCrew: hireableCrew });
-                    this.subscriptions[4] = hireableCrew.getCrew().subscribe(recruits => {
+                this.subscriptions[4] = port.availableOfficersToHire.subscribe(hireableOfficers => {
+                    this.subscriptions[5]?.unsubscribe();
+                    this.setState({ hireableOfficers: hireableOfficers });
+                    this.subscriptions[5] = hireableOfficers.getOfficers().subscribe(recruits => {
                         this.setState({ recruits });
                     });
                 });
@@ -110,15 +120,16 @@ export class HireCrew extends React.Component<Props, State> {
     }
 
     public render() {
-        const { crewCount, currentIndex, maxCrew, recruits } = this.state;
+        const { carpenter, currentIndex, doctor, recruits, quartermaster } = this.state;
         const children = React.Children.toArray(this.props.children);
-        const maxCrewReached = crewCount >= maxCrew;
+        const currRecruit = recruits[currentIndex] ?? null;
+        const currType = currRecruit?.type ?? OfficerType.Quartermaster;
         return (
             <Row className='no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
                     <Row className='no-gutters mb-5'>
                         <Col className='col-6 offset-3'>
-                            <h2 className={ styles['hire-crew-header'] }>Hire Recruits</h2>
+                            <h2 className={ styles['hire-crew-header'] }>Hire Officers</h2>
                         </Col>
                         <Col className='col-1'>
                             <div className={ styles['hire-crew-help'] + ' text-right' }>
@@ -131,7 +142,7 @@ export class HireCrew extends React.Component<Props, State> {
                             </div>
                         </Col>
                     </Row>
-                    { (!recruits?.length || maxCrewReached)
+                    { !recruits?.length
                         ? <div className={ styles['avatar-sizing'] }></div>
                         : <div
                             className={ styles['avatar-sizing'] }
@@ -150,14 +161,11 @@ export class HireCrew extends React.Component<Props, State> {
                         <div className={ styles['ink-quill-wrapper'] + ' no-select' }>
                             <img src='images/tavern-ink-quill.png' alt='ink and quill' className={ styles['ink-quill'] }/>
                         </div>
-                        { (!recruits?.length || maxCrewReached)
+                        { !recruits?.length
                             ? <div className={ styles['stats-wrapper'] + ' text-dark' }>
                                 <Row className={ styles['stats'] + ' mx-auto' }>
                                     <Col className={ styles['stats-text'] + ' col-12 no-select mt-2' }>
-                                        { maxCrewReached
-                                            ? 'You\'ve eached the maximum crew your ships can support'
-                                            : 'No Recruits Available'
-                                        }
+                                        No Officers Available
                                     </Col>
                                 </Row>
                             </div>
@@ -192,7 +200,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <span
                                             aria-label='Hire the recruit'
                                             className={ styles['hire-icon']}
-                                            onClick={ () => { this._hireCrew([recruits[currentIndex]]) } }>
+                                            onClick={ () => { this._hireOfficers(recruits[currentIndex]) } }>
                                             <FaHireAHelper />
                                         </span>
                                     }
@@ -233,7 +241,7 @@ export class HireCrew extends React.Component<Props, State> {
                                             </OverlayTrigger>
                                         </Col>
                                         <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.cannoneering * 100).toFixed(0) }
+                                            { (recruits[currentIndex]?.skills[0]?.rank * 100).toFixed(0) }
                                         </Col>
                                         <Col className={ styles['stats-text'] + ' col-4 no-select'}>
                                             { (recruits[currentIndex].skills.cleanliness * 100).toFixed(0) }

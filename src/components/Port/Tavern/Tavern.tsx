@@ -176,7 +176,7 @@ export class Tavern extends React.Component<Props, State> {
                     </Row>
                 </>}
                 { portSceneState !== PortSceneState.TavernBuySupplies ? null :
-                    <Row className='no-gutters'>
+                    <Row className='no-gutters tavern-bg'>
                         <Col
                             aria-label='Tavern buy supplies section description'
                             className='fs-sm text-left'>
@@ -197,7 +197,7 @@ export class Tavern extends React.Component<Props, State> {
                     <div style={{ position: 'absolute', top: 0, right: 0 }}>
                         <img src="images/torch-fire.gif" alt='tavern background torch flame' style={{ width: '4em', height: '4em' }}></img>
                     </div>
-                    <Row className='no-gutters bg-dark text-light'>
+                    <Row className='no-gutters bg-dark text-light tavern-bg'>
                         <Col
                             aria-label='Tavern hire crew section description'
                             className='fs-sm text-left'>
@@ -245,7 +245,7 @@ export class Tavern extends React.Component<Props, State> {
                     </Row>
                 </>}
                 { portSceneState !== PortSceneState.TavernHireOfficers ? null :
-                    <Row className='no-gutters'>
+                    <Row className='no-gutters tavern-bg'>
                         <Col
                             aria-label='Tavern hire officers section description'
                             className='fs-sm text-left'>
