@@ -60,7 +60,7 @@ export class Officers {
     /**
      * The salary modifier associated with the difficulty level.
      */
-    private _salaryBase: number = 0;
+    private static _salaryBase: number = 0;
 
     /**
      * List of subscriptions class instance is listening on.
@@ -144,8 +144,9 @@ export class Officers {
      * @param newOfficer the new officer to add to the roster.
      * @param officerType the type of officer to add: carpenter, doctor, quartermaster.
      * @param isRandom if true, make up the officer at random.
+     * @param isHire if true, recruit is a recruit for hire and should have a transparent background.
      */
-    public addOfficer(newOfficer: Officer | null, officerType: OfficerType, isRandom?: boolean): void {
+    public addOfficer(newOfficer: Officer | null, officerType: OfficerType, isRandom?: boolean, isHire?: boolean): void {
         let officerToHire;
         let skills: { [key: string]: OfficerSkill<string> } = {};
         let salary = 0;
@@ -162,7 +163,7 @@ export class Officers {
                         rank: Math.ceil(Math.random() * 10)
                     }
                 };
-                salary = BaseCarpenterSalary * this._salaryBase * Math.floor((skills.repair.rank + skills.diyMedicine.rank) / 2);
+                salary = BaseCarpenterSalary * Officers._salaryBase * Math.floor((skills.repair.rank + skills.diyMedicine.rank) / 2);
                 break;
             }
             case OfficerType.Doctor: {
@@ -173,7 +174,7 @@ export class Officers {
                         rank: Math.ceil(Math.random() * 10)
                     }
                 };
-                salary = BaseDoctorSalary * this._salaryBase * skills.medicine.rank;
+                salary = BaseDoctorSalary * Officers._salaryBase * skills.medicine.rank;
                 break;
             }
             case OfficerType.Quartermaster: {
@@ -192,7 +193,7 @@ export class Officers {
                         rank: Math.ceil(Math.random() * 10)
                     }
                 };
-                salary = BaseQuartermasterSalary * this._salaryBase * Math.floor((skills.cargoDistribution.rank + skills.humanResourcing.rank + skills.moraleManagement.rank) / 3);
+                salary = BaseQuartermasterSalary * Officers._salaryBase * Math.floor((skills.cargoDistribution.rank + skills.humanResourcing.rank + skills.moraleManagement.rank) / 3);
                 break;
             }
         }
@@ -213,9 +214,11 @@ export class Officers {
             } as Officer;
             newOfficer.mood = translateMood(newOfficer.morale);
             newOfficer.features = getAvatarFeatures(newOfficer.nameFirst, newOfficer.nameNick, newOfficer.nameLast)
-            newOfficer.avatar = getAvatar(newOfficer.features, newOfficer.mood, true);
+            newOfficer.avatar = getAvatar(newOfficer.features, newOfficer.mood, true, !!isHire);
+            newOfficer.type = officerType;
             officerToHire.next(newOfficer as any);
         } else if (newOfficer) {
+            newOfficer.type = officerType;
             officerToHire.next(newOfficer as any);
         }
     }
@@ -328,6 +331,28 @@ export class Officers {
     }
 
     /**
+     * Quick check to determine if player is currently employing an officer of that type.
+     * @param type the type of officer to check for.
+     * @returns true if the officer exists and false if the slot is empty.
+     */
+    public hasOfficer(type: OfficerType): boolean {
+        switch (type) {
+            case OfficerType.Carpenter: {
+                return !!this.carpenter.value;
+            }
+            case OfficerType.Doctor: {
+                return !!this.doctor.value;
+            }
+            case OfficerType.Quartermaster: {
+                return !!this.quartermaster.value;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+
+    /**
      * Caclulates how much to pay officers, how much is left over, and how many of the officers will leave.
      * @param balance the current amount of money the player possesses.
      * @returns the amount of money player will possess after paying their officers.
@@ -364,7 +389,7 @@ export class Officers {
      * @param difficulty the game difficulty level the player chose at start.
      */
     public updateOfficerSalaryBase(difficulty: number): void {
-        this._salaryBase = difficulty;
+        Officers._salaryBase = difficulty;
         this._updateOfficerSalaries();
     }
 }

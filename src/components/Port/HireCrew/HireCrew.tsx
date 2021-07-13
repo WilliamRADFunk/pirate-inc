@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HireableCrew } from '../../../Objects/Crew/HireableCrew';
@@ -14,6 +14,7 @@ import { IoArrowRedoCircleOutline, IoArrowUndoCircleOutline } from 'react-icons/
 import { RiTeamFill } from 'react-icons/ri';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
 
 interface Props {}
 
@@ -24,15 +25,6 @@ interface State {
     hireableCrew: HireableCrew;
     maxCrew: number;
     recruits: CrewMember[];
-}
-
-function renderTooltip(props: any): JSX.Element {
-    const id = `tooltip-${GUID()}`;
-    return (
-        <Tooltip id={ id }>
-            { props.children }
-        </Tooltip>
-    );
 }
 
 export class HireCrew extends React.Component<Props, State> {
@@ -72,7 +64,7 @@ export class HireCrew extends React.Component<Props, State> {
             this.setState({ currentIndex: recruits.length - existingChoices.length - 1 });
         }
 
-        gameManager.addCrew(existingChoices, true);
+        gameManager.addCrew(existingChoices);
         // Remove the listed crew members from the eligibleCrew.
         this.state.hireableCrew?.removeCrew(existingChoices);
         
@@ -204,7 +196,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'cannoneering' })}>
+                                                overlay={RenderTooltip({ children: 'cannoneering' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><GiCannon aria-label='cannoneering' /></span>
                                                 )}
@@ -215,7 +207,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'cleanliness' })}>
+                                                overlay={RenderTooltip({ children: 'cleanliness' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><GiBroom aria-label='cleanliness' /></span>
                                                 )}
@@ -226,7 +218,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'greed' })}>
+                                                overlay={RenderTooltip({ children: 'greed' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><GiReceiveMoney aria-label='greed' /></span>
                                                 )}
@@ -246,7 +238,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'hand to hand combat' })}>
+                                                overlay={RenderTooltip({ children: 'hand to hand combat' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><GiFist aria-label='hand2HandCombat' /></span>
                                                 )}
@@ -257,7 +249,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'sailing' })}>
+                                                overlay={RenderTooltip({ children: 'sailing' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><GiSailboat aria-label='sailing' /></span>
                                                 )}
@@ -268,7 +260,7 @@ export class HireCrew extends React.Component<Props, State> {
                                                 key={GUID()}
                                                 placement="top"
                                                 delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'teamwork' })}>
+                                                overlay={RenderTooltip({ children: 'teamwork' })}>
                                                 {({ ref, ...triggerHandler }) => (
                                                     <span ref={ ref } {...triggerHandler}><RiTeamFill aria-label='teamwork' /></span>
                                                 )}

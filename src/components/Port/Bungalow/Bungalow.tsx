@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { ImExit } from 'react-icons/im';
 import { MdHelpOutline } from 'react-icons/md';
@@ -11,20 +11,12 @@ import { CrewManifest } from '../CrewManifest/CrewManifest';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
 import { OfficersManifest } from '../OfficersManifest/OfficersManifest';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
 
 interface Props {}
 
 interface State {
     portSceneState: PortSceneState;
-}
-
-function renderTooltip(props: any): JSX.Element {
-    const id = `tooltip-${GUID()}`;
-    return (
-        <Tooltip id={ id }>
-            { props.children }
-        </Tooltip>
-    );
 }
 
 export class Bungalow extends React.Component<Props, State> {
@@ -141,7 +133,7 @@ export class Bungalow extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Access help for this section'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 
@@ -160,7 +152,7 @@ export class Bungalow extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Return to main port options'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 
@@ -198,7 +190,7 @@ export class Bungalow extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Access help for this section'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 
@@ -217,7 +209,7 @@ export class Bungalow extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Return to main port options'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 

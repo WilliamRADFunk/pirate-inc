@@ -105,9 +105,8 @@ class GameManager {
     /**
      * Adds existing crew members to the crew.
      * @param newCrew the new crew members to add to the roster.
-     * @param isHire flag to signal that the new crew is result of a hire.
      */
-    public addCrew(newCrew: CrewMember[], isHire?: boolean): void {
+    public addCrew(newCrew: CrewMember[]): void {
         const crewCount = this._crew.getCrewCount() + newCrew.length;
         const maxCrew = this.maxCrewCount.value;
         if (crewCount >= maxCrew) {
@@ -119,6 +118,18 @@ class GameManager {
         //TODO: Make sure the payorder increments appropriately.
         if (Math.random() < 0.05) {
             playerManager.removeActionPoints(1);
+        }
+    }
+
+    /**
+     * Adds existing officer.
+     * @param officer the officer player has hired.
+     * @param type the type of officer the player has hired.
+     */
+    public addOfficer(officer: (Carpenter | Doctor | Quartermaster | null), type: OfficerType): void {
+        if (!officer || this._officers.hasOfficer(type)) {
+            this._officers.fireOfficer(type);
+            this._officers.addOfficer(officer, type, false);
         }
     }
 

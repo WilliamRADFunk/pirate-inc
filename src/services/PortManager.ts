@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
+import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
 
 import { Port, PortLocation } from "../Types/Port";
 import { playerManager } from "./PlayerManager";
@@ -25,6 +26,7 @@ class PortManager {
             // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: false, // Bribe
                     2: false, // Writ of Protection
@@ -47,6 +49,7 @@ class PortManager {
             // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: true, // Bribe
                     2: true, // Writ of Protection
@@ -69,6 +72,7 @@ class PortManager {
             // A crown port with no love for pirates which is often attacked by pirates.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -91,6 +95,7 @@ class PortManager {
             // While technically under the crown, it is the capital of the pirate republic under Benjamin Hornigold.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -113,6 +118,7 @@ class PortManager {
             // A known pirate port with no love for the crown.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: true,
                     2: false,
@@ -135,6 +141,7 @@ class PortManager {
             // THE Crown port. Pirates will find no love here, but it's also where the real money can be found.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -157,6 +164,7 @@ class PortManager {
             // A pirate stronghold with its very own castle.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
+                availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -214,6 +222,7 @@ class PortManager {
 
     private _setupPortContent(port: Port): void {
         port.availableCrewToHire.next(new HireableCrew(Math.floor(Math.random() * 90 + 10)));
+        port.availableOfficersToHire.next(new HireableOfficers(Math.floor(Math.random() * 3)));
         // TODO: Establish how much shipyard can spend on buying player ships.
         // TODO: Establish how much money port is willing to spend on buying looted cargo.
         // TODO: Establish local prices for buying each type of local cargo.

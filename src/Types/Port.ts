@@ -1,5 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
+import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
 
 /**
  * Available ports in the game.
@@ -19,6 +20,7 @@ export enum PortLocation {
  */
 export interface Port {
     availableCrewToHire: BehaviorSubject<HireableCrew>;
+    availableOfficersToHire: BehaviorSubject<HireableOfficers>;
     readonly colonialOptions: { [key: number]: boolean };
     readonly connectedPorts: Port[];
     readonly costScaleSize: number;

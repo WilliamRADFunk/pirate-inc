@@ -191,7 +191,7 @@ export class HUD extends React.Component<Props, State> {
         } = this.state;
 
         return (gameState !== GameState.Active ? null :
-            <Col xs='12' lg={{ span: 10, offset: 1}} className='hud-bg text-left' style={{ color: '#000', textShadow: '0.5px 0.5px #720058', letterSpacing: '0.1em' }}>
+            <Col xs='12' lg={{ span: 10, offset: 1}} className='hud-bg text-left' style={{ color: '#000', textShadow: '0.5px 0.5px #720058' }}>
                 <Row className='no-gutters my-5'>
                     <Col
                         xs={{ span: 7, offset: 1}}

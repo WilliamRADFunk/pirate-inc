@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, OverlayTrigger, Row, Table, Tooltip } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row, Table } from 'react-bootstrap';
 import { FaCaretDown, FaCaretUp, FaRegThumbsDown, FaSort } from 'react-icons/fa';
 import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
 import { GrMoney } from 'react-icons/gr';
@@ -11,6 +11,7 @@ import { gameManager } from '../../../Services/GameManager';
 import { CrewMember } from '../../../Types/CrewMember';
 import { ConcernTypes, MouthToMood } from '../../../Types/People';
 import { GUID } from '../../../Helpers/GUID';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
 
 interface Props {}
 
@@ -33,7 +34,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
             key={GUID()}
             placement="top"
             delay={{ show: 100, hide: 250 }}
-            overlay={renderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
+            overlay={RenderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
             {({ ref, ...triggerHandler }) => (
                 <span ref={ ref } {...triggerHandler} className='clickable ml-1' onClick={ () => props.sortBy() }><FaSort /></span>
             )}
@@ -61,14 +62,6 @@ function renderDeathBenefits(props: any): JSX.Element {
             <span>${ benefitAmt }</span> <span>({ turnsSinceDeath })</span>
         </div>
     </>);
-}
-
-function renderTooltip(props: any): JSX.Element {
-    return (
-        <Tooltip id="button-tooltip" {...props}>
-            { props.children }
-        </Tooltip>
-    );
 }
 
 export class CrewManifest extends React.Component<Props, State> {

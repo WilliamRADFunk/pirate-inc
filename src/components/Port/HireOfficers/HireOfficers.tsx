@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HireableOfficers } from '../../../Objects/Officers/HireableOfficers';
@@ -7,14 +7,17 @@ import { portManager } from '../../../Services/PortManager';
 
 import styles from './HireOfficers.module.scss';
 import { Port } from '../../../Types/Port';
-import { FaHireAHelper } from 'react-icons/fa';
-import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
+import { AiFillMedicineBox } from 'react-icons/ai';
+import { FaBoxes, FaHireAHelper } from 'react-icons/fa';
+import { GiHandSaw, GiHumanPyramid, GiSewingNeedle } from 'react-icons/gi';
 import { IoArrowRedoCircleOutline, IoArrowUndoCircleOutline } from 'react-icons/io5';
-import { RiTeamFill } from 'react-icons/ri';
+import { BiHappyBeaming } from 'react-icons/bi';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
 import { Carpenter, Doctor, Quartermaster } from '../../../Types/Officers';
 import { OfficerType } from '../../../Objects/Officers/Officers';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
+import { formatter } from '../../../Helpers/Format';
 
 interface Props {}
 
@@ -28,15 +31,7 @@ interface State {
     recruitableCarpenter: Carpenter | null;
     recruitableDoctor: Doctor | null;
     recruitableQuartermaster: Quartermaster | null;
-}
-
-function renderTooltip(props: any): JSX.Element {
-    const id = `tooltip-${GUID()}`;
-    return (
-        <Tooltip id={ id }>
-            { props.children }
-        </Tooltip>
-    );
+    recruits: [(Carpenter | null), (Doctor | null), (Quartermaster | null)];
 }
 
 export class HireOfficers extends React.Component<Props, State> {
@@ -54,7 +49,8 @@ export class HireOfficers extends React.Component<Props, State> {
             hireableOfficers: new HireableOfficers(),
             recruitableCarpenter: null,
             recruitableDoctor: null,
-            recruitableQuartermaster: null
+            recruitableQuartermaster: null,
+            recruits: [null, null, null]
         };
     }
 
@@ -65,24 +61,184 @@ export class HireOfficers extends React.Component<Props, State> {
         }
     }
 
-    private _hireOfficers(officer: (Carpenter | Doctor | Quartermaster)): void {
-        const currIndex = this.state.currentIndex;
-        const recruits = this.state.recruits;
+    private _renderCarpenterStats(): JSX.Element {
+        const { recruitableCarpenter } = this.state;
+        const skills = (recruitableCarpenter as Carpenter).skills;
+        return (
+            <Row className={ styles['stats'] + ' mx-auto' }>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                    Carpenter
+                </Col>
+                <Col className={ styles['stats-icon'] + ' col-6'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'Repair' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><GiHandSaw aria-label='repair' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col  className={ styles['stats-icon'] + ' col-6'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'DIY Medicine' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><GiSewingNeedle aria-label='D.I.Y. Medicine' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-6 no-select'}>
+                    { skills.repair.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-6 no-select'}>
+                    { skills.diyMedicine.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
+                    Salary: { formatter.format(recruitableCarpenter?.salary ?? 0) }
+                </Col>
+            </Row>
+        );
+    }
 
-        // Make sure the suggested crew member are actually present.
-        const existingChoices = crew.filter(elem => recruits.includes(elem))
-        if (!existingChoices.length) {
+    private _renderDoctorStats(): JSX.Element {
+        const { recruitableDoctor } = this.state;
+        const skills = (recruitableDoctor as Doctor).skills;
+        return (
+            <Row className={ styles['stats'] + ' mx-auto' }>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                    Doctor
+                </Col>
+                <Col className={ styles['stats-icon'] + ' col-12'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'Medicine' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><AiFillMedicineBox aria-label='medicine' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-12 no-select'}>
+                    { skills.medicine.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
+                    Salary: { formatter.format(recruitableDoctor?.salary ?? 0) }
+                </Col>
+            </Row>
+        );
+    }
+
+    private _renderQuartermasterStats(): JSX.Element {
+        const { recruitableQuartermaster } = this.state;
+        const skills = (recruitableQuartermaster as Quartermaster).skills;
+        return (
+            <Row className={ styles['stats'] + ' mx-auto' }>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                    Quartermaster
+                </Col>
+                <Col className={ styles['stats-icon'] + ' col-4'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'Cargo Distribution' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><FaBoxes aria-label='Cargo Distribution' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col className={ styles['stats-icon'] + ' col-4'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'Human Resources' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><GiHumanPyramid aria-label='Human Resources' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col className={ styles['stats-icon'] + ' col-4'}>
+                    <OverlayTrigger
+                        key={GUID()}
+                        placement="top"
+                        delay={{ show: 100, hide: 250 }}
+                        overlay={RenderTooltip({ children: 'Morale Management' })}>
+                        {({ ref, ...triggerHandler }) => (
+                            <span ref={ ref } {...triggerHandler}><BiHappyBeaming aria-label='Morale Management' /></span>
+                        )}
+                    </OverlayTrigger>
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                    { skills.cargoDistribution.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                    { skills.humanResourcing.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                    { skills.moraleManagement.rank } / 10
+                </Col>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
+                    Salary: { formatter.format(recruitableQuartermaster?.salary ?? 0) }
+                </Col>
+            </Row>
+        );
+    }
+
+    private _renderStats(type: OfficerType | null): JSX.Element {
+        const { recruitableCarpenter, recruitableDoctor, recruitableQuartermaster } = this.state;
+        switch (type) {
+            case OfficerType.Carpenter: {
+                return !!recruitableCarpenter ? this._renderCarpenterStats() : <></>;
+            }
+            case OfficerType.Doctor: {
+                return !!recruitableDoctor ? this._renderDoctorStats() : <></>;
+            }
+            case OfficerType.Quartermaster: {
+                return !!recruitableQuartermaster ? this._renderQuartermasterStats() : <></>;
+            }
+            default: {
+                return <></>;
+            }
+        }
+    }
+
+    private _hireOfficers(officer: (Carpenter | Doctor | Quartermaster | null)): void {
+        const currIndex = this.state.currentIndex;
+
+        // Make sure the suggested officer is actually present.
+        if (!officer || this.state.recruits[currIndex]?.id !== officer?.id) {
             return;
         }
 
-        if (currIndex >= recruits.length - existingChoices.length - 1) {
-            this.setState({ currentIndex: recruits.length - existingChoices.length - 1 });
+        switch (currIndex) {
+            case 0: {
+                const oldOfficer = this.state.carpenter;
+                gameManager.addOfficer(this.state.recruitableCarpenter, OfficerType.Carpenter);
+                this.state.hireableOfficers?.removeOfficer(OfficerType.Carpenter);
+                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Carpenter, false);
+                break;
+            }
+            case 1: {
+                const oldOfficer = this.state.doctor;
+                gameManager.addOfficer(this.state.recruitableDoctor, OfficerType.Doctor);
+                this.state.hireableOfficers?.removeOfficer(OfficerType.Doctor);
+                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Doctor, false);
+                break;
+            }
+            case 2: {
+                const oldOfficer = this.state.quartermaster;
+                gameManager.addOfficer(this.state.recruitableQuartermaster, OfficerType.Quartermaster);
+                this.state.hireableOfficers?.removeOfficer(OfficerType.Quartermaster);
+                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Quartermaster, false);
+                break;
+            }
         }
-
-        gameManager.addCrew(existingChoices, true);
-        // Remove the listed crew members from the eligibleCrew.
-        this.state.hireableOfficers?.removeOfficer(existingChoices);
-        
     }
 
     public componentDidMount() {
@@ -106,8 +262,13 @@ export class HireOfficers extends React.Component<Props, State> {
                 this.subscriptions[4] = port.availableOfficersToHire.subscribe(hireableOfficers => {
                     this.subscriptions[5]?.unsubscribe();
                     this.setState({ hireableOfficers: hireableOfficers });
-                    this.subscriptions[5] = hireableOfficers.getOfficers().subscribe(recruits => {
-                        this.setState({ recruits });
+                    this.subscriptions[5] = hireableOfficers.getOfficers().subscribe(officers => {
+                        this.setState({
+                            recruitableCarpenter: officers.carpenter,
+                            recruitableDoctor: officers.doctor,
+                            recruitableQuartermaster: officers.quartermaster,
+                            recruits: [officers.carpenter, officers.doctor, officers.quartermaster]
+                        });
                     });
                 });
             });
@@ -120,33 +281,43 @@ export class HireOfficers extends React.Component<Props, State> {
     }
 
     public render() {
-        const { carpenter, currentIndex, doctor, recruits, quartermaster } = this.state;
+        const { currentIndex, recruits } = this.state;
         const children = React.Children.toArray(this.props.children);
         const currRecruit = recruits[currentIndex] ?? null;
-        const currType = currRecruit?.type ?? OfficerType.Quartermaster;
         return (
             <Row className='no-gutters'>
-                <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
-                    <Row className='no-gutters mb-5'>
+                <Col xs='12' aria-label='Officers Manifest section' className='text-center text-light'>
+                    <Row className='no-gutters mb-2'>
                         <Col className='col-6 offset-3'>
-                            <h2 className={ styles['hire-crew-header'] }>Hire Officers</h2>
+                            <h2 className={ styles['hire-officer-header'] }>Hire Officers</h2>
                         </Col>
                         <Col className='col-1'>
-                            <div className={ styles['hire-crew-help'] + ' text-right' }>
+                            <div className={ styles['hire-officer-help'] + ' text-right' }>
                                 { children[0] }
                             </div>
                         </Col>
                         <Col className='col-2'>
-                            <div className={ styles['hire-crew-exit'] + ' text-left' }>
+                            <div className={ styles['hire-officer-exit'] + ' text-left' }>
                                 { children[1] }
                             </div>
                         </Col>
                     </Row>
-                    { !recruits?.length
-                        ? <div className={ styles['avatar-sizing'] }></div>
-                        : <div
+                    <Row className='no-gutters mb-3'>
+                        { !currRecruit ? null :
+                            <Col className='col-6 offset-3'>
+                                <h5 className={ styles['hire-officer-name-header'] }>
+                                    { `${currRecruit.nameFirst}${ currRecruit.nameNick ? ` '${currRecruit.nameNick}' ` : ' '}${currRecruit.nameLast}` }
+                                </h5>
+                            </Col>
+                        }
+                    </Row>
+                    { recruits?.length
+                        ? <div
                             className={ styles['avatar-sizing'] }
-                            dangerouslySetInnerHTML={{__html: recruits[currentIndex].avatar}}></div>
+                            dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? ''}}></div>
+                        : <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="360" height="360" fill='#5554'/>
+                          </svg>
                     }
                     <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
                         <div className={ styles['table-bg-wrapper'] + ' no-select' }>
@@ -200,98 +371,14 @@ export class HireOfficers extends React.Component<Props, State> {
                                         <span
                                             aria-label='Hire the recruit'
                                             className={ styles['hire-icon']}
-                                            onClick={ () => { this._hireOfficers(recruits[currentIndex]) } }>
+                                            onClick={ () => { this._hireOfficers(currRecruit) } }>
                                             <FaHireAHelper />
                                         </span>
                                     }
                                 </div>
                                 <div className={ styles['stats-wrapper'] + ' text-dark' }>
-                                    <Row className={ styles['stats'] + ' mx-auto' }>
-                                        <Col className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'cannoneering' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><GiCannon aria-label='cannoneering' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col  className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'cleanliness' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><GiBroom aria-label='cleanliness' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col  className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'greed' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><GiReceiveMoney aria-label='greed' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex]?.skills[0]?.rank * 100).toFixed(0) }
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.cleanliness * 100).toFixed(0) }
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.greed * 100).toFixed(0) }
-                                        </Col>
-                                        <Col  className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'hand to hand combat' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><GiFist aria-label='hand2HandCombat' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col  className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'sailing' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><GiSailboat aria-label='sailing' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col  className={ styles['stats-icon'] + ' col-4'}>
-                                            <OverlayTrigger
-                                                key={GUID()}
-                                                placement="top"
-                                                delay={{ show: 100, hide: 250 }}
-                                                overlay={renderTooltip({ children: 'teamwork' })}>
-                                                {({ ref, ...triggerHandler }) => (
-                                                    <span ref={ ref } {...triggerHandler}><RiTeamFill aria-label='teamwork' /></span>
-                                                )}
-                                            </OverlayTrigger>
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.hand2HandCombat * 100).toFixed(0) }
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.sailing * 100).toFixed(0) }
-                                        </Col>
-                                        <Col className={ styles['stats-text'] + ' col-4 no-select'}>
-                                            { (recruits[currentIndex].skills.teamwork * 100).toFixed(0) }
-                                        </Col>
-                                    </Row>
+                                    { !currRecruit ? null :
+                                        this._renderStats(currRecruit?.type) }
                                 </div>
                         </>}
                     </div>

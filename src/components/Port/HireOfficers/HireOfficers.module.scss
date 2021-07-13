@@ -6,14 +6,20 @@
     width: 20vw;
 }
 
-.hire-crew-header {
+.hire-officer-header {
     font-size: 2em;
     position: relative;
     top: 2.7vw;
 }
 
-.hire-crew-exit,
-.hire-crew-help {
+.hire-officer-name-header {
+    font-size: 1.5em;
+    position: relative;
+    top: 4.7vw;
+}
+
+.hire-officer-exit,
+.hire-officer-help {
     position: relative;
     top: 2vw;
 }
@@ -146,6 +152,10 @@
 .recruit-count-text {
     float: right;
     transform: rotateX(60deg);
+}
+
+.hire-icon {
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 1400px) {
@@ -322,8 +332,8 @@
         font-size: 22px;
     }
 
-    .hire-crew-exit,
-    .hire-crew-help {
+    .hire-officer-exit,
+    .hire-officer-help {
         top: 8.5vw;
     }
 }
@@ -360,7 +370,7 @@
         }
 
         .stats-text {
-            font-size: 10px;
+            font-size: 8px;
         }
     }
 

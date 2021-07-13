@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { ImExit } from 'react-icons/im';
 import { MdHelpOutline } from 'react-icons/md';
@@ -11,6 +11,8 @@ import { HireCrew } from '../HireCrew/HireCrew';
 import { playerManager } from '../../../Services/PlayerManager';
 import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
+import { HireOfficers } from '../HireOfficers/HireOfficers';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
 
 interface Props {}
 
@@ -19,15 +21,6 @@ interface State {
     crewCount: number;
     maxCrew: number;
     portSceneState: PortSceneState;
-}
-
-function renderTooltip(props: any): JSX.Element {
-    const id = `tooltip-${GUID()}`;
-    return (
-        <Tooltip id={ id }>
-            { props.children }
-        </Tooltip>
-    );
 }
 
 export class Tavern extends React.Component<Props, State> {
@@ -131,7 +124,7 @@ export class Tavern extends React.Component<Props, State> {
                             key={GUID()}
                             placement="top"
                             delay={{ show: 100, hide: 250 }}
-                            overlay={renderTooltip({
+                            overlay={RenderTooltip({
                                 children: `${ actionPoints
                                     ? 'Hire crew one at a time, and risk using an action point per recruit'
                                     : maxCrewReached
@@ -155,9 +148,9 @@ export class Tavern extends React.Component<Props, State> {
                             key={GUID()}
                             placement="top"
                             delay={{ show: 100, hide: 250 }}
-                            overlay={renderTooltip({
+                            overlay={RenderTooltip({
                                 children: `${ actionPoints
-                                    ? 'Hire officers one at a time, and risk using an action point per officer'
+                                    ? 'Hire officers one at a time, and use an action point per officer'
                                     : 'You need at least 1 Action Point to hire a new officer' }`
                             })}>
                             {({ ref, ...triggerHandler }) => (
@@ -206,7 +199,7 @@ export class Tavern extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Access help for this section'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 
@@ -225,7 +218,7 @@ export class Tavern extends React.Component<Props, State> {
                                     key={GUID()}
                                     placement="top"
                                     delay={{ show: 100, hide: 250 }}
-                                    overlay={renderTooltip({
+                                    overlay={RenderTooltip({
                                         children: 'Return to main port options'
                                     })}>
                                     {({ ref, ...triggerHandler }) => ( 
@@ -249,7 +242,46 @@ export class Tavern extends React.Component<Props, State> {
                         <Col
                             aria-label='Tavern hire officers section description'
                             className='fs-sm text-left'>
-                            Which officer position are trying to fill?
+                            <HireOfficers>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={RenderTooltip({
+                                        children: 'Access help for this section'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Open help modal for deeper description of hire officers section'
+                                            className={ styles['help-icon'] + ' border-0 text-light' }
+                                            onClick={() => gameManager.openHelpModal('Hire Officers')}>
+                                            <MdHelpOutline></MdHelpOutline>
+                                        </Button>
+                                     )}
+                                </OverlayTrigger>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={RenderTooltip({
+                                        children: 'Return to main port options'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Return to port options'
+                                            className={ styles['exit-icon'] + ' border-0 text-light' }
+                                            onClick={() => this.toggleMode()}>
+                                            <ImExit></ImExit>
+                                        </Button>
+                                     )}
+                                </OverlayTrigger>
+                            </HireOfficers>
                         </Col>
                     </Row>
                 }

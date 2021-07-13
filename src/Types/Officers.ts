@@ -19,7 +19,7 @@ export interface Officer {
     nameNick: string;
     salary: number;
     skills: { [key: string]: OfficerSkill<string> }
-    type: OfficerType;
+    type: keyof typeof OfficerType;
 }
 
 export interface Carpenter extends Officer {
