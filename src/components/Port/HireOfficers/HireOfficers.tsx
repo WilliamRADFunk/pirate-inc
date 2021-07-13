@@ -63,11 +63,24 @@ export class HireOfficers extends React.Component<Props, State> {
 
     private _renderCarpenterStats(): JSX.Element {
         const { recruitableCarpenter } = this.state;
+        if (!recruitableCarpenter) {
+            return (
+                <Row className={ styles['stats'] + ' mx-auto' }>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                        <u>Carpenter</u>
+                    </Col>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-lg-2 px-2 px-md-4'}>
+                        There are no available carpenters for hire here
+                    </Col>
+                </Row>
+            );
+        }
+        
         const skills = (recruitableCarpenter as Carpenter).skills;
         return (
             <Row className={ styles['stats'] + ' mx-auto' }>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
-                    Carpenter
+                    <u>Carpenter</u>
                 </Col>
                 <Col className={ styles['stats-icon'] + ' col-6'}>
                     <OverlayTrigger
@@ -91,10 +104,10 @@ export class HireOfficers extends React.Component<Props, State> {
                         )}
                     </OverlayTrigger>
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-6 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-6 no-select px-0'}>
                     { skills.repair.rank } / 10
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-6 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-6 no-select px-0'}>
                     { skills.diyMedicine.rank } / 10
                 </Col>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
@@ -106,11 +119,24 @@ export class HireOfficers extends React.Component<Props, State> {
 
     private _renderDoctorStats(): JSX.Element {
         const { recruitableDoctor } = this.state;
+        if (!recruitableDoctor) {
+            return (
+                <Row className={ styles['stats'] + ' mx-auto' }>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                        <u>Doctor</u>
+                    </Col>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-lg-2 px-2 px-md-4'}>
+                        There are no available doctors for hire here
+                    </Col>
+                </Row>
+            );
+        }
+
         const skills = (recruitableDoctor as Doctor).skills;
         return (
             <Row className={ styles['stats'] + ' mx-auto' }>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
-                    Doctor
+                    <u>Doctor</u>
                 </Col>
                 <Col className={ styles['stats-icon'] + ' col-12'}>
                     <OverlayTrigger
@@ -123,7 +149,7 @@ export class HireOfficers extends React.Component<Props, State> {
                         )}
                     </OverlayTrigger>
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-12 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-12 no-select px-0'}>
                     { skills.medicine.rank } / 10
                 </Col>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
@@ -135,11 +161,24 @@ export class HireOfficers extends React.Component<Props, State> {
 
     private _renderQuartermasterStats(): JSX.Element {
         const { recruitableQuartermaster } = this.state;
+        if (!recruitableQuartermaster) {
+            return (
+                <Row className={ styles['stats'] + ' mx-auto' }>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                        <u>Quartermaster</u>
+                    </Col>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-lg-2 px-2 px-md-4'}>
+                        There are no available quartermasters for hire here
+                    </Col>
+                </Row>
+            );
+        }
+
         const skills = (recruitableQuartermaster as Quartermaster).skills;
         return (
             <Row className={ styles['stats'] + ' mx-auto' }>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
-                    Quartermaster
+                    <u>Quartermaster</u>
                 </Col>
                 <Col className={ styles['stats-icon'] + ' col-4'}>
                     <OverlayTrigger
@@ -174,13 +213,13 @@ export class HireOfficers extends React.Component<Props, State> {
                         )}
                     </OverlayTrigger>
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-4 no-select px-0'}>
                     { skills.cargoDistribution.rank } / 10
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-4 no-select px-0'}>
                     { skills.humanResourcing.rank } / 10
                 </Col>
-                <Col className={ styles['stats-text'] + ' col-4 no-select'}>
+                <Col className={ styles['stats-text'] + ' col-4 no-select px-0'}>
                     { skills.moraleManagement.rank } / 10
                 </Col>
                 <Col className={ styles['stats-text'] + ' col-12 no-select mt-1 mt-lg-2'}>
@@ -190,17 +229,24 @@ export class HireOfficers extends React.Component<Props, State> {
         );
     }
 
-    private _renderStats(type: OfficerType | null): JSX.Element {
-        const { recruitableCarpenter, recruitableDoctor, recruitableQuartermaster } = this.state;
+    private _renderStats(): JSX.Element {
+        const { currentIndex } = this.state;
+        let type = OfficerType.Carpenter;
+        if (currentIndex === 1) {
+            type = OfficerType.Doctor;
+        } else if (currentIndex === 2) {
+            type = OfficerType.Quartermaster;
+        }
+
         switch (type) {
             case OfficerType.Carpenter: {
-                return !!recruitableCarpenter ? this._renderCarpenterStats() : <></>;
+                return this._renderCarpenterStats();
             }
             case OfficerType.Doctor: {
-                return !!recruitableDoctor ? this._renderDoctorStats() : <></>;
+                return this._renderDoctorStats();
             }
             case OfficerType.Quartermaster: {
-                return !!recruitableQuartermaster ? this._renderQuartermasterStats() : <></>;
+                return this._renderQuartermasterStats();
             }
             default: {
                 return <></>;
@@ -219,9 +265,10 @@ export class HireOfficers extends React.Component<Props, State> {
         switch (currIndex) {
             case 0: {
                 const oldOfficer = this.state.carpenter;
+                console.log('oldOfficer', oldOfficer, 'newOfficer', this.state.recruitableCarpenter);
                 gameManager.addOfficer(this.state.recruitableCarpenter, OfficerType.Carpenter);
-                this.state.hireableOfficers?.removeOfficer(OfficerType.Carpenter);
-                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Carpenter, false);
+                this.state.hireableOfficers.removeOfficer(OfficerType.Carpenter);
+                this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Carpenter, false);
                 break;
             }
             case 1: {
@@ -377,8 +424,7 @@ export class HireOfficers extends React.Component<Props, State> {
                                     }
                                 </div>
                                 <div className={ styles['stats-wrapper'] + ' text-dark' }>
-                                    { !currRecruit ? null :
-                                        this._renderStats(currRecruit?.type) }
+                                    { this._renderStats() }
                                 </div>
                         </>}
                     </div>

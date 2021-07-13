@@ -127,9 +127,11 @@ class GameManager {
      * @param type the type of officer the player has hired.
      */
     public addOfficer(officer: (Carpenter | Doctor | Quartermaster | null), type: OfficerType): void {
+        console.log('gameManager addOfficer', this._officers.hasOfficer(type));
         if (!officer || this._officers.hasOfficer(type)) {
+            console.log('gameManager addOfficer', this._officers.hasOfficer(type));
             this._officers.fireOfficer(type);
-            this._officers.addOfficer(officer, type, false);
+            this._officers.addOfficer(officer, type, false, true);
         }
     }
 

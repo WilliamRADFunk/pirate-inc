@@ -197,6 +197,7 @@ export class Officers {
                 break;
             }
         }
+
         if (isRandom) {
             const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
             const newOfficer = {
@@ -219,6 +220,8 @@ export class Officers {
             officerToHire.next(newOfficer as any);
         } else if (newOfficer) {
             newOfficer.type = officerType;
+            newOfficer.avatar = getAvatar(newOfficer.features, newOfficer.mood, true, !!isHire);
+            console.log('newOfficer', newOfficer);
             officerToHire.next(newOfficer as any);
         }
     }
