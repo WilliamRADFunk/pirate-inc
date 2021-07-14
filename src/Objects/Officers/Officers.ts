@@ -146,21 +146,22 @@ export class Officers {
      * @param isRandom if true, make up the officer at random.
      * @param isHire if true, recruit is a recruit for hire and should have a transparent background.
      */
-    public addOfficer(newOfficer: Officer | null, officerType: OfficerType, isRandom?: boolean, isHire?: boolean): void {
+    public addOfficer(newOfficer: Officer | null, officerType: OfficerType, isRandom?: boolean, isHire?: boolean, costScale?: number): void {
         let officerToHire;
         let skills: { [key: string]: OfficerSkill<string> } = {};
         let salary = 0;
+        let skillLimit = costScale ?? 10;
         switch(officerType) {
             case OfficerType.Carpenter: {
                 officerToHire = this._carpenter;
                 skills = {
                     repair: {
                         label: 'Repair',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     },
                     diyMedicine: {
                         label: 'DIY Medicine',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     }
                 };
                 salary = BaseCarpenterSalary * Officers._salaryBase * Math.floor((skills.repair.rank + skills.diyMedicine.rank) / 2);
@@ -171,7 +172,7 @@ export class Officers {
                 skills = {
                     medicine: {
                         label: 'Medicine',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     }
                 };
                 salary = BaseDoctorSalary * Officers._salaryBase * skills.medicine.rank;
@@ -182,15 +183,15 @@ export class Officers {
                 skills = {
                     cargoDistribution: {
                         label: 'Cargo Distribution',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     },
                     humanResourcing: {
                         label: 'Human Resources',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     },
                     moraleManagement: {
                         label: 'Morale Management',
-                        rank: Math.ceil(Math.random() * 10)
+                        rank: Math.ceil(Math.random() * skillLimit)
                     }
                 };
                 salary = BaseQuartermasterSalary * Officers._salaryBase * Math.floor((skills.cargoDistribution.rank + skills.humanResourcing.rank + skills.moraleManagement.rank) / 3);
@@ -221,7 +222,6 @@ export class Officers {
         } else if (newOfficer) {
             newOfficer.type = officerType;
             newOfficer.avatar = getAvatar(newOfficer.features, newOfficer.mood, true, !!isHire);
-            console.log('newOfficer', newOfficer);
             officerToHire.next(newOfficer as any);
         }
     }
@@ -296,11 +296,32 @@ export class Officers {
     }
 
     /**
-     * Get a clone of the quartermaster the player has employed.
-     * @returns the clone of the quartermaster.
+     * Consolidates officer info into a single observable for HUD use.
+     * @returns an observable of an object containing the relevant officer info for the HUD.
      */
-    public getQuartermaster(): Observable<Quartermaster | null> {
-        return this.quartermaster.asObservable();
+    public getHUD(): Observable<{[key: string]: number}> {
+        return zip(this.officersMorale, this.officerSalaries)
+            .pipe(map(val => {
+                return {
+                    officersMorale: val[0],
+                    officersSalaries: val[1]
+                };
+            }));
+    }
+
+    /**
+     * Allows the officers to be subscribed to in one observable.
+     * @returns the combined three officers all in one updatable observable.
+     */
+     public getOfficers(): Observable<{ carpenter: Carpenter | null, doctor: Doctor | null, quartermaster: Quartermaster | null}> {
+        return zip(this.carpenter, this.doctor, this.quartermaster)
+            .pipe(map(val => {
+                return {
+                    carpenter: val[0],
+                    doctor: val[1],
+                    quartermaster: val[2]
+                };
+            }));
     }
 
     /**
@@ -320,17 +341,11 @@ export class Officers {
     }
 
     /**
-     * Consolidates officer info into a single observable for HUD use.
-     * @returns an observable of an object containing the relevant officer info for the HUD.
+     * Get a clone of the quartermaster the player has employed.
+     * @returns the clone of the quartermaster.
      */
-    public getHUD(): Observable<{[key: string]: number}> {
-        return zip(this.officersMorale, this.officerSalaries)
-            .pipe(map(val => {
-                return {
-                    officersMorale: val[0],
-                    officersSalaries: val[1]
-                };
-            }));
+    public getQuartermaster(): Observable<Quartermaster | null> {
+        return this.quartermaster.asObservable();
     }
 
     /**
@@ -348,6 +363,28 @@ export class Officers {
             }
             case OfficerType.Quartermaster: {
                 return !!this.quartermaster.value;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Quick check to determine if officer type is valid.
+     * @param type the type of officer to check for.
+     * @returns true if the officer type exists and false if invalid.
+     */
+    public hasOfficerType(type: OfficerType): boolean {
+        switch (type) {
+            case OfficerType.Carpenter: {
+                return true;
+            }
+            case OfficerType.Doctor: {
+                return true;
+            }
+            case OfficerType.Quartermaster: {
+                return true;
             }
             default: {
                 return false;

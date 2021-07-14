@@ -105,6 +105,7 @@ export class HireCrew extends React.Component<Props, State> {
         const { crewCount, currentIndex, maxCrew, recruits } = this.state;
         const children = React.Children.toArray(this.props.children);
         const maxCrewReached = crewCount >= maxCrew;
+        const currRecruit = recruits[currentIndex] ?? null;
         return (
             <Row className='no-gutters'>
                 <Col xs='12' aria-label='Crew Manifest section' className='text-center text-light'>
@@ -123,11 +124,33 @@ export class HireCrew extends React.Component<Props, State> {
                             </div>
                         </Col>
                     </Row>
+                    <Row className='no-gutters mb-3'>
+                        { !currRecruit || maxCrewReached
+                            ? <Col className='col-6 offset-3'>
+                                <h5 className={ styles['hire-crew-name-header'] }>&nbsp;</h5>
+                              </Col>
+                            : <Col className='col-6 offset-3'>
+                                <h5 className={ styles['hire-crew-name-header'] }>
+                                    { `${currRecruit.nameFirst}${ currRecruit.nameNick ? ` '${currRecruit.nameNick}' ` : ' '}${currRecruit.nameLast}` }
+                                </h5>
+                              </Col>
+                        }
+                    </Row>
                     { (!recruits?.length || maxCrewReached)
-                        ? <div className={ styles['avatar-sizing'] }></div>
+                        ? <div
+                            className={ styles['avatar-sizing'] }
+                            dangerouslySetInnerHTML={{__html: `
+                                <svg viewBox="0 0 360 369" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                </svg>`}}>
+                          </div>
                         : <div
                             className={ styles['avatar-sizing'] }
-                            dangerouslySetInnerHTML={{__html: recruits[currentIndex].avatar}}></div>
+                            dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? `
+                                <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                </svg>`}}>
+                          </div>
                     }
                     <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
                         <div className={ styles['table-bg-wrapper'] + ' no-select' }>

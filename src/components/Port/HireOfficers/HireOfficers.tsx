@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { combineLatestWith, filter, switchMap } from 'rxjs/operators';
 import { HireableOfficers } from '../../../Objects/Officers/HireableOfficers';
 import { portManager } from '../../../Services/PortManager';
 
@@ -164,10 +164,10 @@ export class HireOfficers extends React.Component<Props, State> {
         if (!recruitableQuartermaster) {
             return (
                 <Row className={ styles['stats'] + ' mx-auto' }>
-                    <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2 pl-4 pl-sm-3'}>
                         <u>Quartermaster</u>
                     </Col>
-                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-lg-2 px-2 px-md-4'}>
+                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-lg-2 px-2 px-md-4 pl-4 pl-sm-3'}>
                         There are no available quartermasters for hire here
                     </Col>
                 </Row>
@@ -177,7 +177,7 @@ export class HireOfficers extends React.Component<Props, State> {
         const skills = (recruitableQuartermaster as Quartermaster).skills;
         return (
             <Row className={ styles['stats'] + ' mx-auto' }>
-                <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2'}>
+                <Col className={ styles['stats-text'] + ' col-12 no-select mb-lg-2 pl-4 pl-sm-3'}>
                     <u>Quartermaster</u>
                 </Col>
                 <Col className={ styles['stats-icon'] + ' col-4'}>
@@ -265,24 +265,24 @@ export class HireOfficers extends React.Component<Props, State> {
         switch (currIndex) {
             case 0: {
                 const oldOfficer = this.state.carpenter;
-                console.log('oldOfficer', oldOfficer, 'newOfficer', this.state.recruitableCarpenter);
                 gameManager.addOfficer(this.state.recruitableCarpenter, OfficerType.Carpenter);
+                console.log(oldOfficer);
                 this.state.hireableOfficers.removeOfficer(OfficerType.Carpenter);
-                this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Carpenter, false);
+                this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Carpenter, false, true);
                 break;
             }
             case 1: {
                 const oldOfficer = this.state.doctor;
                 gameManager.addOfficer(this.state.recruitableDoctor, OfficerType.Doctor);
-                this.state.hireableOfficers?.removeOfficer(OfficerType.Doctor);
-                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Doctor, false);
+                this.state.hireableOfficers.removeOfficer(OfficerType.Doctor);
+                this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Doctor, false, true);
                 break;
             }
             case 2: {
                 const oldOfficer = this.state.quartermaster;
                 gameManager.addOfficer(this.state.recruitableQuartermaster, OfficerType.Quartermaster);
-                this.state.hireableOfficers?.removeOfficer(OfficerType.Quartermaster);
-                this.state.hireableOfficers?.addOfficer(oldOfficer, OfficerType.Quartermaster, false);
+                this.state.hireableOfficers.removeOfficer(OfficerType.Quartermaster);
+                this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Quartermaster, false, true);
                 break;
             }
         }
@@ -299,26 +299,28 @@ export class HireOfficers extends React.Component<Props, State> {
             gameManager.getQuartermaster().subscribe(qmc => {
                 this.setState({ quartermaster: qmc });
             }),
-        );
-
-        this.subscriptions[3] = portManager.getCurrentPort()
-            .pipe(filter(port => !!port))
-            .subscribe(port => {
-                this.subscriptions[4]?.unsubscribe();
-                this.setState({ currentPort: port });
-                this.subscriptions[4] = port.availableOfficersToHire.subscribe(hireableOfficers => {
-                    this.subscriptions[5]?.unsubscribe();
-                    this.setState({ hireableOfficers: hireableOfficers });
-                    this.subscriptions[5] = hireableOfficers.getOfficers().subscribe(officers => {
-                        this.setState({
-                            recruitableCarpenter: officers.carpenter,
-                            recruitableDoctor: officers.doctor,
-                            recruitableQuartermaster: officers.quartermaster,
-                            recruits: [officers.carpenter, officers.doctor, officers.quartermaster]
-                        });
+            portManager.getCurrentPort()
+                .pipe(
+                    filter(port => !!port),
+                    switchMap(port => {
+                        this.setState({ currentPort: port });
+                        return port.availableOfficersToHire.asObservable();
+                    }),
+                    switchMap((hireableOfficers: HireableOfficers) => {
+                        this.setState({ hireableOfficers: hireableOfficers });
+                        return hireableOfficers.getCarpenter()
+                            .pipe(combineLatestWith(hireableOfficers.getDoctor(), hireableOfficers.getQuartermaster()));
+                    })
+                ).subscribe((officers: any[]) => {
+                    console.log('the new recruit officer: ', officers);
+                    this.setState({
+                        recruitableCarpenter: officers[0],
+                        recruitableDoctor: officers[1],
+                        recruitableQuartermaster: officers[2],
+                        recruits: [officers[0], officers[1], officers[2]]
                     });
-                });
-            });
+                })
+        );
     }
 
     public componentWillUnmount() {
@@ -331,6 +333,7 @@ export class HireOfficers extends React.Component<Props, State> {
         const { currentIndex, recruits } = this.state;
         const children = React.Children.toArray(this.props.children);
         const currRecruit = recruits[currentIndex] ?? null;
+        const recAvailable = (recruits?.filter(x => !!x) ?? []).length;
         return (
             <Row className='no-gutters'>
                 <Col xs='12' aria-label='Officers Manifest section' className='text-center text-light'>
@@ -350,21 +353,32 @@ export class HireOfficers extends React.Component<Props, State> {
                         </Col>
                     </Row>
                     <Row className='no-gutters mb-3'>
-                        { !currRecruit ? null :
-                            <Col className='col-6 offset-3'>
+                        { !currRecruit
+                            ? <Col className='col-6 offset-3'>
+                                <h5 className={ styles['hire-officer-name-header'] }>&nbsp;</h5>
+                              </Col>
+                            : <Col className='col-6 offset-3'>
                                 <h5 className={ styles['hire-officer-name-header'] }>
                                     { `${currRecruit.nameFirst}${ currRecruit.nameNick ? ` '${currRecruit.nameNick}' ` : ' '}${currRecruit.nameLast}` }
                                 </h5>
-                            </Col>
+                              </Col>
                         }
                     </Row>
-                    { recruits?.length
+                    { recAvailable
                         ? <div
                             className={ styles['avatar-sizing'] }
-                            dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? ''}}></div>
-                        : <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="360" height="360" fill='#5554'/>
-                          </svg>
+                            dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? `
+                                <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                </svg>`}}>
+                          </div>
+                        : <div
+                            className={ styles['avatar-sizing'] }
+                            dangerouslySetInnerHTML={{__html: `
+                                <svg viewBox="0 0 360 369" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                </svg>`}}>
+                          </div>
                     }
                     <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
                         <div className={ styles['table-bg-wrapper'] + ' no-select' }>
@@ -379,10 +393,10 @@ export class HireOfficers extends React.Component<Props, State> {
                         <div className={ styles['ink-quill-wrapper'] + ' no-select' }>
                             <img src='images/tavern-ink-quill.png' alt='ink and quill' className={ styles['ink-quill'] }/>
                         </div>
-                        { !recruits?.length
+                        { !recAvailable
                             ? <div className={ styles['stats-wrapper'] + ' text-dark' }>
                                 <Row className={ styles['stats'] + ' mx-auto' }>
-                                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-2' }>
+                                    <Col className={ styles['stats-text'] + ' col-12 no-select mt-2 pl-4' }>
                                         No Officers Available
                                     </Col>
                                 </Row>
@@ -414,7 +428,7 @@ export class HireOfficers extends React.Component<Props, State> {
                                     }
                                 </div>
                                 <div className={ styles['hire-icon-wrapper'] + ' text-info'}>
-                                    { currentIndex > recruits.length - 1 ? null :
+                                    { !currRecruit ? null :
                                         <span
                                             aria-label='Hire the recruit'
                                             className={ styles['hire-icon']}

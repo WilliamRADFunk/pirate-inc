@@ -1,46 +1,51 @@
-import { Observable, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Carpenter, Doctor, Quartermaster } from '../../Types/Officers';
+import { take } from 'rxjs/operators';
 import { Officers, OfficerType } from './Officers';
 
 export class HireableOfficers extends Officers {
-    constructor(quantity?: number) {
+    constructor(reputation?: number, costScaleSize?: number) {
         super();
 
-        let numOfRecruits = quantity ?? 0;
-        if (numOfRecruits === 3) {
-            super.addOfficer(null, OfficerType.Carpenter, true);
-            super.addOfficer(null, OfficerType.Doctor, true, true);
-            super.addOfficer(null, OfficerType.Quartermaster, true, true);
-        } else if (numOfRecruits === 2) {
-            // Tie between Doctor and Quartermaster with Carpenters being common.
-            Math.random() > 0.5
-                ? super.addOfficer(null, OfficerType.Quartermaster, true, true)
-                : super.addOfficer(null, OfficerType.Doctor, true, true);
-            super.addOfficer(null, OfficerType.Carpenter, true, true);
-        } else if (numOfRecruits) {
-            // With only 1 possible officer, carpenter has highest chance, and the other two are tied as next in line.
-            Math.random() < 0.75
-                ? super.addOfficer(null, OfficerType.Carpenter, true, true)
-                : (Math.random() > 0.5
-                    ? super.addOfficer(null, OfficerType.Quartermaster, true, true)
-                    : super.addOfficer(null, OfficerType.Doctor, true, true));
+        if (!reputation || reputation <= 0 || !costScaleSize) {
+            return;
         }
-    }
 
-    /**
-     * Allows the recruitable officers to be subscribed to in one observable.
-     * @returns the combined three recruitable officers all in one updatable observable.
-     */
-    public getOfficers(): Observable<{ carpenter: Carpenter | null, doctor: Doctor | null, quartermaster: Quartermaster | null}> {
-        return zip(super.getCarpenter(), super.getDoctor(), super.getQuartermaster())
-            .pipe(map(val => {
-                return {
-                    carpenter: val[0],
-                    doctor: val[1],
-                    quartermaster: val[2]
-                };
-            }));
+        const costScale = costScaleSize * 10;
+        const carpThreshold = 0.8;
+        const docThreshold = 0.6;
+        const qmcThreshold = 0.4;
+
+        // Carpenter
+        let sizeCheck = Math.floor(Math.random() * 100) <= costScale;
+        let repCheck = Math.floor(Math.random() * 100) >= reputation;
+        let officerCheck = Math.random() < carpThreshold;
+        if (sizeCheck && repCheck && officerCheck) {
+            super.addOfficer(null, OfficerType.Carpenter, true, true, costScaleSize);
+            super.getCarpenter().pipe(take(1)).forEach(officer => {
+                console.log(`Available carpenter for hire (Repair: ${officer?.skills?.repair.rank}, DIY Medicine: ${officer?.skills?.diyMedicine.rank}). CostScale: ${costScale}. Port Reputation: ${reputation}. Threshold: ${carpThreshold}`);
+            });
+        }
+
+        // Doctor
+        sizeCheck = Math.floor(Math.random() * 100) <= costScale;
+        repCheck = Math.floor(Math.random() * 100) >= reputation;
+        officerCheck = Math.random() < docThreshold;
+        if (sizeCheck && repCheck && officerCheck) {
+            super.addOfficer(null, OfficerType.Doctor, true, true, costScaleSize);
+            super.getDoctor().pipe(take(1)).forEach(officer => {
+                console.log(`Available doctor for hire (Medicine: ${officer?.skills?.medicine.rank}). CostScale: ${costScale}. Port Reputation: ${reputation}. Threshold: ${docThreshold}`);
+            });
+        }
+
+        // Quartermaster
+        sizeCheck = Math.floor(Math.random() * 100) <= costScale;
+        repCheck = Math.floor(Math.random() * 100) >= reputation;
+        officerCheck = Math.random() < qmcThreshold;
+        if (sizeCheck && repCheck && officerCheck) {
+            super.addOfficer(null, OfficerType.Quartermaster, true, true, costScaleSize);
+            super.getQuartermaster().pipe(take(1)).forEach(officer => {
+                console.log(`Available quartermaster for hire (Cargo Distribution: ${officer?.skills?.cargoDistribution.rank}, Human Resources: ${officer?.skills?.humanResourcing.rank}, Morale Management: ${officer?.skills?.moraleManagement.rank}). CostScale: ${costScale}. Port Reputation: ${reputation}. Threshold: ${qmcThreshold}`);
+            });
+        }
     }
 
     /**

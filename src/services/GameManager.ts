@@ -127,12 +127,12 @@ class GameManager {
      * @param type the type of officer the player has hired.
      */
     public addOfficer(officer: (Carpenter | Doctor | Quartermaster | null), type: OfficerType): void {
-        console.log('gameManager addOfficer', this._officers.hasOfficer(type));
-        if (!officer || this._officers.hasOfficer(type)) {
-            console.log('gameManager addOfficer', this._officers.hasOfficer(type));
+        if (this._officers.hasOfficerType(type)) {
             this._officers.fireOfficer(type);
-            this._officers.addOfficer(officer, type, false, true);
+            this._officers.addOfficer(officer, type, false);
+            return;
         }
+        console.log('GameManager.addOfficer', 'Invalid officerType entered: ', type, 'for officer of type: ', officer?.type);
     }
 
     /**
@@ -377,6 +377,9 @@ class GameManager {
             this._officers.addOfficer(null, OfficerType.Quartermaster, true);
 
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
+            // Sets all port reputations to a default start based on difficulty
+            // (normal mode aka difficulty = 2, renders pirate port rep = 20, and crown port = -20)
+            portManager.updatePortReputation(Math.abs((1000 * this.difficulty.value) - 4000), 0);
             portManager.enterPort(PortLocation.Nassau);
             stateManager.changeGameState(GameState.Active);
             this.canPlayTurn.next(true);

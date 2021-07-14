@@ -7,10 +7,17 @@ import { Crew } from './Crew';
 const random = require('random-name-redux');
 
 export class HireableCrew extends Crew {
-    constructor(quantity?: number) {
+    constructor(reputation?: number, costScaleSize?: number) {
         super();
 
-        const numOfRecruits = quantity ?? 0;
+        if (!reputation || reputation <= 0 || !costScaleSize) {
+            return;
+        }
+
+        const costScale = costScaleSize * 10;
+        const maxPossible = (reputation / 100) * costScale;
+
+        const numOfRecruits = Math.floor(Math.random() * maxPossible);
         const recruits = [];
         const concernTypes = (Object.values(ConcernTypes) as unknown) as string[];
         for (let i = 0; i < numOfRecruits; i++) {
@@ -44,6 +51,8 @@ export class HireableCrew extends Crew {
             recruits.push(newMember);
         }
         super.addCrew(recruits, false);
+
+        console.log(`Available crew for hire: ${numOfRecruits}. CostScale: ${costScale}. Port Reputation: ${reputation}. MaxPossible: ${maxPossible}`);
     }
 
     /**

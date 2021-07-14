@@ -185,7 +185,7 @@ class PortManager {
                 willArrest: false
             }
         );
-        this.currentPort = new BehaviorSubject<Port>(this.ports[3]);
+        this.currentPort = new BehaviorSubject<Port>(this.ports[0]);
         
         this.subscriptions.push(
             this.currentPort.subscribe(port => {
@@ -221,8 +221,10 @@ class PortManager {
     }
 
     private _setupPortContent(port: Port): void {
-        port.availableCrewToHire.next(new HireableCrew(Math.floor(Math.random() * 90 + 10)));
-        port.availableOfficersToHire.next(new HireableOfficers(Math.floor(Math.random() * 3)));
+        if (port.name !== PortLocation.AtSea) {
+            port.availableCrewToHire.next(new HireableCrew(port.reputation, port.costScaleSize));
+            port.availableOfficersToHire.next(new HireableOfficers(port.reputation, port.costScaleSize));
+        }
         // TODO: Establish how much shipyard can spend on buying player ships.
         // TODO: Establish how much money port is willing to spend on buying looted cargo.
         // TODO: Establish local prices for buying each type of local cargo.
