@@ -40,7 +40,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.AtSea,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false, // Buy
@@ -66,7 +66,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.Bath,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true, // Buy
@@ -92,7 +92,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.CharlesTown,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,
@@ -118,7 +118,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.Nassau,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true,
@@ -144,7 +144,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.NormanIsland,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,
@@ -170,7 +170,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.PortRoyal,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true,
@@ -196,7 +196,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.Tortuga,
-                provisionPrices: new BehaviorSubject([0, 0, 0]),
+                provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,

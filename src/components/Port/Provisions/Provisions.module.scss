@@ -122,6 +122,40 @@
     width: 10%;
 }
 
+.provisions-backing-wrapper {
+    left: -5vw;
+    position: absolute;
+    top: -3vw;
+    width: 100%;
+    z-index: 0;
+}
+
+.provisions-labels-wrapper {
+    font-size: 1.5em;
+    left: -1vw;
+    position: absolute;
+    top: -1vw;
+    width: 100%;
+    z-index: 10;
+}
+
+.provisions-platter-wrapper {
+    position: absolute;
+    top: 1vw;
+    width: 100%;
+    z-index: 20;
+}
+
+.provisions-price {
+    font-size: 0.75em;
+}
+
+.provisions-quantity-help {
+    cursor: pointer;
+    position: relative;
+    top: -3px;
+}
+
 .provisions-wrapper {
     min-height: 50px;
     position: absolute;
@@ -132,6 +166,10 @@
 
 .provisions {
     width: 90%;
+}
+
+.provisions-backing {
+    width: 165%;
 }
 
 .hire-icon-wrapper {

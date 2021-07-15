@@ -1,13 +1,16 @@
 import React from 'react';
-import { Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, OverlayTrigger, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { combineLatestWith, filter, switchMap } from 'rxjs/operators';
+import { MdHelpOutline } from 'react-icons/md';
 
 import styles from './Provisions.module.scss';
 import { portManager } from '../../../Services/PortManager';
 import { Port } from '../../../Types/Port';
 import { gameManager } from '../../../Services/GameManager';
 import { Merchant } from '../../../Types/Merchant';
+import { GUID } from '../../../Helpers/GUID';
+import { RenderTooltip } from '../../../Helpers/Tooltip';
 
 interface Props {}
 
@@ -83,7 +86,7 @@ export class Provisions extends React.Component<Props, State> {
     }
 
     public render() {
-        const { availableProvisions, intendedProvisionPurchase, intendedProvisionSale, currentPort } = this.state;
+        const { availableProvisions, intendedProvisionPurchase, intendedProvisionSale, currentPort, provisionBuyPrices } = this.state;
         const children = React.Children.toArray(this.props.children);
         const merchant = currentPort?.merchant as Merchant;
         const hasProvisions = availableProvisions.reduce((acc, val) => { return acc += val; }, 0) > 0;
@@ -135,14 +138,108 @@ export class Provisions extends React.Component<Props, State> {
                             <Image src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
                         </div>
                         <div className={ styles['provisions-wrapper'] + ' no-select' }>
-                            <Row className='no-gutters'>
-                                <Col xs={{ span: 2, offset:3}} className='text-center'>
+                            <Row className={ styles['provisions-backing-wrapper'] + ' no-gutters'}>
+                                <Col xs={{ span: 2, offset: 2 }} className='text-center'>
+                                    <Image src='images/scroll-sideways.png' alt='Scroll background for luxury provisions label' className={ styles['provisions-backing'] }/>
+                                </Col>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-center'>
+                                    <Image src='images/scroll-sideways.png' alt='Scroll background for average provisions label' className={ styles['provisions-backing'] }/>
+                                </Col>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-center'>
+                                    <Image src='images/scroll-sideways.png' alt='Scroll background for sparse provisions label' className={ styles['provisions-backing'] }/>
+                                </Col>
+                            </Row>
+                            <Row className={ styles['provisions-labels-wrapper'] + ' no-gutters text-dark'}>
+                                <Col xs={{ span: 2, offset: 2 }} className='text-left'>
+                                    <Row className='no-gutters'>
+                                        <Col xs='8'>
+                                            Luxurious:
+                                        </Col>
+                                        <Col xs='3' className='text-center'>
+                                            <span className={ styles['provisions-price'] }>${ provisionBuyPrices[0] }</span>
+                                        </Col>
+                                        <Col xs='1' className='text-right'>
+                                            <span className={ styles['provisions-quantity-help'] }>
+                                            <OverlayTrigger rootClose
+                                                key={GUID()}
+                                                placement="top"
+                                                delay={{ show: 100, hide: 250 }}
+                                                overlay={RenderTooltip({
+                                                    children: 'Premium food and wine to keep your crew in high spirits'
+                                                })}>
+                                                {({ ref, ...triggerHandler }) => ( 
+                                                    <span ref={ref} {...triggerHandler }>
+                                                        <MdHelpOutline></MdHelpOutline>
+                                                    </span>
+                                                )}
+                                            </OverlayTrigger>
+                                            </span>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-left'>
+                                    <Row className='no-gutters'>
+                                        <Col xs='8'>
+                                            Average:
+                                        </Col>
+                                        <Col xs='3' className='text-center'>
+                                            <span className={ styles['provisions-price'] }>${ provisionBuyPrices[1] }</span>
+                                        </Col>
+                                        <Col xs='1' className='text-right'>
+                                            <span className={ styles['provisions-quantity-help'] }>
+                                            <OverlayTrigger rootClose
+                                                key={GUID()}
+                                                placement="top"
+                                                delay={{ show: 100, hide: 250 }}
+                                                overlay={RenderTooltip({
+                                                    children: 'Enough food and beer to keep the crew from complaining'
+                                                })}>
+                                                {({ ref, ...triggerHandler }) => ( 
+                                                    <span ref={ref} {...triggerHandler }>
+                                                        <MdHelpOutline></MdHelpOutline>
+                                                    </span>
+                                                )}
+                                            </OverlayTrigger>
+                                            </span>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-left'>
+                                    <Row className='no-gutters'>
+                                        <Col xs='8'>
+                                            Sparse:
+                                        </Col>
+                                        <Col xs='3' className='text-center'>
+                                            <span className={ styles['provisions-price'] }>${ provisionBuyPrices[2] }</span>
+                                        </Col>
+                                        <Col xs='1' className='text-right'>
+                                            <span className={ styles['provisions-quantity-help'] }>
+                                            <OverlayTrigger rootClose
+                                                key={GUID()}
+                                                placement="top"
+                                                delay={{ show: 100, hide: 250 }}
+                                                overlay={RenderTooltip({
+                                                    children: 'The bare minimum food and water to keep the crew alive physically, but morale will suffer'
+                                                })}>
+                                                {({ ref, ...triggerHandler }) => ( 
+                                                    <span ref={ref} {...triggerHandler }>
+                                                        <MdHelpOutline></MdHelpOutline>
+                                                    </span>
+                                                )}
+                                            </OverlayTrigger>
+                                            </span>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row className={ styles['provisions-platter-wrapper'] + ' no-gutters'}>
+                                <Col xs={{ span: 2, offset: 2 }} className='text-center'>
                                     <Image src='images/platter-3.png' alt='luxury provisions' className={ styles['provisions'] }/>
                                 </Col>
-                                <Col xs={{ span: 2}} className='text-center'>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-center'>
                                     <Image src='images/platter-2.png' alt='average provisions' className={ styles['provisions'] }/>
                                 </Col>
-                                <Col xs={{ span: 2}} className='text-center'>
+                                <Col xs={{ span: 2, offset: 1 }} className='text-center'>
                                     <Image src='images/platter-1.png' alt='sparse provisions' className={ styles['provisions'] }/>
                                 </Col>
                             </Row>

@@ -43,6 +43,26 @@ export class Intro extends React.Component<Props, State> {
 
     private getIntro(): JSX.Element {
         switch(this.state.difficulty) {
+            case 1: {
+                return (
+                    <Row className='no-gutters'>
+                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
+                            <p>
+                                Passed up for promotion again, you’ve rallied the crew of a large English merchant vessel to turn on its captain and his worthless officers.
+                            </p>
+                            <p>
+                                The ship and it’s treasures are yours; its crew voted you as the new captain; the former now marooned on an unnamed island.
+                            </p>
+                            <p>
+                                You can never go back to civilized society. They hang people for what you’ve done. Why not try for a life of piracy? You could turn your new found riches into a fortune.
+                            </p>
+                            <p>
+                                Best place to start is the safety of the Pirate Republic of Nassau, and so you set sail. From there, only you can decide how to make your legend.
+                            </p>
+                        </Col>
+                    </Row>
+                );
+            }
             case 2: {
                 return (
                     <Row className='no-gutters'>
@@ -102,18 +122,7 @@ export class Intro extends React.Component<Props, State> {
                 return (
                     <Row className='no-gutters'>
                         <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
-                            <p>
-                                Passed up for promotion again, you’ve rallied the crew of a large English merchant vessel to turn on its captain and his worthless officers.
-                            </p>
-                            <p>
-                                The ship and it’s treasures are yours; its crew voted you as the new captain; the former now marooned on an unnamed island.
-                            </p>
-                            <p>
-                                You can never go back to civilized society. They hang people for what you’ve done. Why not try for a life of piracy? You could turn your new found riches into a fortune.
-                            </p>
-                            <p>
-                                Best place to start is the safety of the Pirate Republic of Nassau, and so you set sail. From there, only you can decide how to make your legend.
-                            </p>
+                            This difficulty level does not exist.
                         </Col>
                     </Row>
                 );
