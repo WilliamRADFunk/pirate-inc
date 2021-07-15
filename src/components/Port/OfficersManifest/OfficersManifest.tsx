@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row, Table } from 'react-bootstrap';
+import { Button, Col, Image, Row, Table } from 'react-bootstrap';
 import { AiFillMedicineBox } from 'react-icons/ai';
 import { FaPeopleCarry, FaRegThumbsDown } from 'react-icons/fa';
 import { GiHandSaw } from 'react-icons/gi';
@@ -62,20 +62,20 @@ export class OfficersManifest extends React.Component<Props, State> {
         const children = React.Children.toArray(this.props.children);
         return (<>
             <div className={ styles['scroll-top'] }>
-                <img
+                <Image
                     src='images/scroll-top.png'
                     width='100%'
                     height='auto'
                     alt='Top of officers manifest scroll'
-                    style={{ width: '100%', height: 'auto' }}></img>
+                    style={{ width: '100%', height: 'auto' }}/>
             </div>
             <div className={ styles['scroll-bottom'] }>
-                <img
+                <Image
                     src='images/scroll-bottom.png'
                     width='100%'
                     height='auto'
                     alt='Bottom of officers manifest scroll'
-                    style={{ width: '100%', height: 'auto' }}></img>
+                    style={{ width: '100%', height: 'auto' }}/>
             </div>
             <Row className='mb-2 mx-1' style={{ position: 'relative', zIndex: 3 }}>
                 <Col xs='12'

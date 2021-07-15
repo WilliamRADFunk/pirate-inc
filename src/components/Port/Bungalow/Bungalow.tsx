@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, OverlayTrigger, Row } from 'react-bootstrap';
+import { Button, Col, Image, OverlayTrigger, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { ImExit } from 'react-icons/im';
 import { MdHelpOutline } from 'react-icons/md';
@@ -79,7 +79,7 @@ export class Bungalow extends React.Component<Props, State> {
                 }
                 { (PortSceneState.BungalowCrewManifest <= portSceneState && portSceneState <= PortSceneState.BungalowShipManifest) || portSceneState === PortSceneState.BungalowOptions
                     ? null
-                    : <img
+                    : <Image
                         src='images/bungalow-icon.png'
                         alt='bungalow icon'
                         width='50%'

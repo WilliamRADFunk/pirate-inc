@@ -2,11 +2,17 @@ import React from 'react';
 import { Col, Image } from 'react-bootstrap';
 import styles from './Title.module.scss';
 
-export class Title extends React.Component {
+interface Props {
+    url: string;
+}
+
+interface State {}
+
+export class Title extends React.Component<Props, State> {
     public render() {
         return (
             <Col xs="12" lg={{ span: 10, offset: 1 }}>
-                <Image className={styles.banner} src="images/pirate-flag.png" alt="Pirates Incorporated logo" fluid/>
+                <Image className={styles.banner} src={ `images/${this.props.url}.png` } alt="Pirates Incorporated logo" fluid/>
             </Col>
         );
     }

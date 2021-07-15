@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
 import { Subscription } from 'rxjs';
@@ -69,7 +69,7 @@ export class ColonialOffice extends React.Component<Props, State> {
                 </Row>
                 { (PortSceneState.ColonialOfficeBribe <= portSceneState && portSceneState <= PortSceneState.ColonialOfficeWritOfProtection) || portSceneState === PortSceneState.ColonialOfficeOptions
                     ? null
-                    : <img
+                    : <Image
                         src='images/colonial-office-icon.png'
                         alt='colonial office icon'
                         width='50%'

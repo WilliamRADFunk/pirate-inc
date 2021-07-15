@@ -21,12 +21,14 @@ export enum PortLocation {
 export interface Port {
     availableCrewToHire: BehaviorSubject<HireableCrew>;
     availableOfficersToHire: BehaviorSubject<HireableOfficers>;
+    availableProvisions: BehaviorSubject<[number, number, number]>;
     readonly colonialOptions: { [key: number]: boolean };
     readonly connectedPorts: Port[];
     readonly costScaleSize: number;
     hasArrestBeenAttempted: boolean;
     readonly isPiratePort: boolean;
     readonly name: PortLocation;
+    provisionPrices: BehaviorSubject<[number, number, number]>;
     reputation: number;
     readonly shipyardOptions: { [key: number]: boolean };
     willArrest: boolean;

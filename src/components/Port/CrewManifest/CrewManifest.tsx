@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, OverlayTrigger, Row, Table } from 'react-bootstrap';
+import { Button, Col, Image, OverlayTrigger, Row, Table } from 'react-bootstrap';
 import { FaCaretDown, FaCaretUp, FaRegThumbsDown, FaSort } from 'react-icons/fa';
 import { GiBroom, GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
 import { GrMoney } from 'react-icons/gr';
@@ -121,20 +121,20 @@ export class CrewManifest extends React.Component<Props, State> {
         const children = React.Children.toArray(this.props.children);
         return (<>
             <div className={ styles['scroll-top'] }>
-                <img
+                <Image
                     src="images/scroll-top.png"
                     width='100%'
                     height='auto'
                     alt='Top of crew manifest scroll'
-                    style={{ width: '100%', height: 'auto' }}></img>
+                    style={{ width: '100%', height: 'auto' }}/>
             </div>
             <div className={ styles['scroll-bottom'] }>
-                <img
+                <Image
                     src="images/scroll-bottom.png"
                     width='100%'
                     height='auto'
                     alt='Bottom of crew manifest scroll'
-                    style={{ width: '100%', height: 'auto' }}></img>
+                    style={{ width: '100%', height: 'auto' }}/>
             </div>
             <Row className='mb-2 mx-1' style={{ position: 'relative', zIndex: 3 }}>
                 <Col xs='12'

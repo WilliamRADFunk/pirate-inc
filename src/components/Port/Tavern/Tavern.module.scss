@@ -7,3 +7,63 @@
     cursor: not-allowed;
     opacity: 0.5;
 }
+
+.torch-flame {
+    height: 4em;
+    width: 4em;
+}
+
+.torch-flame-wrapper-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.torch-flame-wrapper-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.torch-handle {
+    height: 4em;
+    width: 7em;
+}
+
+.torch-handle-wrapper-left {
+    position: absolute;
+    left: -1.35em;
+    top: 2em;
+}
+
+.torch-handle-wrapper-right {
+    position: absolute;
+    right: -1.6em;
+    top: 2em;
+}
+
+@media only screen and (max-width: 1200px) {
+    .torch-flame {
+        height: 3em;
+        width: 3em;
+    }
+
+    .torch-flame-wrapper-left {
+        left: -0.5em;
+        top: 0.3em;
+    }
+
+    .torch-flame-wrapper-right {
+        right: 1.2em;
+        top: 0.3em;
+    }
+
+    .torch-handle {
+        height: 3em;
+        width: 5em;
+    }
+
+    .torch-handle-wrapper-right {
+        right: 0;
+    }
+}

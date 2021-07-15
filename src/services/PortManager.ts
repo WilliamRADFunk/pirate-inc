@@ -27,6 +27,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: false, // Bribe
                     2: false, // Writ of Protection
@@ -37,6 +38,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.AtSea,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false, // Buy
@@ -50,6 +52,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: true, // Bribe
                     2: true, // Writ of Protection
@@ -60,6 +63,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.Bath,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true, // Buy
@@ -73,6 +77,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -83,6 +88,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.CharlesTown,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,
@@ -96,6 +102,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -106,6 +113,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.Nassau,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true,
@@ -119,6 +127,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: true,
                     2: false,
@@ -129,6 +138,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.NormanIsland,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,
@@ -142,6 +152,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -152,6 +163,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: false,
                 name: PortLocation.PortRoyal,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: true,
@@ -165,6 +177,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
+                availableProvisions: new BehaviorSubject([0, 0, 0]),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -175,6 +188,7 @@ class PortManager {
                 hasArrestBeenAttempted: false,
                 isPiratePort: true,
                 name: PortLocation.Tortuga,
+                provisionPrices: new BehaviorSubject([0, 0, 0]),
                 reputation: 0,
                 shipyardOptions: {
                     1: false,

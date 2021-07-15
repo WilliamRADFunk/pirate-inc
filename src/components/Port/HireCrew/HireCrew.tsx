@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, OverlayTrigger, Row } from 'react-bootstrap';
+import { Col, Image, OverlayTrigger, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HireableCrew } from '../../../Objects/Crew/HireableCrew';
@@ -154,16 +154,16 @@ export class HireCrew extends React.Component<Props, State> {
                     }
                     <div style={{ minHeight: '32vw', position: 'relative', width: '100%' }}>
                         <div className={ styles['table-bg-wrapper'] + ' no-select' }>
-                            <img src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
+                            <Image src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
                         </div>
                         <div className={ styles['stats-bg-wrapper'] }>
-                            <img src='images/rope-border-square.png' alt='recruit stat parchment' className={ styles['stats-bg'] + ' no-select' }/>
+                            <Image src='images/rope-border-square.png' alt='recruit stat parchment' className={ styles['stats-bg'] + ' no-select' }/>
                         </div>
                         <div className={ styles['beer-mug-wrapper'] + ' no-select' }>
-                            <img src='images/beer-mug.png' alt='mug of beer' className={ styles['beer-mug'] }/>
+                            <Image src='images/beer-mug.png' alt='mug of beer' className={ styles['beer-mug'] }/>
                         </div>
                         <div className={ styles['ink-quill-wrapper'] + ' no-select' }>
-                            <img src='images/tavern-ink-quill.png' alt='ink and quill' className={ styles['ink-quill'] }/>
+                            <Image src='images/tavern-ink-quill.png' alt='ink and quill' className={ styles['ink-quill'] }/>
                         </div>
                         { (!recruits?.length || maxCrewReached)
                             ? <div className={ styles['stats-wrapper'] + ' text-dark' }>
