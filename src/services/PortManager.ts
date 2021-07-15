@@ -1,7 +1,9 @@
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
+import { CreateMerchant } from "../Helpers/CreateMerchant";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
 import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
+import { MoodToMouth } from "../Types/People";
 
 import { Port, PortLocation } from "../Types/Port";
 import { playerManager } from "./PlayerManager";
@@ -27,7 +29,7 @@ class PortManager {
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: false, // Bribe
                     2: false, // Writ of Protection
@@ -46,13 +48,14 @@ class PortManager {
                     3: false, // Repair
                     4: false // Outfit
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 0, false)
             },
             // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: true, // Bribe
                     2: true, // Writ of Protection
@@ -71,13 +74,14 @@ class PortManager {
                     3: true, // Repair
                     4: false // Outfit
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 7, false)
             },
             // A crown port with no love for pirates which is often attacked by pirates.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -96,13 +100,14 @@ class PortManager {
                     3: true,
                     4: true
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 8, false)
             },
             // While technically under the crown, it is the capital of the pirate republic under Benjamin Hornigold.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -121,13 +126,14 @@ class PortManager {
                     3: true,
                     4: true
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 5, true)
             },
             // A known pirate port with no love for the crown.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: true,
                     2: false,
@@ -146,13 +152,14 @@ class PortManager {
                     3: true,
                     4: true
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 3, true)
             },
             // THE Crown port. Pirates will find no love here, but it's also where the real money can be found.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -171,13 +178,14 @@ class PortManager {
                     3: true,
                     4: true
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 10, false)
             },
             // A pirate stronghold with its very own castle.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
-                availableProvisions: new BehaviorSubject([0, 0, 0]),
+                availableProvisions: new BehaviorSubject([1, 1, 1]),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -196,7 +204,8 @@ class PortManager {
                     3: true,
                     4: false
                 },
-                willArrest: false
+                willArrest: false,
+                merchant: CreateMerchant(0, 2, true)
             }
         );
         this.currentPort = new BehaviorSubject<Port>(this.ports[0]);
@@ -316,6 +325,8 @@ class PortManager {
         
         // Check arrest potential.
         !hasWritOrBribe ? this._rollForArrest() : null;
+
+        port.merchant.mood = MoodToMouth.Pleased;
     }
 }
 

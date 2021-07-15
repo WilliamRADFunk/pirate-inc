@@ -7,6 +7,7 @@ import styles from './Provisions.module.scss';
 import { portManager } from '../../../Services/PortManager';
 import { Port } from '../../../Types/Port';
 import { gameManager } from '../../../Services/GameManager';
+import { Merchant } from '../../../Types/Merchant';
 
 interface Props {}
 
@@ -82,8 +83,9 @@ export class Provisions extends React.Component<Props, State> {
     }
 
     public render() {
-        const { availableProvisions, intendedProvisionPurchase, intendedProvisionSale } = this.state;
+        const { availableProvisions, intendedProvisionPurchase, intendedProvisionSale, currentPort } = this.state;
         const children = React.Children.toArray(this.props.children);
+        const merchant = currentPort?.merchant as Merchant;
         const hasProvisions = availableProvisions.reduce((acc, val) => { return acc += val; }, 0) > 0;
         const canBuy = intendedProvisionPurchase.reduce((acc, val) => { return acc += val; }, 0) > 0;
         const canSell = intendedProvisionSale.reduce((acc, val) => { return acc += val; }, 0) > 0;
@@ -92,35 +94,30 @@ export class Provisions extends React.Component<Props, State> {
                 <Col xs='12' aria-label='Officers Manifest section' className='text-center text-light'>
                     <Row className='no-gutters mb-2'>
                         <Col className='col-6 offset-3'>
-                            <h2 className={ styles['Provisions-header'] }>Buy or Sell Provisions</h2>
+                            <h2 className={ styles['provisions-header'] }>Buy or Sell Provisions</h2>
                         </Col>
                         <Col className='col-1'>
-                            <div className={ styles['Provisions-help'] + ' text-right' }>
+                            <div className={ styles['provisions-help'] + ' text-right' }>
                                 { children[0] }
                             </div>
                         </Col>
                         <Col className='col-2'>
-                            <div className={ styles['Provisions-exit'] + ' text-left' }>
+                            <div className={ styles['provisions-exit'] + ' text-left' }>
                                 { children[1] }
                             </div>
                         </Col>
                     </Row>
                     <Row className='no-gutters mb-3'>
-                        {/* { !currRecruit
-                            ? <Col className='col-6 offset-3'>
-                                <h5 className={ styles['Provisions-name-header'] }>&nbsp;</h5>
-                              </Col>
-                            : <Col className='col-6 offset-3'>
-                                <h5 className={ styles['Provisions-name-header'] }>
-                                    { `${currRecruit.nameFirst}${ currRecruit.nameNick ? ` '${currRecruit.nameNick}' ` : ' '}${currRecruit.nameLast}` }
-                                </h5>
-                              </Col>
-                        } */}
+                        <Col className='col-6 offset-3'>
+                            <h5 className={ styles['provisions-name-header'] }>
+                                { `Master ${merchant?.nameFirst}${ merchant?.nameNick ? ` '${merchant?.nameNick}' ` : ' '}${merchant?.nameLast}` }
+                            </h5>
+                        </Col>
                     </Row>
                     { hasProvisions
                         ? <div
                             className={ styles['avatar-sizing'] }
-                            dangerouslySetInnerHTML={{__html:  `
+                            dangerouslySetInnerHTML={{__html: merchant?.avatar ?? `
                                 <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="20vw" height="25vw" fill="transparent"/>
                                 </svg>`}}>
@@ -137,18 +134,16 @@ export class Provisions extends React.Component<Props, State> {
                         <div className={ styles['table-bg-wrapper'] + ' no-select' }>
                             <Image src='images/tavern-table.svg' alt='tavern table' style={{ width: '90%' }}/>
                         </div>
-                        <div className={ styles['luxury-provisions-wrapper'] + ' no-select' }>
+                        <div className={ styles['provisions-wrapper'] + ' no-select' }>
                             <Row className='no-gutters'>
-                                <Col xs={{ span: 6, offset: 3}} className='text-center'>
-                                    <Image src='images/flour.png' alt='luxury provisions - flour' className={ styles['luxury-provisions'] }/>
-                                    <Image src='images/meat.png' alt='luxury provisions - meat' className={ styles['luxury-provisions'] }/>
-                                    <Image src='images/fruits-veggies.png' alt='luxury provisions - fruits and veggies' className={ styles['luxury-provisions'] }/>
+                                <Col xs={{ span: 2, offset:3}} className='text-center'>
+                                    <Image src='images/platter-3.png' alt='luxury provisions' className={ styles['provisions'] }/>
                                 </Col>
-                            </Row>
-                            <Row className='no-gutters'>
-                                <Col xs={{ span: 6, offset: 3}} className='text-center'>
-                                    <Image src='images/bread.png' alt='luxury provisions - bread' className={ styles['luxury-provisions'] }/>
-                                    <Image src='images/cheese.png' alt='luxury provisions - cheese' className={ styles['luxury-provisions'] }/>
+                                <Col xs={{ span: 2}} className='text-center'>
+                                    <Image src='images/platter-2.png' alt='average provisions' className={ styles['provisions'] }/>
+                                </Col>
+                                <Col xs={{ span: 2}} className='text-center'>
+                                    <Image src='images/platter-1.png' alt='sparse provisions' className={ styles['provisions'] }/>
                                 </Col>
                             </Row>
                         </div>

@@ -1,6 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
 import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
+import { Merchant } from "./Merchant";
 
 /**
  * Available ports in the game.
@@ -27,6 +28,7 @@ export interface Port {
     readonly costScaleSize: number;
     hasArrestBeenAttempted: boolean;
     readonly isPiratePort: boolean;
+    readonly merchant: Merchant;
     readonly name: PortLocation;
     provisionPrices: BehaviorSubject<[number, number, number]>;
     reputation: number;

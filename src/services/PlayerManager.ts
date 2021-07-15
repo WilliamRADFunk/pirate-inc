@@ -16,6 +16,10 @@ export interface PlayerNegativeStats {
     Paranoid: number;
 }
 
+function statCheck(stat: number): number {
+    return (stat > 1 && 9 > stat) ? stat : 5;
+}
+
 // Singleton to control the various aspects of the player object.
 class PlayerManager {
     /**
@@ -143,10 +147,6 @@ class PlayerManager {
         const currAC = this.remainingActionPoints.value;
         this.remainingActionPoints.next(currAC > 0 ? currAC - 1 : 0);
     }
-}
-
-function statCheck(stat: number): number {
-    return (stat > 1 && 9 > stat) ? stat : 5;
 }
 
 /**
