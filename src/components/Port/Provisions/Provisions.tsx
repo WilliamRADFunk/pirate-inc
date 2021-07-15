@@ -3,7 +3,7 @@ import { Col, Image, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 import { combineLatestWith, filter, switchMap } from 'rxjs/operators';
 
-import styles from './BuySupplies.module.scss';
+import styles from './Provisions.module.scss';
 import { portManager } from '../../../Services/PortManager';
 import { Port } from '../../../Types/Port';
 import { gameManager } from '../../../Services/GameManager';
@@ -14,12 +14,14 @@ interface State {
     availableProvisions: [number, number, number];
     currentPort: Port | null;
     intendedProvisionPurchase: [number, number, number];
-    provisionPrices: [number, number, number];
+    intendedProvisionSale: [number, number, number];
+    provisionBuyPrices: [number, number, number];
+    provisionSellPrices: [number, number, number];
     provisions: [number, number, number];
     purchaseTotal: number;
 }
 
-export class BuySupplies extends React.Component<Props, State> {
+export class Provisions extends React.Component<Props, State> {
     private subscriptions: Subscription[] = [];
 
     constructor(props: Props) {
@@ -29,17 +31,26 @@ export class BuySupplies extends React.Component<Props, State> {
             availableProvisions: [0, 0, 0],
             currentPort: null,
             intendedProvisionPurchase: [0, 0, 0],
-            provisionPrices: [0, 0, 0],
+            intendedProvisionSale: [0, 0, 0],
+            provisionBuyPrices: [0, 0, 0],
+            provisionSellPrices: [0, 0, 0],
             provisions: [0, 0, 0],
             purchaseTotal: 0
         };
     }
 
-    private _changeIndex(provIndex: number, dir: number): void {
+    private _changeBuyIndex(provIndex: number, dir: number): void {
         const intendedProvisionPurchases = this.state.intendedProvisionPurchase;
     }
 
+    private _changeSellIndex(provIndex: number, dir: number): void {
+        const intendedProvisionSale = this.state.intendedProvisionSale;
+    }
+
     private _buyProvisions(): void {
+    }
+
+    private _sellProvisions(): void {
     }
 
     public componentDidMount() {
@@ -57,7 +68,8 @@ export class BuySupplies extends React.Component<Props, State> {
                 ).subscribe((portData: [[number, number, number], [number, number, number]]) => {
                     this.setState({
                         availableProvisions: portData[0],
-                        provisionPrices: portData[1]
+                        provisionBuyPrices: portData[1],
+                        provisionSellPrices: portData[1].map(val => val * 0.9) as [number, number, number]
                     });
                 })
         );
@@ -70,23 +82,25 @@ export class BuySupplies extends React.Component<Props, State> {
     }
 
     public render() {
-        const { availableProvisions, intendedProvisionPurchase } = this.state;
+        const { availableProvisions, intendedProvisionPurchase, intendedProvisionSale } = this.state;
         const children = React.Children.toArray(this.props.children);
-        const hasProvisions = availableProvisions.reduce((acc, val) => { return acc += val; }, 0);
+        const hasProvisions = availableProvisions.reduce((acc, val) => { return acc += val; }, 0) > 0;
+        const canBuy = intendedProvisionPurchase.reduce((acc, val) => { return acc += val; }, 0) > 0;
+        const canSell = intendedProvisionSale.reduce((acc, val) => { return acc += val; }, 0) > 0;
         return (
             <Row className='no-gutters'>
                 <Col xs='12' aria-label='Officers Manifest section' className='text-center text-light'>
                     <Row className='no-gutters mb-2'>
                         <Col className='col-6 offset-3'>
-                            <h2 className={ styles['buy-supplies-header'] }>Buy Supplies</h2>
+                            <h2 className={ styles['Provisions-header'] }>Buy or Sell Provisions</h2>
                         </Col>
                         <Col className='col-1'>
-                            <div className={ styles['buy-supplies-help'] + ' text-right' }>
+                            <div className={ styles['Provisions-help'] + ' text-right' }>
                                 { children[0] }
                             </div>
                         </Col>
                         <Col className='col-2'>
-                            <div className={ styles['buy-supplies-exit'] + ' text-left' }>
+                            <div className={ styles['Provisions-exit'] + ' text-left' }>
                                 { children[1] }
                             </div>
                         </Col>
@@ -94,10 +108,10 @@ export class BuySupplies extends React.Component<Props, State> {
                     <Row className='no-gutters mb-3'>
                         {/* { !currRecruit
                             ? <Col className='col-6 offset-3'>
-                                <h5 className={ styles['buy-supplies-name-header'] }>&nbsp;</h5>
+                                <h5 className={ styles['Provisions-name-header'] }>&nbsp;</h5>
                               </Col>
                             : <Col className='col-6 offset-3'>
-                                <h5 className={ styles['buy-supplies-name-header'] }>
+                                <h5 className={ styles['Provisions-name-header'] }>
                                     { `${currRecruit.nameFirst}${ currRecruit.nameNick ? ` '${currRecruit.nameNick}' ` : ' '}${currRecruit.nameLast}` }
                                 </h5>
                               </Col>

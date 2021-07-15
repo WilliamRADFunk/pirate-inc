@@ -13,7 +13,7 @@ import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
 import { HireOfficers } from '../HireOfficers/HireOfficers';
 import { RenderTooltip } from '../../../Helpers/Tooltip';
-import { BuySupplies } from '../BuySupplies/BuySupplies';
+import { Provisions } from '../Provisions/Provisions';
 
 interface Props {}
 
@@ -59,13 +59,13 @@ export class Tavern extends React.Component<Props, State> {
         </>);
     }
 
-    private _renderBuySupplies(): JSX.Element {
+    private _renderProvisions(): JSX.Element {
         return (
             <Row className='no-gutters bg-dark text-light tavern-bg'>
                 <Col
-                    aria-label='Tavern buy supplies section description'
+                    aria-label='Tavern provisions section description'
                     className='fs-sm text-left'>
-                    <BuySupplies>
+                    <Provisions>
                         <OverlayTrigger rootClose
                             key={GUID()}
                             placement="top"
@@ -78,9 +78,9 @@ export class Tavern extends React.Component<Props, State> {
                                     {...triggerHandler }
                                     ref={ref}
                                     variant='link'
-                                    aria-label='Open help modal for deeper description of buy supplies section'
+                                    aria-label='Open help modal for deeper description of provisions section'
                                     className={ styles['help-icon'] + ' border-0 text-light' }
-                                    onClick={() => gameManager.openHelpModal('Buy Supplies')}>
+                                    onClick={() => gameManager.openHelpModal('Provisions')}>
                                     <MdHelpOutline></MdHelpOutline>
                                 </Button>
                                 )}
@@ -104,7 +104,7 @@ export class Tavern extends React.Component<Props, State> {
                                 </Button>
                                 )}
                         </OverlayTrigger>
-                    </BuySupplies>
+                    </Provisions>
                 </Col>
             </Row>
         );
@@ -215,13 +215,44 @@ export class Tavern extends React.Component<Props, State> {
     private _renderOptions(actionPoints: boolean, maxCrewReached: boolean): JSX.Element {
         return (<>
             <Row className='no-gutters'>
-                <Button
-                    aria-label='Open tavern buy supplies section'
-                    variant='link'
-                    className='col-12 text-dark fs-md my-4'
-                    onClick={() => stateManager.changePortSceneState(PortSceneState.TavernBuySupplies)}>
-                    Buy Supplies
-                </Button>
+                <OverlayTrigger rootClose
+                    key={GUID()}
+                    placement="top"
+                    delay={{ show: 100, hide: 250 }}
+                    overlay={RenderTooltip({
+                        children: 'Visit the port\'s merchant guild leader to buy or sell provisions'
+                    })}>
+                    {({ ref, ...triggerHandler }) => (
+                        <div className='col-4 offset-1 my-4'>
+                            <Button ref={ ref } {...triggerHandler}
+                                aria-label='Open tavern provisions section'
+                                variant='link'
+                                className='fs-md text-dark'
+                                onClick={() => stateManager.changePortSceneState(PortSceneState.TavernProvisions)}>
+                                Provisions
+                            </Button>
+                        </div>
+                    )}
+                </OverlayTrigger>
+                <OverlayTrigger rootClose
+                    key={GUID()}
+                    placement="top"
+                    delay={{ show: 100, hide: 250 }}
+                    overlay={RenderTooltip({
+                        children: 'Visit the port\'s fence to sell your ill-gotten booty'
+                    })}>
+                    {({ ref, ...triggerHandler }) => (
+                        <div className='col-4 offset-1 my-4'>
+                            <Button ref={ ref } {...triggerHandler}
+                                aria-label='Open tavern fence section'
+                                variant='link'
+                                className='fs-md text-dark'
+                                onClick={() => stateManager.changePortSceneState(PortSceneState.TavernFence)}>
+                                Fence
+                            </Button>
+                        </div>
+                    )}
+                </OverlayTrigger>
             </Row>
             <Row className='no-gutters'>
                 <OverlayTrigger rootClose
@@ -335,8 +366,8 @@ export class Tavern extends React.Component<Props, State> {
         const actionPoints = this._hasActionPoints();
         return (
             <div className='w-100 h-100 text-dark'>
-                { (portSceneState !== PortSceneState.TavernOptions && portSceneState >= PortSceneState.TavernBuySupplies) ? null : this._renderTitle(portSceneState) }
-                { (PortSceneState.TavernBuySupplies <= portSceneState && portSceneState <= PortSceneState.TavernHireOfficers) || portSceneState === PortSceneState.TavernOptions
+                { (portSceneState !== PortSceneState.TavernOptions && portSceneState >= PortSceneState.TavernProvisions) ? null : this._renderTitle(portSceneState) }
+                { (PortSceneState.TavernProvisions <= portSceneState && portSceneState <= PortSceneState.TavernHireOfficers) || portSceneState === PortSceneState.TavernOptions
                     ? null
                     : <Image
                         src='images/tavern-icon.png'
@@ -346,9 +377,9 @@ export class Tavern extends React.Component<Props, State> {
                         className='small-square-icon'
                         onClick={() => this._toggleMode()}/>
                 }
-                { portSceneState < PortSceneState.TavernBuySupplies || portSceneState > PortSceneState.TavernHireOfficers ? null : this._renderBackgroundImages() }
+                { portSceneState < PortSceneState.TavernProvisions || portSceneState > PortSceneState.TavernHireOfficers ? null : this._renderBackgroundImages() }
                 { portSceneState !== PortSceneState.TavernOptions ? null : this._renderOptions(actionPoints, maxCrewReached)}
-                { portSceneState !== PortSceneState.TavernBuySupplies ? null : this._renderBuySupplies() }
+                { portSceneState !== PortSceneState.TavernProvisions ? null : this._renderProvisions() }
                 { portSceneState !== PortSceneState.TavernHireCrew ? null : this._renderHireCrew() }
                 { portSceneState !== PortSceneState.TavernHireOfficers ? null : this._renderHireOfficers() }
             </div>);

@@ -77,7 +77,7 @@ export class PortMain extends React.Component<Props, State> {
                             <Shipyard></Shipyard>
                         </Col>
                     }
-                    { portSceneState < PortSceneState.TavernBuySupplies ? null :
+                    { portSceneState < PortSceneState.TavernProvisions ? null :
                         <Col xs="12">
                             <Tavern></Tavern>
                         </Col>

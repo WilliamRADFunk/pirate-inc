@@ -148,7 +148,7 @@ export class Shipyard extends React.Component<Props, State> {
                         <Col
                             aria-label='Shipyard outfit ships section description'
                             className='fs-sm text-left'>
-                            The port has limited supplies of canon, armor, and sail cloth.
+                            The port has a limited supply of canon, armor, and sail cloth.
                             <br/>Each ship will also have a limit.
                             <br/>Select ship to buy or sell it's outfitting.
                         </Col>

@@ -33,9 +33,10 @@ import { BehaviorSubject, Observable } from "rxjs";
     ShipyardOutfit = 15,
     ShipyardRepair = 16,
     ShipyardSell = 17,
-    TavernBuySupplies = 18,
-    TavernHireCrew = 19,
-    TavernHireOfficers = 20
+    TavernProvisions = 18,
+    TavernFence = 19,
+    TavernHireCrew = 20,
+    TavernHireOfficers = 21
 }
 
 /**

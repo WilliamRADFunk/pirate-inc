@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 import { Subscription } from 'rxjs';
 
