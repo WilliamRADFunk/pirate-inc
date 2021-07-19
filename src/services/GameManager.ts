@@ -255,7 +255,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of difficulty setting.
-     * @returns observable of player's monetary balance.
+     * @returns observable of player's chosen difficulty level.
      */
     public getDifficulty(): Observable<number> {
         return this.difficulty.asObservable();
@@ -279,7 +279,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of maximum crew allowed.
-     * @returns observable of player's monetary balance.
+     * @returns observable of player's max possible crew.
      */
     public getMaxCrewCount(): Observable<number> {
         return this.maxCrewCount.asObservable();
@@ -295,7 +295,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of player's bounty.
-     * @returns observable of player's monetary balance.
+     * @returns observable of player's bounty.
      */
     public getPlayerBounty(): Observable<number> {
         return this.bounty.asObservable();
@@ -303,7 +303,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of provisions.
-     * @returns observable of player's monetary balance.
+     * @returns observable of player's total provisions owned.
      */
     public getProvisions(): Observable<[number, number, number]> {
         return this.totalProvisions.asObservable();
@@ -319,7 +319,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of ship count.
-     * @returns observable of player's monetary balance.
+     * @returns observable of player's total ship number.
      */
     public getShipCount(): Observable<number> {
         return this.shipCount.asObservable();
@@ -362,7 +362,7 @@ class GameManager {
 
     /**
      * Gets the subscribable value of balance.
-     * @returns observable of player's monetary balance.
+     * @returns True if name player chose name was valid, False if name was invalid.
      */
     public startGame(name: string): boolean {
         if (this.verifyPlayerName(name)) {

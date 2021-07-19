@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
-import { CreateMerchant } from "../Helpers/CreateMerchant";
+import { AdjustColonialOfficial, AdjustMerchant, CreateColonialOfficial, CreateMerchant } from "../Helpers/CreatePortPersonnel";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
 import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
 import { MoodToMouth } from "../Types/People";
@@ -30,6 +30,8 @@ class PortManager {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 0, false),
                 colonialOptions: {
                     1: false, // Bribe
                     2: false, // Writ of Protection
@@ -42,6 +44,7 @@ class PortManager {
                 name: PortLocation.AtSea,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: false, // Buy
                     2: false, // Sell
@@ -49,13 +52,16 @@ class PortManager {
                     4: false // Outfit
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 0, false)
+                merchant: CreateMerchant(0, 0, false),
+                writOfProtectionPrice: 0
             },
             // Sort of a neutral port in that they are under the crown, but history suggests Black Beard used it.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 7, false),
                 colonialOptions: {
                     1: true, // Bribe
                     2: true, // Writ of Protection
@@ -68,6 +74,7 @@ class PortManager {
                 name: PortLocation.Bath,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: true, // Buy
                     2: true, // Sell
@@ -75,13 +82,16 @@ class PortManager {
                     4: false // Outfit
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 7, false)
+                merchant: CreateMerchant(0, 7, false),
+                writOfProtectionPrice: 0
             },
             // A crown port with no love for pirates which is often attacked by pirates.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 8, false),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -94,6 +104,7 @@ class PortManager {
                 name: PortLocation.CharlesTown,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: false,
                     2: true,
@@ -101,13 +112,16 @@ class PortManager {
                     4: true
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 8, false)
+                merchant: CreateMerchant(0, 8, false),
+                writOfProtectionPrice: 0
             },
             // While technically under the crown, it is the capital of the pirate republic under Benjamin Hornigold.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 5, true),
                 colonialOptions: {
                     1: true,
                     2: true,
@@ -120,6 +134,7 @@ class PortManager {
                 name: PortLocation.Nassau,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: true,
                     2: true,
@@ -127,13 +142,16 @@ class PortManager {
                     4: true
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 5, true)
+                merchant: CreateMerchant(0, 5, true),
+                writOfProtectionPrice: 0
             },
             // A known pirate port with no love for the crown.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 3, true),
                 colonialOptions: {
                     1: true,
                     2: false,
@@ -146,6 +164,7 @@ class PortManager {
                 name: PortLocation.NormanIsland,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: false,
                     2: true,
@@ -153,13 +172,16 @@ class PortManager {
                     4: true
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 3, true)
+                merchant: CreateMerchant(0, 3, true),
+                writOfProtectionPrice: 0
             },
             // THE Crown port. Pirates will find no love here, but it's also where the real money can be found.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 10, false),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -172,6 +194,7 @@ class PortManager {
                 name: PortLocation.PortRoyal,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: true,
                     2: false,
@@ -179,13 +202,16 @@ class PortManager {
                     4: true
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 10, false)
+                merchant: CreateMerchant(0, 10, false),
+                writOfProtectionPrice: 0
             },
             // A pirate stronghold with its very own castle.
             {
                 availableCrewToHire: new BehaviorSubject(new HireableCrew()),
                 availableOfficersToHire: new BehaviorSubject(new HireableOfficers()),
                 availableProvisions: new BehaviorSubject([1, 1, 1]),
+                bribePrice: 0,
+                colonialOfficial: CreateColonialOfficial(0, 2, true),
                 colonialOptions: {
                     1: false,
                     2: false,
@@ -198,6 +224,7 @@ class PortManager {
                 name: PortLocation.Tortuga,
                 provisionPrices: new BehaviorSubject([200, 100, 50]),
                 reputation: 0,
+                royalPardonPrice: 0,
                 shipyardOptions: {
                     1: false,
                     2: false,
@@ -205,7 +232,8 @@ class PortManager {
                     4: false
                 },
                 willArrest: false,
-                merchant: CreateMerchant(0, 2, true)
+                merchant: CreateMerchant(0, 2, true),
+                writOfProtectionPrice: 0
             }
         );
         this.currentPort = new BehaviorSubject<Port>(this.ports[0]);
@@ -219,17 +247,24 @@ class PortManager {
 
     /**
      * Establishes whether arrest is imminent this turn or not.
+     * @returns True if the colonial official was replaced, False if they did their job and kept it.
      */
-    private _rollForArrest(): void {
+    private _rollForArrest(): boolean {
         const port = this.currentPort.value;
         if (!port) {
-            return;
+            return false;
         }
         // If an attempt hasn't already been made, there is no purchased protection, and reputation is low enough, arrest is possible.
         if (!port.hasArrestBeenAttempted && port.reputation < 0) {
             // Arrest is randomized and increases in chance as the negative reputation increases.
-            port.willArrest = Math.random() <= Math.abs(port.reputation) ? true : false;
-
+            port.willArrest = (Math.random() <= Math.abs(port.reputation));
+            // One final check is make against the colonial official's willingness to arrest. If they don't, they might be replaced.
+            const willArrest = port.willArrest;
+            port.willArrest = ((Math.random() * 10) < port.colonialOfficial.arrestInclination);
+            if (willArrest && !port.willArrest) {
+                // TODO: Replace the colonial official for not doing his job, and communicate the change to the player.
+                return true;
+            }
         } else {
             port.willArrest = false;
         }
@@ -241,19 +276,22 @@ class PortManager {
             // If the random roll is below player's cunning stat, they avoid imminent arrest.
             port.willArrest = Math.floor(Math.random() * 10) < cunningStat ? false : true;
         }
+
+        return false;
     }
 
     private _setupPortContent(port: Port): void {
         if (port.name !== PortLocation.AtSea) {
             port.availableCrewToHire.next(new HireableCrew(port.reputation, port.costScaleSize));
             port.availableOfficersToHire.next(new HireableOfficers(port.reputation, port.costScaleSize));
+            AdjustColonialOfficial(port.colonialOfficial, port.reputation, port.costScaleSize, port.isPiratePort);
+            AdjustMerchant(port.merchant, port.reputation, port.costScaleSize, port.isPiratePort);
+            port.bribePrice = 
         }
         // TODO: Establish how much shipyard can spend on buying player ships.
         // TODO: Establish how much money port is willing to spend on buying looted cargo.
         // TODO: Establish local prices for buying each type of local cargo.
         // TODO: Establish which special items player can buy.
-        // TODO: Establish the available crew for hire.
-        // TODO: Establish available officers for hire.
         // TODO: Establish the ships available for purchase.
         // TODO: Establish how many armor upgrades are available.
         // TODO: Establish how many cannon of each type are available for purchase.

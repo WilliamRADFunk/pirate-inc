@@ -6,9 +6,8 @@ import { MdHelpOutline } from 'react-icons/md';
 
 import styles from './Provisions.module.scss';
 import { portManager } from '../../../Services/PortManager';
-import { Port } from '../../../Types/Port';
+import { Merchant, Port } from '../../../Types/Port';
 import { gameManager } from '../../../Services/GameManager';
-import { Merchant } from '../../../Types/Merchant';
 import { GUID } from '../../../Helpers/GUID';
 import { RenderTooltip } from '../../../Helpers/Tooltip';
 

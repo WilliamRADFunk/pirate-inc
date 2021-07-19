@@ -1,7 +1,36 @@
 import { BehaviorSubject } from "rxjs";
 import { HireableCrew } from "../Objects/Crew/HireableCrew";
 import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
-import { Merchant } from "./Merchant";
+import { Features, MoodToMouth } from "./People";
+
+/**
+ * All the attributes port colonial official must have.
+ */
+ export interface ColonialOfficial {
+    arrestInclination: number;
+    avatar: string;
+    features: Features;
+    id: string;
+    mood: MoodToMouth;
+    nameFirst: string;
+    nameLast: string;
+    nameNick: string;
+    haggleResistance: number;
+}
+
+/**
+ * All the attributes the port merchant must have.
+ */
+ export interface Merchant {
+    avatar: string;
+    features: Features;
+    id: string;
+    mood: MoodToMouth;
+    nameFirst: string;
+    nameLast: string;
+    nameNick: string;
+    haggleResistance: number;
+}
 
 /**
  * Available ports in the game.
@@ -23,6 +52,8 @@ export interface Port {
     availableCrewToHire: BehaviorSubject<HireableCrew>;
     availableOfficersToHire: BehaviorSubject<HireableOfficers>;
     availableProvisions: BehaviorSubject<[number, number, number]>;
+    bribePrice: number;
+    readonly colonialOfficial: ColonialOfficial;
     readonly colonialOptions: { [key: number]: boolean };
     readonly connectedPorts: Port[];
     readonly costScaleSize: number;
@@ -32,6 +63,8 @@ export interface Port {
     readonly name: PortLocation;
     provisionPrices: BehaviorSubject<[number, number, number]>;
     reputation: number;
+    royalPardonPrice: number;
     readonly shipyardOptions: { [key: number]: boolean };
     willArrest: boolean;
+    writOfProtectionPrice: number;
 }

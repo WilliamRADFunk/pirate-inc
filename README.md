@@ -53,7 +53,7 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Create an infamy system. The more death and destruction you create, the higher your infamy. Royal pardons can reduce a bounty, but not your infamy. Suffering defeats on the other hand lowers infamy as you appear less of a threat.
 
-:black_square_button: Create HUD with basic info for player.
+:white_check_mark: Create HUD with basic info for player.
 
 :black_square_button: Add stats selection screen after the intro but before starting. From here the player can distribute skill points as they see fit. Amount of points to distribute will be affected by difficulty chosen. (Iron, Cunning, Silver Tongue, People Person, Energetic).
 
@@ -97,7 +97,7 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Create ability to buy certain artifacts that boost some stats (crew morale, refresh AC, etc.).
 
-:black_square_button: Create randomizer to make officers available for hiring. Their name and stats to be affected by the port, and the player's infamy/bounty. Better officers cost more. Not all ports will have all officer types all the time.
+:white_check_mark: Create randomizer to make officers available for hiring. Their name and stats to be affected by the port, and the player's infamy/bounty. Better officers cost more. Not all ports will have all officer types all the time.
 
 :black_square_button: Create ability to fire specific officers. Once fired, they will only be available for rehire if there was no officer of that type at the tavern already. Once player leaves port, those officers are permanently gone.
 
@@ -105,7 +105,9 @@ Steal booty. Don't die. Retire rich or die famous.
 
 :black_square_button: Hire crew either as a bulk purchase (bigger ports will have more than smaller), or one by one.
 
-:black_square_button: Fire flagged crew.
+:white_check_mark: Fire flagged crew.
+
+:black_square_button: Add quartermaster ability to fire all crew meeting certain criteria.
 
 :black_square_button: Buy provisions functionality, and let the quartermaster distribute it across your fleet.
 
