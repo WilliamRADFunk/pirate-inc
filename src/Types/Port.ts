@@ -9,13 +9,13 @@ import { Features, MoodToMouth } from "./People";
  export interface ColonialOfficial {
     arrestInclination: number;
     avatar: string;
+    bribeResistance: number;
     features: Features;
     id: string;
     mood: MoodToMouth;
     nameFirst: string;
     nameLast: string;
     nameNick: string;
-    haggleResistance: number;
 }
 
 /**
@@ -66,5 +66,12 @@ export interface Port {
     royalPardonPrice: number;
     readonly shipyardOptions: { [key: number]: boolean };
     willArrest: boolean;
+    writOfProtection: WritOfProtection | null;
     writOfProtectionPrice: number;
+}
+
+export interface WritOfProtection {
+    originalCost: number;
+    port: Port;
+    turnsRemaining: number;
 }

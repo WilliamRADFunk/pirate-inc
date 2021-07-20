@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Carrack extends Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Carrack,      // armor
             ShipDefaultMaxCargo.Carrack,            // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Carrack extends Ship {
             ShipDefaultMinCrew.Carrack,             // min crew
             ShipDefaultMaxCannon.Carrack,           // max cannons
             ShipDefaultMaxHealth.Carrack,           // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Carrack,            // top speed of the vessel
             ShipType.Carrack,                       // vessel type
             numCannon ?? 1,                         // number of cannons

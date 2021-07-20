@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Galleon extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Galleon,      // armor
             ShipDefaultMaxCargo.Galleon,            // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Galleon extends  Ship {
             ShipDefaultMinCrew.Galleon,             // min crew
             ShipDefaultMaxCannon.Galleon,           // max cannons
             ShipDefaultMaxHealth.Galleon,           // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Galleon,            // top speed of the vessel
             ShipType.Galleon,                       // vessel type
             numCannon ?? 1,                         // number of cannons

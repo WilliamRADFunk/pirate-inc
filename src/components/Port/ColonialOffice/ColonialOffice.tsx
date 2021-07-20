@@ -87,18 +87,18 @@ export class ColonialOffice extends React.Component<Props, State> {
                             Bribe Officials
                         </Button>
                         <Button
-                            aria-label='Open colonial office purchase royal pardon section'
-                            variant='link'
-                            className='col-12 col-md-4 col-xl-12 text-dark fs-md my-2 my-md-4 my-xl-2'
-                            onClick={() => stateManager.changePortSceneState(PortSceneState.ColonialOfficeRoyalPardon)}>
-                            Purchase Royal Pardon
-                        </Button>
-                        <Button
                             aria-label='Open colonial office purchase writ of protection section'
                             variant='link'
-                            className='col-12 col-md-4 col-xl-12 text-dark fs-md mt-2 mb-5 my-md-4 mt-xl-2 mb-xl-5'
+                            className='col-12 col-md-4 col-xl-12 text-dark fs-md my-2 my-md-4 my-xl-2'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.ColonialOfficeWritOfProtection)}>
                             Purchase Writ of Protection
+                        </Button>
+                        <Button
+                            aria-label='Open colonial office purchase royal pardon section'
+                            variant='link'
+                            className='col-12 col-md-4 col-xl-12 text-dark fs-md mt-2 mb-5 my-md-4 mt-xl-2 mb-xl-5'
+                            onClick={() => stateManager.changePortSceneState(PortSceneState.ColonialOfficeRoyalPardon)}>
+                            Purchase Royal Pardon
                         </Button>
                     </Row>
                 }
@@ -111,21 +111,21 @@ export class ColonialOffice extends React.Component<Props, State> {
                         </Col>
                     </Row>
                 }
-                { portSceneState !== PortSceneState.ColonialOfficeRoyalPardon ? null :
-                    <Row className='no-gutters'>
-                        <Col
-                            aria-label='Colonial Office purchase royal pardon section description'
-                            className='fs-sm text-left'>
-                            Purchasing a royal pardon is expensive but can drastically lower your bounty, and add a small bump to crown favor.
-                        </Col>
-                    </Row>
-                }
                 { portSceneState !== PortSceneState.ColonialOfficeWritOfProtection ? null :
                     <Row className='no-gutters'>
                         <Col
                             aria-label='Colonial Office writ of protection section description'
                             className='fs-sm text-left'>
                             Purchasing a writ of protection has no affect on your bounty, infamy or crown favor, but it will ensure you are not arrested in this port for the next # turns.
+                        </Col>
+                    </Row>
+                }
+                { portSceneState !== PortSceneState.ColonialOfficeRoyalPardon ? null :
+                    <Row className='no-gutters'>
+                        <Col
+                            aria-label='Colonial Office purchase royal pardon section description'
+                            className='fs-sm text-left'>
+                            Purchasing a royal pardon is expensive but can drastically lower your bounty, and add a small bump to crown favor.
                         </Col>
                     </Row>
                 }

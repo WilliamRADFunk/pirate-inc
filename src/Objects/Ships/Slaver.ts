@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Slaver extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Slaver,       // armor
             ShipDefaultMaxCargo.Slaver,             // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Slaver extends  Ship {
             ShipDefaultMinCrew.Slaver,              // min crew
             ShipDefaultMaxCannon.Slaver,            // max cannons
             ShipDefaultMaxHealth.Slaver,            // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Slaver,             // top speed of the vessel
             ShipType.Slaver,                        // vessel type
             numCannon ?? 1,                         // number of cannons

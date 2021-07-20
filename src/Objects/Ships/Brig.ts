@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Brig extends Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Brig,         // armor
             ShipDefaultMaxCargo.Brig,             // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Brig extends Ship {
             ShipDefaultMinCrew.Brig,                // min crew
             ShipDefaultMaxCannon.Brig,              // max cannons
             ShipDefaultMaxHealth.Brig,              // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Brig,               // top speed of the vessel
             ShipType.Brig,                          // vessel type
             numCannon ?? 1,                         // number of cannons

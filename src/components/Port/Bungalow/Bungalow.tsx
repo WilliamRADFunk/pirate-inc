@@ -12,6 +12,7 @@ import { GUID } from '../../../Helpers/GUID';
 import { gameManager } from '../../../Services/GameManager';
 import { OfficersManifest } from '../OfficersManifest/OfficersManifest';
 import { RenderTooltip } from '../../../Helpers/Tooltip';
+import { FleetManifest } from '../FleetManifest/FleetManifest';
 
 interface Props {}
 
@@ -231,9 +232,48 @@ export class Bungalow extends React.Component<Props, State> {
                 { portSceneState !== PortSceneState.BungalowShipManifest ? null :
                     <Row className='no-gutters'>
                         <Col
-                            aria-label='Bungalow hire officers section description'
+                            aria-label='Bungalow fleet manifest section description'
                             className='fs-sm text-left'>
-                            This is your fleet. See all the details, armaments, and cargo carried for each ship.
+                            <FleetManifest>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={RenderTooltip({
+                                        children: 'Access help for this section'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Open help modal for deeper description of fleet manifest section'
+                                            className={ styles['help-icon'] + ' border-0 text-dark' }
+                                            onClick={() => gameManager.openHelpModal('Fleet Manifest - Port')}>
+                                            <MdHelpOutline></MdHelpOutline>
+                                        </Button>
+                                    )}
+                                </OverlayTrigger>
+                                <OverlayTrigger rootClose
+                                    key={GUID()}
+                                    placement="top"
+                                    delay={{ show: 100, hide: 250 }}
+                                    overlay={RenderTooltip({
+                                        children: 'Return to main port options'
+                                    })}>
+                                    {({ ref, ...triggerHandler }) => ( 
+                                        <Button
+                                            {...triggerHandler }
+                                            ref={ref}
+                                            variant='link'
+                                            aria-label='Return to port options'
+                                            className={ styles['exit-icon'] + ' border-0 text-dark' }
+                                            onClick={() => this.toggleMode()}>
+                                            <ImExit></ImExit>
+                                        </Button>
+                                    )}
+                                </OverlayTrigger>
+                            </FleetManifest>
                         </Col>
                     </Row>
                 }

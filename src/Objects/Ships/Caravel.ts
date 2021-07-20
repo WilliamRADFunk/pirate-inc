@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Caravel extends Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Caravel,      // armor
             ShipDefaultMaxCargo.Caravel,            // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Caravel extends Ship {
             ShipDefaultMinCrew.Caravel,             // min crew
             ShipDefaultMaxCannon.Caravel,           // max cannons
             ShipDefaultMaxHealth.Caravel,           // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Caravel,            // top speed of the vessel
             ShipType.Caravel,                       // vessel type
             numCannon ?? 1,                         // number of cannons

@@ -25,3 +25,8 @@ export const BasePirateWage = 2;
  * For the least expensive ship with a cost modifier of 1. A 10 would 10 x this number.
  */
 export const BaseShipPrice = 10000;
+
+/**
+ * The minimum amount of turns a writ of protection will last for in a port (to be divided by difficulty level);
+ */
+export const BaseWritOfProtectionLifespan = 24;

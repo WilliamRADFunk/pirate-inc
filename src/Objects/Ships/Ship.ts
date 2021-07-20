@@ -64,7 +64,7 @@ export class Ship {
         this.cannonTypeBow = cannonTypeBow ?? "Empty";
         this.cannonTypeMain = cannonTypeMain ?? 0;
         this.cargoCarried = cargoCarried ?? [];
-        this.health = health ?? this.maxHealth;
+        this.health = health || this.maxHealth;
     }
 
     public addMainCannons(cannons: number): boolean {
@@ -133,6 +133,18 @@ export class Ship {
         return  [0, 0, 0];
     }
 
+    public getHealth(): number {
+        return this.health;
+    }
+
+    public getHealthMax(): number {
+        return this.maxHealth;
+    }
+
+    public getMainCanonType(): string {
+        return this.cannonTypeMain === 0 ? "Empty" : `${this.cannonTypeMain}-pounders`;
+    }
+
     public getMainFireAccuracyScore(): [number, number, number] {
         const pounds = this.cannonTypeMain;
         return [(pounds * 0.95), (pounds * 0.75), (pounds * 0.6)];
@@ -141,14 +153,6 @@ export class Ship {
     public getMainFireDamageScore(): [number, number, number] {
         const pounds = this.cannonTypeMain;
         return [(pounds * 0.95), (pounds * 0.8), (pounds * 0.75)];
-    }
-
-    public getHealth(): number {
-        return this.health;
-    }
-
-    public getMainCanonType(): string {
-        return this.cannonTypeMain === 0 ? "Empty" : `${this.cannonTypeMain}-pounders`;
     }
 
     public getName(): string {

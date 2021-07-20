@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class ManOWar extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.ManOWar,      // armor
             ShipDefaultMaxCargo.ManOWar,            // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class ManOWar extends  Ship {
             ShipDefaultMinCrew.ManOWar,             // min crew
             ShipDefaultMaxCannon.ManOWar,           // max cannons
             ShipDefaultMaxHealth.ManOWar,           // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.ManOWar,            // top speed of the vessel
             ShipType.ManOWar,                       // vessel type
             numCannon ?? 1,                         // number of cannons

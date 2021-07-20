@@ -69,8 +69,9 @@ export class Crew {
         const remainingCrew = crew.filter(c => c.isAlive).filter(c => {
             // Roll crew morale event (leave)
             // If crew morale is below 50%, a random check is made on a 1d100.
-            // If the score + current morale is higher than 50%, then no loass of crew.
+            // If the score + current morale is higher than 50%, then no loss of crew.
             if (c.morale < 50 && ((Math.random() * 100) + c.morale) <= 50) {
+                console.log('Crew', '_calculateDesertion', `${c.nameFirst}${ c.nameNick ? ` '${c.nameNick}' ` : ' '}${c.nameLast} deserted due to low morale.`);
                 return false;
             }
             return true;

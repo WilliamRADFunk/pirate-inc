@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Frigate extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Frigate,      // armor
             ShipDefaultMaxCargo.Frigate,            // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Frigate extends  Ship {
             ShipDefaultMinCrew.Frigate,             // min crew
             ShipDefaultMaxCannon.Frigate,           // max cannons
             ShipDefaultMaxHealth.Frigate,           // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Frigate,            // top speed of the vessel
             ShipType.Frigate,                       // vessel type
             numCannon ?? 1,                         // number of cannons

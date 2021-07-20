@@ -16,13 +16,13 @@ export function AdjustColonialOfficial(official: ColonialOfficial, reputation: n
     statMin = statMin >= statMax ? statMax - 1 : statMin;
 
     const prevArrestInclination = official.arrestInclination;
-    const prevHaggleResistance = official.haggleResistance;
+    const prevBribeResistance = official.bribeResistance;
     
     const newArrestInclination = Math.floor(Math.random() * (statMax - statMin) + statMin);
-    const newHaggleResistance = Math.floor(Math.random() * (statMax - statMin) + statMin);
+    const newBribeResistance = Math.floor(Math.random() * (statMax - statMin) + statMin);
 
     official.arrestInclination = (!prevArrestInclination || Math.abs(newArrestInclination - prevArrestInclination) <= 2)  ? newArrestInclination : prevArrestInclination;
-    official.haggleResistance = (!prevHaggleResistance || Math.abs(newHaggleResistance - prevHaggleResistance) <= 2) ? newHaggleResistance : prevHaggleResistance;
+    official.bribeResistance = (!prevBribeResistance || Math.abs(newBribeResistance - prevBribeResistance) <= 2) ? newBribeResistance : prevBribeResistance;
 }
 
 export function AdjustMerchant(official: Merchant, reputation: number, costScaleSize: number, isPiratePort: boolean): void {
@@ -40,12 +40,12 @@ export function CreateColonialOfficial(reputation: number, costScaleSize: number
     const colonialOfficial = {
         arrestInclination: 0,
         avatar: '',
+        bribeResistance: 0,
         id: GUID(),
         mood: MoodToMouth.Pleased,
         nameFirst: random.firstMale(),
         nameLast: random.last(),
-        nameNick: Math.random() > 0.5 ? NickNameGenerator() : '',
-        haggleResistance: 0
+        nameNick: Math.random() > 0.5 ? NickNameGenerator() : ''
     } as ColonialOfficial;
     colonialOfficial.features = getAvatarFeatures(colonialOfficial.nameFirst, colonialOfficial.nameNick, colonialOfficial.nameLast)
     colonialOfficial.avatar = getAvatar(colonialOfficial.features, colonialOfficial.mood, true, true);

@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Cutter extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Cutter,       // armor
             ShipDefaultMaxCargo.Cutter,             // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Cutter extends  Ship {
             ShipDefaultMinCrew.Cutter,              // min crew
             ShipDefaultMaxCannon.Cutter,            // max cannons
             ShipDefaultMaxHealth.Cutter,            // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Cutter,             // top speed of the vessel
             ShipType.Cutter,                        // vessel type
             numCannon ?? 1,                         // number of cannons

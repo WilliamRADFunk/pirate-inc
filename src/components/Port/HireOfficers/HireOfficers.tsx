@@ -266,7 +266,6 @@ export class HireOfficers extends React.Component<Props, State> {
             case 0: {
                 const oldOfficer = this.state.carpenter;
                 gameManager.addOfficer(this.state.recruitableCarpenter, OfficerType.Carpenter);
-                console.log(oldOfficer);
                 this.state.hireableOfficers.removeOfficer(OfficerType.Carpenter);
                 this.state.hireableOfficers.addOfficer(oldOfficer, OfficerType.Carpenter, false, true);
                 break;
@@ -312,7 +311,6 @@ export class HireOfficers extends React.Component<Props, State> {
                             .pipe(combineLatestWith(hireableOfficers.getDoctor(), hireableOfficers.getQuartermaster()));
                     })
                 ).subscribe((officers: any[]) => {
-                    console.log('the new recruit officer: ', officers);
                     this.setState({
                         recruitableCarpenter: officers[0],
                         recruitableDoctor: officers[1],

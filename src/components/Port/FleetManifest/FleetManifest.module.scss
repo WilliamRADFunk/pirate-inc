@@ -1,0 +1,126 @@
+.avatar-sizing {
+    height: 100px;
+    width: 100px;
+}
+
+.manifest {
+    margin-top: -20px;
+}
+
+.manifest-header {
+    font-size: 2em;
+    position: relative;
+    top: -0.5vw;
+}
+
+.manifest-exit,
+    .manifest-help {
+    position: relative;
+    top: -1vw;
+}
+
+.manifest.table thead th,
+.manifest.table tbody td.no-break {
+    background-color: 'transparent';
+    white-space: nowrap;
+}
+
+.manifest thead th {
+    border-bottom: 1px solid black;
+    border-top: none;
+}
+
+.manifest tbody td {
+    border-bottom: 1px solid black;
+    border-top: none;
+    vertical-align: middle;
+}
+
+.middle {
+    line-height: 100%;
+    vertical-align: middle;
+}
+
+.pay-order-button {
+    line-height: 1.25px;
+}
+
+.pay-order-buttons {
+    left: 0;
+    padding-left: 10px;
+    position: absolute;
+    width: 120px;
+    z-index: 1;
+}
+
+.pay-order-cell {
+    position: relative;
+    width: 120px;
+}
+
+.pay-order-text {
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    z-index: 0;
+}
+
+.scroll-bottom {
+    position: absolute;
+    bottom: -122px;
+    z-index: 2;
+}
+
+.scroll-top {
+    position: absolute;
+    top: -40px;
+    z-index: 2;
+}
+
+@media only screen and (max-width: 1400px) {
+    .manifest-header {
+        top: -1vw;
+    }
+
+    .manifest-exit,
+    .manifest-help {
+        top: -1.5vw;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .manifest-header {
+        font-size: 1.5em;
+        top: -2.5vw;
+    }
+
+    .manifest-exit,
+    .manifest-help {
+        top: -3vw;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .manifest-header {
+        font-size: 1.25em;
+        top: -4vw;
+    }
+
+    .manifest-exit,
+    .manifest-help {
+        top: -5.5vw;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .manifest-header {
+        font-size: 1.25em;
+        top: -6.25vw;
+    }
+
+    .manifest-exit,
+    .manifest-help {
+        top: -7.75vw;
+    }
+}

@@ -8,10 +8,10 @@ import { Crew } from '../Objects/Crew/Crew';
 import { CrewMember } from '../Types/CrewMember';
 import { Fleet } from '../Objects/Ships/Fleet';
 import { Barque } from '../Objects/Ships/Barque';
-import { ShipNameGenerator } from '../Helpers/ShipNameGenerator';
 import { PortLocation } from '../Types/Port';
 import { Officers, OfficerType } from '../Objects/Officers/Officers';
 import { Carpenter, Doctor, Quartermaster } from '../Types/Officers';
+import { Galleon } from '../Objects/Ships/Galleon';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -111,7 +111,7 @@ class GameManager {
         const maxCrew = this.maxCrewCount.value;
         if (crewCount >= maxCrew) {
             const excessCrewCount = crewCount - maxCrew;
-            console.log('GameManager', 'addCrew', `Added crew exceeds player's maximum crew capacity by ${excessCrewCount}`);
+            console.warn('GameManager', 'addCrew', `Added crew exceeds player's maximum crew capacity by ${excessCrewCount}`);
             newCrew.length -= excessCrewCount;
         }
         this._crew.addCrew(newCrew, false);
@@ -132,7 +132,7 @@ class GameManager {
             this._officers.addOfficer(officer, type, false);
             return;
         }
-        console.log('GameManager.addOfficer', 'Invalid officerType entered: ', type, 'for officer of type: ', officer?.type);
+        console.warn('GameManager.addOfficer', 'Invalid officerType entered: ', type, 'for officer of type: ', officer?.type);
     }
 
     /**
@@ -361,6 +361,16 @@ class GameManager {
     }
 
     /**
+     * Sort the fleet order based on the offered params.
+     * @param key the first-level nested fleet key to sort by.
+     * @param secondaryKey the optional second-level nested fleet key to sort by.
+     * @param asc whether to sort in ascending order or not.
+     */
+    public sortFleetManifest(key: string, secondaryKey: string, asc: boolean): void {
+        this._fleet.sortFleetManifest(key, secondaryKey, asc);
+    }
+
+    /**
      * Gets the subscribable value of balance.
      * @returns True if name player chose name was valid, False if name was invalid.
      */
@@ -369,7 +379,9 @@ class GameManager {
             this._crew.updateCrewWage(this.difficulty.value);
             this._crew.addCrew(new Array(48 / this.difficulty.value), true);
 
-            this._fleet.addShip(new Barque(ShipNameGenerator()));
+            this._fleet.addShip(new Barque());
+            // TODO: Remove second ship after done testing
+            this._fleet.addShip(new Galleon());
             
             this._officers.updateOfficerSalaryBase(this.difficulty.value);
             this._officers.addOfficer(null, OfficerType.Carpenter, true);
@@ -377,6 +389,8 @@ class GameManager {
             this._officers.addOfficer(null, OfficerType.Quartermaster, true);
 
             playerManager.initiatePlayer(this.difficulty.value, name, {} as any);
+
+            portManager.updateDifficultyLevel(this.difficulty.value);
             // Sets all port reputations to a default start based on difficulty
             // (normal mode aka difficulty = 2, renders pirate port rep = 20, and crown port = -20)
             portManager.updatePortReputation(Math.abs((1000 * this.difficulty.value) - 4000), 0);

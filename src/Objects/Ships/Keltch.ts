@@ -13,9 +13,10 @@ import {
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
+import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Keltch extends  Ship {
-    constructor(name: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Keltch,       // armor
             ShipDefaultMaxCargo.Keltch,             // Maximum tonnage of cargo this vessel can carry
@@ -24,7 +25,7 @@ export class Keltch extends  Ship {
             ShipDefaultMinCrew.Keltch,              // min crew
             ShipDefaultMaxCannon.Keltch,            // max cannons
             ShipDefaultMaxHealth.Keltch,            // max health
-            name,                                   // unique name for the vessel
+            name || ShipNameGenerator(),            // unique name for the vessel
             ShipDefaultTopSpeed.Keltch,             // top speed of the vessel
             ShipType.Keltch,                        // vessel type
             numCannon ?? 1,                         // number of cannons
