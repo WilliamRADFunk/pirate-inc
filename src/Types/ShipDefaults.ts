@@ -1,3 +1,5 @@
+import { JsxEmit } from "typescript";
+
 /**
  * Available types of bow fixed cannon. There can be only one per ship, and is used for first attack volley.
  */
@@ -224,6 +226,29 @@ export enum ShipDefaultTopSpeed {
     Schooner = 16,
     Slaver = 5,
     Sloop = 12
+}
+
+/**
+ * An image of a ship icon used for the fleet manifest to represent the ship's type.
+ */
+export enum ShipIconImage {
+    Barque = 'images/icon-ship-barque.ICO',
+    Brig = 'images/icon-ship-brig.ICO',
+    Brigantine = 'images/icon-ship-brigantine.ICO',
+    Caravel = 'images/icon-ship-caravel.ICO',
+    Carrack = 'images/icon-ship-carrack.ICO',
+    Corvette = 'images/icon-ship-corvette.ICO',
+    Cutter = 'images/icon-ship-cutter.ICO',
+    Dhow = 'images/icon-ship-dhow.ICO',
+    EastIndiaman = 'images/icon-ship-eastindiaman.ICO',
+    Frigate = 'images/icon-ship-frigate.ICO',
+    Galleon = 'images/icon-ship-galleon.ICO',
+    Keltch = 'images/icon-ship-keltch.ICO',
+    ManOWar = 'images/icon-ship-manowar.ICO',
+    Pinnace = 'images/icon-ship-pinnace.ICO',
+    Schooner = 'images/icon-ship-schooner.ICO',
+    Slaver = 'images/icon-ship-slaver.ICO',
+    Sloop = 'images/icon-ship-sloop.ICO'
 }
 
 /**

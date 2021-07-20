@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Galleon extends  Ship {
             ShipDefaultCost.Galleon,                // cost modifier
             ShipDefaultMaxCrew.Galleon,             // max crew
             ShipDefaultMinCrew.Galleon,             // min crew
+            ShipIconImage.Galleon,                  // icon url used in fleet manifest
             ShipDefaultMaxCannon.Galleon,           // max cannons
             ShipDefaultMaxHealth.Galleon,           // max health
             name || ShipNameGenerator(),            // unique name for the vessel

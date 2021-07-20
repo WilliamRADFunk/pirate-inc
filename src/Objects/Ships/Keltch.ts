@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Keltch extends  Ship {
             ShipDefaultCost.Keltch,                 // cost modifier
             ShipDefaultMaxCrew.Keltch,              // max crew
             ShipDefaultMinCrew.Keltch,              // min crew
+            ShipIconImage.Keltch,                   // icon url used in fleet manifest
             ShipDefaultMaxCannon.Keltch,            // max cannons
             ShipDefaultMaxHealth.Keltch,            // max health
             name || ShipNameGenerator(),            // unique name for the vessel

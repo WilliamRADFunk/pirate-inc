@@ -1,3 +1,5 @@
+import { Image } from 'react-bootstrap';
+
 import { Cargo } from "../../Types/Cargo";
 import { BowCanonType, MainCanonType, ShipType } from "../../Types/ShipDefaults";
 
@@ -24,6 +26,8 @@ export class Ship {
 
     private health: number = 100;
 
+    private icon: JSX.Element = <Image src={''}></Image>;
+
     private maxCannonCount: number = 0;
 
     private maxHealth: number = 100;
@@ -40,6 +44,7 @@ export class Ship {
         costModifier: number,
         crewMax: number,
         crewMin: number,
+        iconUri: string,
         maxCannonCount: number,
         maxHealth: number,
         name: string,
@@ -55,6 +60,7 @@ export class Ship {
         this.costModifier = costModifier;
         this.crewMax = crewMax;
         this.crewMin = crewMin;
+        this.icon = <Image src={iconUri}></Image>;
         this.maxCannonCount = maxCannonCount;
         this.maxHealth = maxHealth;
         this.name = name;
@@ -115,6 +121,10 @@ export class Ship {
         return this.crewMin;
     }
 
+    public getCrewCount(): number {
+        return this.currentCrew;
+    }
+
     public getFirstFireAccuracyScore(): [number, number, number] {
         if (this.cannonTypeBow === "Long Nine") {
             return [0.95, 0.85, 0.75];
@@ -139,6 +149,10 @@ export class Ship {
 
     public getHealthMax(): number {
         return this.maxHealth;
+    }
+
+    public getIcon(): JSX.Element {
+        return this.icon;
     }
 
     public getMainCanonType(): string {

@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Sloop extends  Ship {
             ShipDefaultCost.Sloop,                  // cost modifier
             ShipDefaultMaxCrew.Sloop,               // max crew
             ShipDefaultMinCrew.Sloop,               // min crew
+            ShipIconImage.Sloop,                    // icon url used in fleet manifest
             ShipDefaultMaxCannon.Sloop,             // max cannons
             ShipDefaultMaxHealth.Sloop,             // max health
             name || ShipNameGenerator(),            // unique name for the vessel

@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Caravel extends Ship {
             ShipDefaultCost.Caravel,                // cost modifier
             ShipDefaultMaxCrew.Caravel,             // max crew
             ShipDefaultMinCrew.Caravel,             // min crew
+            ShipIconImage.Caravel,                  // icon url used in fleet manifest
             ShipDefaultMaxCannon.Caravel,           // max cannons
             ShipDefaultMaxHealth.Caravel,           // max health
             name || ShipNameGenerator(),            // unique name for the vessel

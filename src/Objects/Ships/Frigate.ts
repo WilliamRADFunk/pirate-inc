@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Frigate extends  Ship {
             ShipDefaultCost.Frigate,                // cost modifier
             ShipDefaultMaxCrew.Frigate,             // max crew
             ShipDefaultMinCrew.Frigate,             // min crew
+            ShipIconImage.Frigate,                  // icon url used in fleet manifest
             ShipDefaultMaxCannon.Frigate,           // max cannons
             ShipDefaultMaxHealth.Frigate,           // max health
             name || ShipNameGenerator(),            // unique name for the vessel

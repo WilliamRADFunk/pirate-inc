@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Brigantine extends Ship {
             ShipDefaultCost.Brigantine,             // cost modifier
             ShipDefaultMaxCrew.Brigantine,          // max crew
             ShipDefaultMinCrew.Brigantine,          // min crew
+            ShipIconImage.Brigantine,               // icon url used in fleet manifest
             ShipDefaultMaxCannon.Brigantine,        // max cannons
             ShipDefaultMaxHealth.Brigantine,        // max health
             name || ShipNameGenerator(),            // unique name for the vessel

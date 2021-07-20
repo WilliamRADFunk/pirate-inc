@@ -6,12 +6,13 @@ import { playerManager } from './PlayerManager';
 import { portManager } from './PortManager';
 import { Crew } from '../Objects/Crew/Crew';
 import { CrewMember } from '../Types/CrewMember';
-import { Fleet } from '../Objects/Ships/Fleet';
+import { Fleet, FleetStats } from '../Objects/Ships/Fleet';
 import { Barque } from '../Objects/Ships/Barque';
 import { PortLocation } from '../Types/Port';
 import { Officers, OfficerType } from '../Objects/Officers/Officers';
 import { Carpenter, Doctor, Quartermaster } from '../Types/Officers';
 import { Galleon } from '../Objects/Ships/Galleon';
+import { Ship } from '../Objects/Ships/Ship';
 
 // Singleton service of the overall game manager.
 class GameManager {
@@ -270,11 +271,40 @@ class GameManager {
     }
 
     /**
+     * Get a clone of the player's fleet to be used in populating the fleet manifest and similar uses.
+     * @returns the clone of the fleet list.
+     */
+    public getFleet(): Observable<Ship[]> {
+        return this._fleet.getShips();
+    }
+
+    /**
      * Consolidates fleet info into a single observable for HUD use.
      * @returns an observable of an object containing the relevant fleet info for the HUD.
      */
     public getFleetHUD(): Observable<{[key: string]: number}> {
         return this._fleet.getHUD();
+    }
+
+    /**
+     * Gets the sum of the stats of all ships in the fleet for manifest.
+     * @returns the fleets totaled stats.
+     */
+    public getFleetStats(): FleetStats {
+        return {
+            armor: number;
+            cannonCount: number;
+            cargoCapacity: number;
+            cargoCarried: number;
+            crewMin: number;
+            crewMax: number;
+            currentCrew: number;
+            firstFireDmg: this._fleet.getFirstFireDamage(),
+            health: number;
+            maxCannon: number;
+            speed: this._fleet.getFleetSpeed(),
+            value: number;
+        };
     }
 
     /**
@@ -348,6 +378,14 @@ class GameManager {
      */
     public payDeathBenefits(cMembers: CrewMember[]): void {
         this.balance.next(this._crew.payDeathBenefits(cMembers, this.balance.value));
+    }
+
+    /**
+     * Removes the selected ship from the fleet by destroying it.
+     * @param ship the ship to be sent to the bottom.
+     */
+    public scuttleShip(ship: Ship): void {
+        this._fleet.removeShip(ship);
     }
 
     /**

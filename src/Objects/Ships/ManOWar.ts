@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class ManOWar extends  Ship {
             ShipDefaultCost.ManOWar,                // cost modifier
             ShipDefaultMaxCrew.ManOWar,             // max crew
             ShipDefaultMinCrew.ManOWar,             // min crew
+            ShipIconImage.ManOWar,                  // icon url used in fleet manifest
             ShipDefaultMaxCannon.ManOWar,           // max cannons
             ShipDefaultMaxHealth.ManOWar,           // max health
             name || ShipNameGenerator(),            // unique name for the vessel

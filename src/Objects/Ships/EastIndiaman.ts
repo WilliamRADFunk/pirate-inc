@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class EastIndiaman extends  Ship {
             ShipDefaultCost.EastIndiaman,               // cost modifier
             ShipDefaultMaxCrew.EastIndiaman,            // max crew
             ShipDefaultMinCrew.EastIndiaman,            // min crew
+            ShipIconImage.EastIndiaman,                 // icon url used in fleet manifest
             ShipDefaultMaxCannon.EastIndiaman,          // max cannons
             ShipDefaultMaxHealth.EastIndiaman,          // max health
             name || ShipNameGenerator(),                // unique name for the vessel

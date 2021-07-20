@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Schooner extends  Ship {
             ShipDefaultCost.Schooner,                   // cost modifier
             ShipDefaultMaxCrew.Schooner,                // max crew
             ShipDefaultMinCrew.Schooner,                // min crew
+            ShipIconImage.Schooner,                     // icon url used in fleet manifest
             ShipDefaultMaxCannon.Schooner,              // max cannons
             ShipDefaultMaxHealth.Schooner,              // max health
             name || ShipNameGenerator(),                // unique name for the vessel

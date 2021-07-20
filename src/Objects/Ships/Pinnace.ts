@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,15 +24,16 @@ export class Pinnace extends  Ship {
             ShipDefaultCost.Pinnace,                    // cost modifier
             ShipDefaultMaxCrew.Pinnace,                 // max crew
             ShipDefaultMinCrew.Pinnace,                 // min crew
+            ShipIconImage.Pinnace,                      // icon url used in fleet manifest
             ShipDefaultMaxCannon.Pinnace,               // max cannons
             ShipDefaultMaxHealth.Pinnace,               // max health
-            name || ShipNameGenerator(),            // unique name for the vessel
+            name || ShipNameGenerator(),                // unique name for the vessel
             ShipDefaultTopSpeed.Pinnace,                // top speed of the vessel
             ShipType.Pinnace,                           // vessel type
             numCannon ?? 1,                             // number of cannons
             bowCannon ?? "Empty",                       // type, if any, of bow cannon on board
             ShipDefaultMainCannonType.Pinnace,          // the poundage type of the main cannons
-            cargoCarried ?? [],                     // cargo ship might already be carrying when instantiated.
+            cargoCarried ?? [],                         // cargo ship might already be carrying when instantiated.
             health                                      // current health of the ship if not full
         );
     }

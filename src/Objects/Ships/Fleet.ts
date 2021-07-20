@@ -3,6 +3,21 @@ import { map } from 'rxjs/operators';
 
 import { Ship } from "./Ship";
 
+export interface FleetStats {
+    armor: number;
+    cannonCount: number;
+    cargoCapacity: number;
+    cargoCarried: number;
+    crewMin: number;
+    crewMax: number;
+    currentCrew: number;
+    firstFireDmg: number;
+    health: number;
+    maxCannon: number;
+    speed: number;
+    value: number;
+}
+
 export class Fleet {
     /**
      * The overall health of the player's fleet (ship damage) in percentage.
@@ -73,7 +88,7 @@ export class Fleet {
 
     /**
      * Gets the subscribable value of fleet health.
-     * @returns observable of player's monetary balance.
+     * @returns observable of fleet health.
      */
     public getFleetHealth(): Observable<number> {
         return this.fleetHealth.asObservable();
@@ -104,6 +119,14 @@ export class Fleet {
     }
 
     /**
+     * Gets the subscribable value of ships in fleet.
+     * @returns observable of list of ships in fleet.
+     */
+    public getShips(): Observable<Ship[]> {
+        return this._ships.asObservable();
+    }
+
+    /**
      * Removes the ship from the player's fleet if present.
      * @param ship the ship to be removed for player's fleet.
      * @returns True if ship by that name was in the fleet. False if the ship couldn't be found.
@@ -116,6 +139,8 @@ export class Fleet {
         }
         ships.splice(shipIndex, 1);
         this._ships.next(ships);
+        // TODO: Put the crew somewhere else.
+        // TODO: Put the cargo somewhere else.
         return true;
     }
     /**

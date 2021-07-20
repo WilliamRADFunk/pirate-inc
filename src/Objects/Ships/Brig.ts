@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -19,10 +20,11 @@ export class Brig extends Ship {
     constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
             armor ?? ShipDefaultArmor.Brig,         // armor
-            ShipDefaultMaxCargo.Brig,             // Maximum tonnage of cargo this vessel can carry
+            ShipDefaultMaxCargo.Brig,               // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.Brig,                   // cost modifier
             ShipDefaultMaxCrew.Brig,                // max crew
             ShipDefaultMinCrew.Brig,                // min crew
+            ShipIconImage.Brig,                     // icon url used in fleet manifest
             ShipDefaultMaxCannon.Brig,              // max cannons
             ShipDefaultMaxHealth.Brig,              // max health
             name || ShipNameGenerator(),            // unique name for the vessel

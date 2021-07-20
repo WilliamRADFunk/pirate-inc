@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Carrack extends Ship {
             ShipDefaultCost.Carrack,                // cost modifier
             ShipDefaultMaxCrew.Carrack,             // max crew
             ShipDefaultMinCrew.Carrack,             // min crew
+            ShipIconImage.Carrack,                  // icon url used in fleet manifest
             ShipDefaultMaxCannon.Carrack,           // max cannons
             ShipDefaultMaxHealth.Carrack,           // max health
             name || ShipNameGenerator(),            // unique name for the vessel

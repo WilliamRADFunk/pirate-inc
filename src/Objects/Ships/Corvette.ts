@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Corvette extends Ship {
             ShipDefaultCost.Corvette,               // cost modifier
             ShipDefaultMaxCrew.Corvette,            // max crew
             ShipDefaultMinCrew.Corvette,            // min crew
+            ShipIconImage.Corvette,                 // icon url used in fleet manifest
             ShipDefaultMaxCannon.Corvette,          // max cannons
             ShipDefaultMaxHealth.Corvette,          // max health
             name || ShipNameGenerator(),            // unique name for the vessel

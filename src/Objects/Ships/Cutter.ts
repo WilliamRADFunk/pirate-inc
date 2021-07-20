@@ -10,6 +10,7 @@ import {
     ShipDefaultMaxHealth,
     ShipDefaultMinCrew,
     ShipDefaultTopSpeed,
+    ShipIconImage,
     ShipType
 } from "../../Types/ShipDefaults";
 import { Cargo } from "../../Types/Cargo";
@@ -23,6 +24,7 @@ export class Cutter extends  Ship {
             ShipDefaultCost.Cutter,                 // cost modifier
             ShipDefaultMaxCrew.Cutter,              // max crew
             ShipDefaultMinCrew.Cutter,              // min crew
+            ShipIconImage.Cutter,                   // icon url used in fleet manifest
             ShipDefaultMaxCannon.Cutter,            // max cannons
             ShipDefaultMaxHealth.Cutter,            // max health
             name || ShipNameGenerator(),            // unique name for the vessel
