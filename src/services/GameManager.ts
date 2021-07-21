@@ -292,18 +292,17 @@ class GameManager {
      */
     public getFleetStats(): FleetStats {
         return {
-            armor: number;
-            cannonCount: number;
-            cargoCapacity: number;
-            cargoCarried: number;
-            crewMin: number;
-            crewMax: number;
-            currentCrew: number;
+            armor: this._fleet.getArmor(),
+            cargoCapacity: this._fleet.getCargoCapacity(),
+            cargoCarried: this._fleet.getCargoCarried(),
+            crewMin: this._fleet.getCrewMin(),
+            crewMax: this._fleet.getCrewMax(),
+            currentCrew: this._fleet.getCrewCount(),
             firstFireDmg: this._fleet.getFirstFireDamage(),
-            health: number;
-            maxCannon: number;
+            health: this._fleet.getFleetOnce(),
+            mainDamage: this._fleet.getMainDamage(),
             speed: this._fleet.getFleetSpeed(),
-            value: number;
+            value: this._fleet.getValue()
         };
     }
 

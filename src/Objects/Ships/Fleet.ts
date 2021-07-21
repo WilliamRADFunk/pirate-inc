@@ -1,28 +1,33 @@
 import { BehaviorSubject, Observable, Subscription, zip } from "rxjs";
 import { map } from 'rxjs/operators';
+import { gameManager } from "../../Services/GameManager";
 
 import { Ship } from "./Ship";
 
 export interface FleetStats {
     armor: number;
-    cannonCount: number;
     cargoCapacity: number;
     cargoCarried: number;
     crewMin: number;
     crewMax: number;
     currentCrew: number;
-    firstFireDmg: number;
+    firstFireDmg: [number, number, number];
     health: number;
-    maxCannon: number;
+    mainDamage: [number, number, number];
     speed: number;
     value: number;
 }
 
 export class Fleet {
     /**
+     * The player chosen difficulty level.
+     */
+    private _difficulty: number = 2;
+
+    /**
      * The overall health of the player's fleet (ship damage) in percentage.
      */
-    private fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
+    private _fleetHealth: BehaviorSubject<number> = new BehaviorSubject(100);
 
     /**
      * The real list of the player's ships
@@ -44,6 +49,9 @@ export class Fleet {
             this._ships.subscribe(ships => {
                 this.ships.next(ships.map(s => JSON.parse(JSON.stringify(s))));
                 this._updateFleetHealth();
+            }),
+            gameManager.getDifficulty().subscribe(diff => {
+                this._difficulty = diff;
             })
         );
     }
@@ -59,7 +67,7 @@ export class Fleet {
         const healthTotal = ships.reduce((acc, ship) => {
             return acc + ship.getHealthMax();
         }, 0);
-        this.fleetHealth.next(Math.floor((healthSum / healthTotal) * 100));
+        this._fleetHealth.next(Math.floor((healthSum / healthTotal) * 100));
     }
 
     /**
@@ -79,11 +87,85 @@ export class Fleet {
     }
 
     /**
-     * calculates and returns the first fire damage of the player's fleet.
+     * Calculates and returns the average armor of the player's fleet.
+     * @returns the average armor of the player's fleet.
+     */
+    public getArmor(): number {
+        const ships = this._ships.value;
+        const armorSum = ships.reduce((acc, ship) => {
+            return acc + ship.getArmorLevel();
+        }, 0);
+        return Math.floor(armorSum / ships.length);
+    }
+
+    /**
+     * Calculates and returns the total cargo capacity allowed in the player's fleet.
+     * @returns the total cargo capacity allowed in the player's fleet.
+     */
+    public getCargoCapacity(): number {
+        const ships = this._ships.value;
+        const cargoCapSum = ships.reduce((acc, ship) => {
+            return acc + ship.getCargoCapacity();
+        }, 0);
+        return cargoCapSum;
+    }
+
+    /**
+     * Calculates and returns the total cargo carried in the player's fleet.
+     * @returns the total cargo carried in the player's fleet.
+     */
+    public getCargoCarried(): number {
+        const ships = this._ships.value;
+        const cargoCarriedSum = ships.reduce((acc, ship) => {
+            return acc + (ship.getCargoCarried().reduce((sum, cargo) => {
+                return sum += cargo.quantity;
+            }, 0));
+        }, 0);
+        return cargoCarriedSum;
+    }
+
+    /**
+     * Calculates and returns the total maximum crew allowed in the player's fleet.
+     * @returns the total maximum crew allowed in the player's fleet.
+     */
+    public getCrewMax(): number {
+        const ships = this._ships.value;
+        const crewMaxSum = ships.reduce((acc, ship) => {
+            return acc + ship.getCrewMax();
+        }, 0);
+        return crewMaxSum;
+    }
+
+    /**
+     * Calculates and returns the total minimum crew needed in the player's fleet.
+     * @returns the total minimum crew needed in the player's fleet.
+     */
+    public getCrewMin(): number {
+        const ships = this._ships.value;
+        const crewMinSum = ships.reduce((acc, ship) => {
+            return acc + ship.getCrewMin();
+        }, 0);
+        return crewMinSum;
+    }
+
+    /**
+     * Calculates and returns the total crew in the player's fleet.
+     * @returns the total crew in the player's fleet.
+     */
+    public getCrewCount(): number {
+        const ships = this._ships.value;
+        const crewCountSum = ships.reduce((acc, ship) => {
+            return acc + ship.getCrewCount();
+        }, 0);
+        return crewCountSum;
+    }
+
+    /**
+     * Calculates and returns the first fire damage of the player's fleet.
      * @returns the first fire damage of the player's fleet.
      */
-    public getFirstFireDamage(): number {
-        return 1;
+    public getFirstFireDamage(): [number, number, number] {
+        return [ 1, 1, 1 ];
     }
 
     /**
@@ -91,7 +173,15 @@ export class Fleet {
      * @returns observable of fleet health.
      */
     public getFleetHealth(): Observable<number> {
-        return this.fleetHealth.asObservable();
+        return this._fleetHealth.asObservable();
+    }
+
+    /**
+     * Gets the value of fleet health.
+     * @returns current fleet health.
+     */
+    public getFleetOnce(): number {
+        return this._fleetHealth.value;
     }
 
     /**
@@ -106,11 +196,30 @@ export class Fleet {
     }
 
     /**
+     * Calculates and returns the average main damage of the player's fleet.
+     * @returns the average main damage of the player's fleet.
+     */
+    public getMainDamage(): [number, number, number] {
+        const ships = this._ships.value;
+        const mainDmgSum = ships.reduce((acc, ship) => {
+            ship.getMainFireDamageScore().forEach((val: number, index: number) => {
+                acc[index] += val;
+            });
+            return acc;
+        }, [0, 0, 0]);
+        return [
+            Math.floor(mainDmgSum[0] / ships.length),
+            Math.floor(mainDmgSum[1] / ships.length),
+            Math.floor(mainDmgSum[2] / ships.length)
+        ];
+    }
+
+    /**
      * Consolidates fleet info into a single observable for HUD use.
      * @returns an observable of an object containing the relevant fleet info for the HUD.
      */
     public getHUD(): Observable<{[key: string]: number}> {
-        return zip(this.fleetHealth)
+        return zip(this._fleetHealth)
             .pipe(map(val => {
                 return {
                     fleetHealth: val[0]
@@ -124,6 +233,18 @@ export class Fleet {
      */
     public getShips(): Observable<Ship[]> {
         return this._ships.asObservable();
+    }
+
+    /**
+     * Calculates and returns the total value of the player's fleet.
+     * @returns the total value of the player's fleet.
+     */
+    public getValue(): number {
+        const ships = this._ships.value;
+        const valueSum = ships.reduce((acc, ship) => {
+            return acc + (ship.getCostModifier() * 1000 * this._difficulty);
+        }, 0);
+        return valueSum;
     }
 
     /**

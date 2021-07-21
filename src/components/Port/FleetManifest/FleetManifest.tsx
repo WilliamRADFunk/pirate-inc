@@ -16,15 +16,7 @@ import { formatter } from '../../../Helpers/Format';
 interface Props {}
 
 interface State {
-    difficulty: number;
     fleet: Ship[];
-}
-
-function getFeatureAvg(fleet: Ship[], featureName: string, scale: number): string {
-    const sum = fleet.reduce((acc: number, val: Ship) => {
-        return acc + val[featureName];
-    }, 0);
-    return ((sum / fleet.length) * scale).toFixed(0);
 }
 
 function renderFullscreenTableHeader(props: any): JSX.Element {
@@ -50,7 +42,6 @@ export class FleetManifest extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            difficulty: 2,
             fleet: []
         };
     }
@@ -77,9 +68,6 @@ export class FleetManifest extends React.Component<Props, State> {
         this.subscriptions.push(
             gameManager.getFleet().subscribe(fleet => {
                 this.setState({ fleet });
-            }),
-            gameManager.getDifficulty().subscribe(diff => {
-                this.setState({ difficulty: diff });
             })
         );
     }
@@ -91,8 +79,8 @@ export class FleetManifest extends React.Component<Props, State> {
     }
 
     public render() {
-        const { difficulty, fleet } = this.state;
-        const fleetArmor = gameManager.g
+        const { fleet } = this.state;
+        const fleetStats = gameManager.getFleetStats();
         const children = React.Children.toArray(this.props.children);
         return (<>
             <div className={ styles['scroll-top'] }>
@@ -152,61 +140,61 @@ export class FleetManifest extends React.Component<Props, State> {
                                                 <FaShieldAlt />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='cannoneering'>
-                                            <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
-                                                <GiCannon />
+                                        <Col xs='2' className='clickable' aria-label='sailing'>
+                                            <span onClick={ () => this._sortBy('sailing')}>
+                                                <GiSailboat />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='greed'>
-                                            <span onClick={ () => this._sortBy('skills', 'greed')}>
+                                            <span onClick={ () => this._sortBy('greed')}>
                                                 <GiReceiveMoney />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='hand2HandCombat'>
-                                            <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
+                                            <span onClick={ () => this._sortBy('hand2HandCombat')}>
                                                 <GiFist />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='sailing'>
-                                            <span onClick={ () => this._sortBy('skills', 'sailing')}>
+                                            <span onClick={ () => this._sortBy('sailing')}>
                                                 <GiSailboat />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='teamwork'>
-                                            <span onClick={ () => this._sortBy('skills', 'teamwork')}>
-                                                <RiTeamFill />
+                                            <span onClick={ () => this._sortBy('teamwork')}>
+                                                <GiReceiveMoney />
                                             </span>
                                         </Col>
                                     </Row>
                                     <Row className='no-gutters'>
                                         <Col xs='2' className='clickable' aria-label='armor average'>
                                             <span onClick={ () => this._sortBy('armor')}>
-                                            { getFeatureAvg(fleet, 'armor', 1) }
+                                            { fleetStats.armor }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='cannoneering average'>
-                                            <span onClick={ () => this._sortBy('skills', 'cannoneering')}>
-                                                { getFeatureAvg(fleet, 'cannoneering') }
+                                        <Col xs='2' className='clickable' aria-label='speed average'>
+                                            <span onClick={ () => this._sortBy('speed')}>
+                                                { fleetStats.speed }
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='greed average'>
-                                            <span onClick={ () => this._sortBy('skills', 'greed')}>
+                                            <span onClick={ () => this._sortBy('greed')}>
                                             { getFeatureAvg(fleet, 'greed') }
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='hand2HandCombat average'>
-                                            <span onClick={ () => this._sortBy('skills', 'hand2HandCombat')}>
+                                            <span onClick={ () => this._sortBy('hand2HandCombat')}>
                                             { getFeatureAvg(fleet, 'hand2HandCombat') }
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='sailing average'>
-                                            <span onClick={ () => this._sortBy('skills', 'sailing')}>
+                                            <span onClick={ () => this._sortBy('sailing')}>
                                             { getFeatureAvg(fleet, 'sailing') }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='teamwork average'>
-                                            <span onClick={ () => this._sortBy('skills', 'teamwork')}>
-                                            { getFeatureAvg(fleet, 'teamwork') }
+                                        <Col xs='2' className='clickable' aria-label='value average'>
+                                            <span onClick={ () => this._sortBy('value')}>
+                                            { formatter.format(fleetStats.value) }
                                             </span>
                                         </Col>
                                     </Row>
@@ -262,8 +250,8 @@ export class FleetManifest extends React.Component<Props, State> {
                                         </td>
                                         <td>
                                             <Row className='no-gutters'>
-                                                <Col xs='2'> { (f.skills.cannoneering * 100).toFixed(0) }</Col>
-                                                <Col xs='2'> { (f.skills.cleanliness * 100).toFixed(0) }</Col>
+                                                <Col xs='2'> { f.getArmorLevel() }</Col>
+                                                <Col xs='2'> { f.getTopSpeed() }</Col>
                                                 <Col xs='2'> { (f.skills.greed * 100).toFixed(0) }</Col>
                                                 <Col xs='2'> { (f.skills.hand2HandCombat * 100).toFixed(0) }</Col>
                                                 <Col xs='2'> { (f.skills.sailing * 100).toFixed(0) }</Col>
