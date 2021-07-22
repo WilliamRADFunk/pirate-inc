@@ -17,8 +17,9 @@ import { Cargo } from "../../Types/Cargo";
 import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Keltch extends  Ship {
-    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(difficulty: number, name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
+            difficulty,                             // player chosen difficulty level.
             armor ?? ShipDefaultArmor.Keltch,       // armor
             ShipDefaultMaxCargo.Keltch,             // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.Keltch,                 // cost modifier

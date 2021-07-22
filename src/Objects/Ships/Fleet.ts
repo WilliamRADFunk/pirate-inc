@@ -1,6 +1,5 @@
 import { BehaviorSubject, Observable, Subscription, zip } from "rxjs";
 import { map } from 'rxjs/operators';
-import { gameManager } from "../../Services/GameManager";
 
 import { Ship } from "./Ship";
 
@@ -11,8 +10,10 @@ export interface FleetStats {
     crewMin: number;
     crewMax: number;
     currentCrew: number;
+    firstFireAccuracy: [number, number, number];
     firstFireDmg: [number, number, number];
     health: number;
+    mainAccuracy: [number, number, number];
     mainDamage: [number, number, number];
     speed: number;
     value: number;
@@ -49,9 +50,6 @@ export class Fleet {
             this._ships.subscribe(ships => {
                 this.ships.next(ships.map(s => JSON.parse(JSON.stringify(s))));
                 this._updateFleetHealth();
-            }),
-            gameManager.getDifficulty().subscribe(diff => {
-                this._difficulty = diff;
             })
         );
     }
@@ -161,11 +159,41 @@ export class Fleet {
     }
 
     /**
+     * Calculates and returns the first fire accuracy of the player's fleet.
+     * @returns the first fire accuracy of the player's fleet.
+     */
+    public getFirstFireAccuracy(): [number, number, number] {
+        const ships = this._ships.value;
+        const mainDmgSum = ships.reduce((acc, ship) => {
+            ship.getFirstFireAccuracyScore().forEach((val: number, index: number) => {
+                acc[index] += val;
+            });
+            return acc;
+        }, [0, 0, 0]);
+        return [
+            Math.floor(mainDmgSum[0] / ships.length),
+            Math.floor(mainDmgSum[1] / ships.length),
+            Math.floor(mainDmgSum[2] / ships.length)
+        ];
+    }
+
+    /**
      * Calculates and returns the first fire damage of the player's fleet.
      * @returns the first fire damage of the player's fleet.
      */
     public getFirstFireDamage(): [number, number, number] {
-        return [ 1, 1, 1 ];
+        const ships = this._ships.value;
+        const mainDmgSum = ships.reduce((acc, ship) => {
+            ship.getFirstFireDamageScore().forEach((val: number, index: number) => {
+                acc[index] += val;
+            });
+            return acc;
+        }, [0, 0, 0]);
+        return [
+            Math.floor(mainDmgSum[0] / ships.length),
+            Math.floor(mainDmgSum[1] / ships.length),
+            Math.floor(mainDmgSum[2] / ships.length)
+        ];
     }
 
     /**
@@ -193,6 +221,25 @@ export class Fleet {
         let totalSpeedSum = 0;
         ships.forEach(ship => totalSpeedSum += ship.getTopSpeed());
         return totalSpeedSum / ships.length;
+    }
+
+    /**
+     * Calculates and returns the main fire accuracy of the player's fleet.
+     * @returns the main fire accuracy of the player's fleet.
+     */
+    public getMainAccuracy(): [number, number, number] {
+        const ships = this._ships.value;
+        const mainDmgSum = ships.reduce((acc, ship) => {
+            ship.getMainFireAccuracyScore().forEach((val: number, index: number) => {
+                acc[index] += val;
+            });
+            return acc;
+        }, [0, 0, 0]);
+        return [
+            Math.floor(mainDmgSum[0] / ships.length),
+            Math.floor(mainDmgSum[1] / ships.length),
+            Math.floor(mainDmgSum[2] / ships.length)
+        ];
     }
 
     /**
@@ -242,7 +289,7 @@ export class Fleet {
     public getValue(): number {
         const ships = this._ships.value;
         const valueSum = ships.reduce((acc, ship) => {
-            return acc + (ship.getCostModifier() * 1000 * this._difficulty);
+            return acc + ship.getValue();
         }, 0);
         return valueSum;
     }
@@ -264,6 +311,7 @@ export class Fleet {
         // TODO: Put the cargo somewhere else.
         return true;
     }
+
     /**
      * Sort the ship order based on the offered params.
      * @param key the first-level nested fleet key to sort by.

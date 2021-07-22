@@ -17,8 +17,9 @@ import { Cargo } from "../../Types/Cargo";
 import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Frigate extends  Ship {
-    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(difficulty: number, name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
+            difficulty,                             // player chosen difficulty level.
             armor ?? ShipDefaultArmor.Frigate,      // armor
             ShipDefaultMaxCargo.Frigate,            // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.Frigate,                // cost modifier

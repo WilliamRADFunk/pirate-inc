@@ -298,8 +298,10 @@ class GameManager {
             crewMin: this._fleet.getCrewMin(),
             crewMax: this._fleet.getCrewMax(),
             currentCrew: this._fleet.getCrewCount(),
+            firstFireAccuracy: this._fleet.getFirstFireAccuracy(),
             firstFireDmg: this._fleet.getFirstFireDamage(),
             health: this._fleet.getFleetOnce(),
+            mainAccuracy: this._fleet.getMainAccuracy(),
             mainDamage: this._fleet.getMainDamage(),
             speed: this._fleet.getFleetSpeed(),
             value: this._fleet.getValue()
@@ -416,9 +418,9 @@ class GameManager {
             this._crew.updateCrewWage(this.difficulty.value);
             this._crew.addCrew(new Array(48 / this.difficulty.value), true);
 
-            this._fleet.addShip(new Barque());
+            this._fleet.addShip(new Barque(this.difficulty.value));
             // TODO: Remove second ship after done testing
-            this._fleet.addShip(new Galleon());
+            this._fleet.addShip(new Galleon(this.difficulty.value));
             
             this._officers.updateOfficerSalaryBase(this.difficulty.value);
             this._officers.addOfficer(null, OfficerType.Carpenter, true);

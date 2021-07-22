@@ -38,7 +38,10 @@ export class Ship {
 
     private type: ShipType;
 
+    private value: number = 0;
+
     constructor(
+        diff: number,
         armor: number,
         cargoCapacity: number,
         costModifier: number,
@@ -71,6 +74,7 @@ export class Ship {
         this.cannonTypeMain = cannonTypeMain ?? 0;
         this.cargoCarried = cargoCarried ?? [];
         this.health = health || this.maxHealth;
+        this.value = costModifier * 1000 * diff;
     }
 
     public addMainCannons(cannons: number): boolean {
@@ -185,6 +189,10 @@ export class Ship {
 
     public getType(): ShipType {
         return this.type;
+    }
+
+    public getValue(): number {
+        return this.value;
     }
 
     public removeMainCannons(cannons: number): boolean {

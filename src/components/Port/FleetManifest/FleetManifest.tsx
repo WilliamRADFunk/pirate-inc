@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button, Col, Image, OverlayTrigger, Row, Table } from 'react-bootstrap';
-import { FaCaretDown, FaCaretUp, FaRegThumbsDown, FaSort, FaShieldAlt } from 'react-icons/fa';
-import { GiCannon, GiFist, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
-import { GrMoney } from 'react-icons/gr';
-import { RiTeamFill } from 'react-icons/ri';
+import { FaRegThumbsDown, FaSort, FaShieldAlt } from 'react-icons/fa';
+import { GiCannon, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import styles from './FleetManifest.module.scss';
@@ -147,12 +145,12 @@ export class FleetManifest extends React.Component<Props, State> {
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='greed'>
                                             <span onClick={ () => this._sortBy('greed')}>
-                                                <GiReceiveMoney />
+                                                <GiCannon />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='hand2HandCombat'>
                                             <span onClick={ () => this._sortBy('hand2HandCombat')}>
-                                                <GiFist />
+                                                <GiCannon />
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='sailing'>
@@ -169,7 +167,7 @@ export class FleetManifest extends React.Component<Props, State> {
                                     <Row className='no-gutters'>
                                         <Col xs='2' className='clickable' aria-label='armor average'>
                                             <span onClick={ () => this._sortBy('armor')}>
-                                            { fleetStats.armor }
+                                                { fleetStats.armor }
                                             </span>
                                         </Col>
                                         <Col xs='2' className='clickable' aria-label='speed average'>
@@ -177,24 +175,24 @@ export class FleetManifest extends React.Component<Props, State> {
                                                 { fleetStats.speed }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='greed average'>
-                                            <span onClick={ () => this._sortBy('greed')}>
-                                            { getFeatureAvg(fleet, 'greed') }
+                                        <Col xs='2' className='clickable' aria-label='first fire damage average'>
+                                            <span onClick={ () => this._sortBy('firstFireDmg')}>
+                                                { fleetStats.firstFireDmg }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='hand2HandCombat average'>
-                                            <span onClick={ () => this._sortBy('hand2HandCombat')}>
-                                            { getFeatureAvg(fleet, 'hand2HandCombat') }
+                                        <Col xs='2' className='clickable' aria-label='main damage average'>
+                                            <span onClick={ () => this._sortBy('mainDamage')}>
+                                                { fleetStats.mainDamage }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='sailing average'>
-                                            <span onClick={ () => this._sortBy('sailing')}>
-                                            { getFeatureAvg(fleet, 'sailing') }
+                                        <Col xs='2' className='clickable' aria-label='first fire accuracy'>
+                                            <span onClick={ () => this._sortBy('firstFireAccuracy')}>
+                                                { fleetStats.firstFireAccuracy }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='value average'>
-                                            <span onClick={ () => this._sortBy('value')}>
-                                            { formatter.format(fleetStats.value) }
+                                        <Col xs='2' className='clickable' aria-label='main gun accuracy'>
+                                            <span onClick={ () => this._sortBy('mainFireAccuracy')}>
+                                                { fleetStats.mainAccuracy }
                                             </span>
                                         </Col>
                                     </Row>
@@ -220,6 +218,14 @@ export class FleetManifest extends React.Component<Props, State> {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Cargo Capacity',
                                             sortBy: () => this._sortBy('maxCargoCapacity')
+                                        })
+                                    }
+                                </th>
+                                <th className="mr-3">
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Cargo Carried',
+                                            sortBy: () => this._sortBy('cargoCarried')
                                         })
                                     }
                                 </th>
@@ -250,12 +256,36 @@ export class FleetManifest extends React.Component<Props, State> {
                                         </td>
                                         <td>
                                             <Row className='no-gutters'>
-                                                <Col xs='2'> { f.getArmorLevel() }</Col>
-                                                <Col xs='2'> { f.getTopSpeed() }</Col>
-                                                <Col xs='2'> { (f.skills.greed * 100).toFixed(0) }</Col>
-                                                <Col xs='2'> { (f.skills.hand2HandCombat * 100).toFixed(0) }</Col>
-                                                <Col xs='2'> { (f.skills.sailing * 100).toFixed(0) }</Col>
-                                                <Col xs='2'> { (f.skills.teamwork * 100).toFixed(0) }</Col>
+                                                <Col xs='2'>
+                                                    { f.getArmorLevel() }
+                                                </Col>
+                                                <Col xs='2'>
+                                                    { f.getTopSpeed() }
+                                                </Col>
+                                                <Col xs='2'>
+                                                    { () => {
+                                                        const dmg = f.getFirstFireDamageScore();
+                                                        return `${dmg[0]}, ${dmg[1]}, ${dmg[2]}`;
+                                                    }}
+                                                </Col>
+                                                <Col xs='2'>
+                                                    { () => {
+                                                        const dmg = f.getMainFireDamageScore();
+                                                        return `${dmg[0]}, ${dmg[1]}, ${dmg[2]}`;
+                                                    }}
+                                                </Col>
+                                                <Col xs='2'>
+                                                    { () => {
+                                                        const acc = f.getFirstFireAccuracyScore();
+                                                        return `${acc[0]}, ${acc[1]}, ${acc[2]}`;
+                                                    }}
+                                                </Col>
+                                                <Col xs='2'>
+                                                    { () => {
+                                                        const acc = f.getMainFireAccuracyScore();
+                                                        return `${acc[0]}, ${acc[1]}, ${acc[2]}`;
+                                                    }}
+                                                </Col>
                                             </Row>
                                         </td>
                                         <td className={ styles['no-break'] }>
@@ -264,37 +294,14 @@ export class FleetManifest extends React.Component<Props, State> {
                                         <td>
                                             { f.getCrewMin() } / { f.getCrewMax() } ( { f.getCrewCount() } )
                                         </td>
-                                        <td className={ styles['pay-order-cell'] }>
-                                            { !f.isAlive ? <span>---</span> : <>
-                                                <span className={ styles['pay-order-text'] + ' text-center' }>
-                                                    { f.payOrder }
-                                                </span>
-                                                <span className={ styles['pay-order-buttons'] }>
-                                                    <span className='float-left'>{ !hasPayUpBtn ? null :
-                                                        <Button
-                                                            variant='info'
-                                                            className={ styles['pay-order-button'] + ' py-1 px-1' }
-                                                            size='sm'
-                                                            aria-label='Increase priority of pay'
-                                                            onClick={() => this._payPriority(f.payOrder, false)}>
-                                                            <FaCaretUp />
-                                                        </Button>
-                                                    }</span>
-                                                    <span className='float-right'> { !hasPayDownBtn ? null :
-                                                        <Button
-                                                            variant='info'
-                                                            className={ styles['pay-order-button'] + ' py-1 px-1' }
-                                                            size='sm'
-                                                            aria-label='Decrease priority of pay'
-                                                            onClick={() => this._payPriority(f.payOrder, true)}>
-                                                            <FaCaretDown />
-                                                        </Button>
-                                                    }</span>
-                                                </span>
-                                            </>}
+                                        <td>
+                                            { formatter.format(f.getValue()) }
                                         </td>
                                         <td>
-                                            { formatter.format(f.getCostModifier() * 1000 * difficulty) }
+                                            { f.getCargoCapacity() }
+                                        </td>
+                                        <td>
+                                            { f.getCargoCarried() }
                                         </td>
                                         <td>
                                             {

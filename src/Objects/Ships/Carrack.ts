@@ -17,8 +17,9 @@ import { Cargo } from "../../Types/Cargo";
 import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
 
 export class Carrack extends Ship {
-    constructor(name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
+    constructor(difficulty: number, name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
         super(
+            difficulty,                             // player chosen difficulty level.
             armor ?? ShipDefaultArmor.Carrack,      // armor
             ShipDefaultMaxCargo.Carrack,            // Maximum tonnage of cargo this vessel can carry
             ShipDefaultCost.Carrack,                // cost modifier
