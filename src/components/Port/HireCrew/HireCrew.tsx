@@ -140,15 +140,15 @@ export class HireCrew extends React.Component<Props, State> {
                         ? <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: `
-                                <svg viewBox="0 0 360 369" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 369' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                         : <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? `
-                                <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                     }
@@ -217,7 +217,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'cannoneering' })}>
                                                 {({ ref, ...triggerHandler }) => (
@@ -228,7 +228,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col  className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'cleanliness' })}>
                                                 {({ ref, ...triggerHandler }) => (
@@ -239,7 +239,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col  className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'greed' })}>
                                                 {({ ref, ...triggerHandler }) => (
@@ -259,7 +259,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col  className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'hand to hand combat' })}>
                                                 {({ ref, ...triggerHandler }) => (
@@ -270,7 +270,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col  className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'sailing' })}>
                                                 {({ ref, ...triggerHandler }) => (
@@ -281,7 +281,7 @@ export class HireCrew extends React.Component<Props, State> {
                                         <Col  className={ styles['stats-icon'] + ' col-4'}>
                                             <OverlayTrigger
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({ children: 'teamwork' })}>
                                                 {({ ref, ...triggerHandler }) => (

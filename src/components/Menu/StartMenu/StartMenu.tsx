@@ -1,12 +1,12 @@
-import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 
-import { stateManager, GameState } from "../../../Services/StateManager";
-import { StartMenuDifficulty } from "../StartMenuDifficulty/StartMenuDifficulty";
-import { StartMenuInstructions } from "../StartMenuInstructions/StartMenuInstructions";
-import { StartMenuLoad } from "../StartMenuLoad/StartMenuLoad";
+import { stateManager, GameState } from '../../../Services/StateManager';
+import { StartMenuDifficulty } from '../StartMenuDifficulty/StartMenuDifficulty';
+import { StartMenuInstructions } from '../StartMenuInstructions/StartMenuInstructions';
+import { StartMenuLoad } from '../StartMenuLoad/StartMenuLoad';
 
 interface Props {}
 
@@ -61,34 +61,34 @@ export class StartMenu extends React.Component<Props, State> {
 
         return (
             gameState !== GameState.Start ? null :
-            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
+            <Col xs='12' lg={{ span: 8, offset: 2 }} className='boundaries py-5'>
                 { menuState !== MenuState.MainMenu ? null :
                     <>
                         <Row className='no-gutters'>
                             <Button
-                                variant="primary"
-                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                variant='primary'
+                                className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                                 onClick={() => this.startGame()}>Start Game
                             </Button>
                         </Row>
                         <Row className='no-gutters'>
                             <Button
-                                variant="primary"
-                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                variant='primary'
+                                className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                                 onClick={() => this.changeMenuState(MenuState.LoadGame)}>Load Game
                             </Button>
                         </Row>
                         <Row className='no-gutters'>
                             <Button
-                                variant="primary"
-                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                variant='primary'
+                                className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                                 onClick={() => this.changeMenuState(MenuState.Difficulty)}>Change Difficulty
                             </Button>
                         </Row>
                         <Row className='no-gutters'>
                             <Button
-                                variant="primary"
-                                className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                                variant='primary'
+                                className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                                 onClick={() => this.changeMenuState(MenuState.Instructions)}>How to Play
                             </Button>
                         </Row>

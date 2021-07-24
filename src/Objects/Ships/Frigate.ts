@@ -1,4 +1,4 @@
-import { Ship } from "./Ship";
+import { Ship } from './Ship';
 import {
     BowCanonType,
     ShipDefaultArmor,
@@ -12,9 +12,9 @@ import {
     ShipDefaultTopSpeed,
     ShipIconImage,
     ShipType
-} from "../../Types/ShipDefaults";
-import { Cargo } from "../../Types/Cargo";
-import { ShipNameGenerator } from "../../Helpers/ShipNameGenerator";
+} from '../../Types/ShipDefaults';
+import { Cargo } from '../../Types/Cargo';
+import { ShipNameGenerator } from '../../Helpers/ShipNameGenerator';
 
 export class Frigate extends  Ship {
     constructor(difficulty: number, name?: string, armor?: number, numCannon?: number, bowCannon?: BowCanonType, cargoCarried?: Cargo[], health?: number) {
@@ -32,7 +32,7 @@ export class Frigate extends  Ship {
             ShipDefaultTopSpeed.Frigate,            // top speed of the vessel
             ShipType.Frigate,                       // vessel type
             numCannon ?? 1,                         // number of cannons
-            bowCannon ?? "Empty",                   // type, if any, of bow cannon on board
+            bowCannon ?? 'Empty',                   // type, if any, of bow cannon on board
             ShipDefaultMainCannonType.Frigate,      // the poundage type of the main cannons
             cargoCarried ?? [],                     // cargo ship might already be carrying when instantiated.
             health                                  // current health of the ship if not full

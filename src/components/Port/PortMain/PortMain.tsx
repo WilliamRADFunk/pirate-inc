@@ -1,13 +1,13 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 
-import { Subscription } from "rxjs";
-import { PortSceneState, stateManager } from "../../../Services/StateManager";
+import { Subscription } from 'rxjs';
+import { PortSceneState, stateManager } from '../../../Services/StateManager';
 
-import { Bungalow } from "../Bungalow/Bungalow";
-import { ColonialOffice } from "../ColonialOffice/ColonialOffice";
-import { Shipyard } from "../Shipyard/Shipyard";
-import { Tavern } from "../Tavern/Tavern";
+import { Bungalow } from '../Bungalow/Bungalow';
+import { ColonialOffice } from '../ColonialOffice/ColonialOffice';
+import { Shipyard } from '../Shipyard/Shipyard';
+import { Tavern } from '../Tavern/Tavern';
 
 interface Props {}
 
@@ -44,41 +44,41 @@ export class PortMain extends React.Component<Props, State> {
     public render() {
         const { portSceneState } = this.state;
         return (
-            <Col xs="12" xl={{ span: 10, offset: 1 }} className="boundaries">
+            <Col xs='12' xl={{ span: 10, offset: 1 }} className='boundaries'>
                 <Row className='no-gutters'>
                     { portSceneState > PortSceneState.TavernOptions ? null :
                         <>
-                            <Col xs="12" xl="5" className="rope-border-square small-square">
+                            <Col xs='12' xl='5' className='rope-border-square small-square'>
                                 <Shipyard></Shipyard>
                             </Col>
-                            <Col xs="12" xl={{ span: 5, offset: 2 }} className="rope-border-square small-square">
+                            <Col xs='12' xl={{ span: 5, offset: 2 }} className='rope-border-square small-square'>
                                 <Tavern></Tavern>
                             </Col>
-                            <Col xs="12" xl="5" className="rope-border-square small-square">
+                            <Col xs='12' xl='5' className='rope-border-square small-square'>
                                 <ColonialOffice></ColonialOffice>
                             </Col>
-                            <Col xs="12" xl={{ span: 5, offset: 2 }} className="rope-border-square small-square">
+                            <Col xs='12' xl={{ span: 5, offset: 2 }} className='rope-border-square small-square'>
                                 <Bungalow></Bungalow>
                             </Col>
                         </>
                     }
                     { (portSceneState < PortSceneState.BungalowCrewManifest || PortSceneState.BungalowShipManifest < portSceneState) ? null :
-                        <Col xs="12">
+                        <Col xs='12'>
                             <Bungalow></Bungalow>
                         </Col>
                     }
                     { (portSceneState < PortSceneState.ColonialOfficeBribe || PortSceneState.ColonialOfficeWritOfProtection < portSceneState) ? null :
-                        <Col xs="12" className="boundaries">
+                        <Col xs='12' className='boundaries'>
                             <ColonialOffice></ColonialOffice>
                         </Col>
                     }
                     { (portSceneState < PortSceneState.ShipyardBuy || PortSceneState.ShipyardSell < portSceneState) ? null :
-                        <Col xs="12" className="boundaries">
+                        <Col xs='12' className='boundaries'>
                             <Shipyard></Shipyard>
                         </Col>
                     }
                     { portSceneState < PortSceneState.TavernProvisions ? null :
-                        <Col xs="12">
+                        <Col xs='12'>
                             <Tavern></Tavern>
                         </Col>
                     }

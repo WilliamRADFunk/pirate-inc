@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { gameManager } from "../../Services/GameManager";
+import { gameManager } from '../../Services/GameManager';
 
 interface Props {}
 
@@ -46,7 +46,7 @@ export class Intro extends React.Component<Props, State> {
             case 1: {
                 return (
                     <Row className='no-gutters'>
-                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
+                        <Col xs='12' lg={{ span: 8, offset: 2 }} className='text-left px-5 px-sm-2'>
                             <p>
                                 Passed up for promotion again, you’ve rallied the crew of a large English merchant vessel to turn on its captain and his worthless officers.
                             </p>
@@ -66,7 +66,7 @@ export class Intro extends React.Component<Props, State> {
             case 2: {
                 return (
                     <Row className='no-gutters'>
-                        <Col xs="12" lg={{ span: 10, offset: 1 }} className="text-left px-5 px-sm-2">
+                        <Col xs='12' lg={{ span: 10, offset: 1 }} className='text-left px-5 px-sm-2'>
                             <p>
                                 It's the early 1700's and the Golden Age of Piracy has begun. Inspired by the great names that pass through the drinking halls of Glasgow about those that dared to strike it rich against Dutch merchants and Spanish treasure vessels alike.
                             </p>
@@ -92,7 +92,7 @@ export class Intro extends React.Component<Props, State> {
             case 3: {
                 return (
                     <Row className='no-gutters'>
-                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
+                        <Col xs='12' lg={{ span: 8, offset: 2 }} className='text-left px-5 px-sm-2'>
                             The Hard difficulty story
                         </Col>
                     </Row>
@@ -101,7 +101,7 @@ export class Intro extends React.Component<Props, State> {
             case 4: {
                 return (
                     <Row className='no-gutters'>
-                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
+                        <Col xs='12' lg={{ span: 8, offset: 2 }} className='text-left px-5 px-sm-2'>
                             <p>
                                 That disastrous day had arrived when your fleet met a force greater than it's own. You and the handful of men on the small row boat with you watch as the last of your ships sink beneath the waves. The storm took everything you'd built in but an hour.
                             </p>
@@ -121,7 +121,7 @@ export class Intro extends React.Component<Props, State> {
             default: {
                 return (
                     <Row className='no-gutters'>
-                        <Col xs="12" lg={{ span: 8, offset: 2 }} className="text-left px-5 px-sm-2">
+                        <Col xs='12' lg={{ span: 8, offset: 2 }} className='text-left px-5 px-sm-2'>
                             This difficulty level does not exist.
                         </Col>
                     </Row>
@@ -167,26 +167,26 @@ export class Intro extends React.Component<Props, State> {
         const { errorMsg, validName } = this.state;
 
         return (
-            <Col xs="12" lg={{ span: 8, offset: 2 }} className="boundaries py-5">
+            <Col xs='12' lg={{ span: 8, offset: 2 }} className='boundaries py-5'>
                 <Row className='no-gutters'>
-                    <Col xs="12" lg={{ span: 8, offset: 2 }} className="mb-4">
-                        <h2 className="font-italic">How your story begins...</h2>
+                    <Col xs='12' lg={{ span: 8, offset: 2 }} className='mb-4'>
+                        <h2 className='font-italic'>How your story begins...</h2>
                     </Col>
                 </Row>
                 {this.getIntro()}
                 <Row className='no-gutters'>
-                    <Col xs={{ span: 10, offset: 1 }} lg={{ span: 6, offset: 3 }} className="my-4">
+                    <Col xs={{ span: 10, offset: 1 }} lg={{ span: 6, offset: 3 }} className='my-4'>
                         <InputGroup hasValidation>
                             <InputGroup.Prepend>
-                                <InputGroup.Text id="load-code-text">Your Pirate Name:</InputGroup.Text>
+                                <InputGroup.Text id='load-code-text'>Your Pirate Name:</InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl
-                                id="pirate-name"
-                                aria-describedby="pirate-name-text"
-                                placeholder="Michael Van Helm"
+                                id='pirate-name'
+                                aria-describedby='pirate-name-text'
+                                placeholder='Michael Van Helm'
                                 onChange={(e) => this.changedName(e)}
                                 isInvalid={ !validName }/>
-                            <Form.Control.Feedback type='invalid'  className="fs-sm">
+                            <Form.Control.Feedback type='invalid'  className='fs-sm'>
                                 {errorMsg}
                             </Form.Control.Feedback>
                         </InputGroup>
@@ -194,8 +194,8 @@ export class Intro extends React.Component<Props, State> {
                 </Row>
                 <Row className='no-gutters'>
                     <Button
-                        variant="primary"
-                        className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? "" : " disabled"}`}
+                        variant='primary'
+                        className={`col-6 col-lg-2 offset-3 offset-lg-5 my-4${validName ? '' : ' disabled'}`}
                         onClick={() => this.startGame()}>To the Ship!
                     </Button>
                 </Row>

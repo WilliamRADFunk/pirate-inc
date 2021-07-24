@@ -32,7 +32,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
         { props.headerLabel }
         <OverlayTrigger
             key={GUID()}
-            placement="top"
+            placement='top'
             delay={{ show: 100, hide: 250 }}
             overlay={RenderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
             {({ ref, ...triggerHandler }) => (
@@ -56,7 +56,7 @@ function renderDeathBenefits(props: any): JSX.Element {
             variant='success'
             aria-label='Pay death benefits'
             onClick={ () => props.pay() }>
-            <GrMoney color="white" />
+            <GrMoney color='white' />
         </Button>
         <div>
             <span>${ benefitAmt }</span> <span>({ turnsSinceDeath })</span>
@@ -122,7 +122,7 @@ export class CrewManifest extends React.Component<Props, State> {
         return (<>
             <div className={ styles['scroll-top'] }>
                 <Image
-                    src="images/scroll-top.png"
+                    src='images/scroll-top.png'
                     width='100%'
                     height='auto'
                     alt='Top of crew manifest scroll'
@@ -130,7 +130,7 @@ export class CrewManifest extends React.Component<Props, State> {
             </div>
             <div className={ styles['scroll-bottom'] }>
                 <Image
-                    src="images/scroll-bottom.png"
+                    src='images/scroll-bottom.png'
                     width='100%'
                     height='auto'
                     alt='Bottom of crew manifest scroll'
@@ -155,11 +155,11 @@ export class CrewManifest extends React.Component<Props, State> {
                             </div>
                         </Col>
                     </Row>
-                    <Table className={ styles["manifest"] + ' table-striped px-5' }>
+                    <Table className={ styles['manifest'] + ' table-striped px-5' }>
                         <thead>
                             <tr>
-                                <th className="mr-3">Avatar</th>
-                                <th className="mr-3">
+                                <th className='mr-3'>Avatar</th>
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Name',
@@ -167,7 +167,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3" style={{ minWidth: '172px', width: '160px' }}>
+                                <th className='mr-3' style={{ minWidth: '172px', width: '160px' }}>
                                     <Row className='no-gutters'>
                                         <Col xs='12'>Skills</Col>
                                     </Row>
@@ -236,7 +236,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                         </Col>
                                     </Row>
                                 </th>
-                                <th className="mr-3">
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Morale',
@@ -244,7 +244,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3">
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Concern',
@@ -252,7 +252,7 @@ export class CrewManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3">
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Pay Priority',

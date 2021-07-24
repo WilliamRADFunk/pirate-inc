@@ -1,14 +1,14 @@
-import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { take } from "rxjs/operators";
-import { AdjustColonialOfficial, AdjustMerchant, CreateColonialOfficial, CreateMerchant } from "../Helpers/CreatePortPersonnel";
-import { HireableCrew } from "../Objects/Crew/HireableCrew";
-import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
-import { BaseWritOfProtectionLifespan } from "../Types/Constants";
-import { MoodToMouth } from "../Types/People";
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { AdjustColonialOfficial, AdjustMerchant, CreateColonialOfficial, CreateMerchant } from '../Helpers/CreatePortPersonnel';
+import { HireableCrew } from '../Objects/Crew/HireableCrew';
+import { HireableOfficers } from '../Objects/Officers/HireableOfficers';
+import { BaseWritOfProtectionLifespan } from '../Types/Constants';
+import { MoodToMouth } from '../Types/People';
 
-import { Port, PortLocation } from "../Types/Port";
-import { playerManager } from "./PlayerManager";
-import { PortSceneState, stateManager } from "./StateManager";
+import { Port, PortLocation } from '../Types/Port';
+import { playerManager } from './PlayerManager';
+import { PortSceneState, stateManager } from './StateManager';
 
 class PortManager {
     /**

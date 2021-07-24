@@ -1,10 +1,10 @@
-import React from "react";
-import { Button, ButtonGroup, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import React from 'react';
+import { Button, ButtonGroup, Dropdown, DropdownButton, Row } from 'react-bootstrap';
 
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 
 import styles from './StartMenuInstructions.module.scss';
-import { ListOption } from "../../../Types/ListOption";
+import { ListOption } from '../../../Types/ListOption';
 
 interface Props {
     toggleView: () => void
@@ -46,29 +46,29 @@ export class StartMenuInstructions extends React.Component<Props, State> {
             <>
                 <Row className='no-gutters'>
                     <Button
-                        variant="primary"
-                        className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                        variant='primary'
+                        className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                         onClick={toggleView}>
                         Back to Menu
                     </Button>
                 </Row>
                 <Row className='no-gutters'>
                     <DropdownButton
-                        className={styles["instruction-dropdown-toggle"] + " col-6 offset-3 my-4 bg-info px-0"}
+                        className={styles['instruction-dropdown-toggle'] + ' col-6 offset-3 my-4 bg-info px-0'}
                         as={ButtonGroup}
-                        key="instrunction-info"
-                        id="instrunction-info-dropdown"
-                        variant="info"
+                        key='instrunction-info'
+                        id='instrunction-info-dropdown'
+                        variant='info'
                         title={this.instructions[selectedInstruction].label}
                         onSelect={(e) => this.instructionSelected(e)}
                     >
                         {
                             this.instructions.map(instruction => (
                                 <Dropdown.Item
-                                    className={"text-light " + (selectedInstruction === instruction.value ? styles["bg-selected"] : " bg-info")}
+                                    className={'text-light ' + (selectedInstruction === instruction.value ? styles['bg-selected'] : ' bg-info')}
                                     eventKey={instruction.value}
                                     key={instruction.value}
-                                    as="button"
+                                    as='button'
                                     active={selectedInstruction === instruction.value}>
                                     {instruction.label}
                                 </Dropdown.Item>

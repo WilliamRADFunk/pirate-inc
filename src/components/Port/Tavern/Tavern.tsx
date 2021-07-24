@@ -45,16 +45,16 @@ export class Tavern extends React.Component<Props, State> {
     private _renderBackgroundImages(): JSX.Element {
         return (<>
             <div className={ styles['torch-handle-wrapper-left'] }>
-                <Image src="images/torch.png" alt='tavern background torch' className={ styles['torch-handle'] }/>
+                <Image src='images/torch.png' alt='tavern background torch' className={ styles['torch-handle'] }/>
             </div>
             <div className={ styles['torch-handle-wrapper-right'] }>
-                <Image src="images/torch.png" alt='tavern background torch' className={ styles['torch-handle'] }/>
+                <Image src='images/torch.png' alt='tavern background torch' className={ styles['torch-handle'] }/>
             </div>
             <div className={ styles['torch-flame-wrapper-left'] }>
-                <Image src="images/torch-fire.gif" alt='tavern background torch flame' className={ styles['torch-flame'] }/>
+                <Image src='images/torch-fire.gif' alt='tavern background torch flame' className={ styles['torch-flame'] }/>
             </div>
             <div className={ styles['torch-flame-wrapper-right'] }>
-                <Image src="images/torch-fire.gif" alt='tavern background torch flame' className={ styles['torch-flame'] }/>
+                <Image src='images/torch-fire.gif' alt='tavern background torch flame' className={ styles['torch-flame'] }/>
             </div>
         </>);
     }
@@ -68,7 +68,7 @@ export class Tavern extends React.Component<Props, State> {
                     <Provisions>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Access help for this section'
@@ -87,7 +87,7 @@ export class Tavern extends React.Component<Props, State> {
                         </OverlayTrigger>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Return to main port options'
@@ -119,7 +119,7 @@ export class Tavern extends React.Component<Props, State> {
                     <HireCrew>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Access help for this section'
@@ -138,7 +138,7 @@ export class Tavern extends React.Component<Props, State> {
                         </OverlayTrigger>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Return to main port options'
@@ -170,7 +170,7 @@ export class Tavern extends React.Component<Props, State> {
                     <HireOfficers>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Access help for this section'
@@ -189,7 +189,7 @@ export class Tavern extends React.Component<Props, State> {
                         </OverlayTrigger>
                         <OverlayTrigger rootClose
                             key={GUID()}
-                            placement="top"
+                            placement='top'
                             delay={{ show: 100, hide: 250 }}
                             overlay={RenderTooltip({
                                 children: 'Return to main port options'
@@ -217,7 +217,7 @@ export class Tavern extends React.Component<Props, State> {
             <Row className='no-gutters'>
                 <OverlayTrigger rootClose
                     key={GUID()}
-                    placement="top"
+                    placement='top'
                     delay={{ show: 100, hide: 250 }}
                     overlay={RenderTooltip({
                         children: 'Visit the port\'s merchant guild leader to buy or sell provisions'
@@ -236,7 +236,7 @@ export class Tavern extends React.Component<Props, State> {
                 </OverlayTrigger>
                 <OverlayTrigger rootClose
                     key={GUID()}
-                    placement="top"
+                    placement='top'
                     delay={{ show: 100, hide: 250 }}
                     overlay={RenderTooltip({
                         children: 'Visit the port\'s fence to sell your ill-gotten booty'
@@ -257,7 +257,7 @@ export class Tavern extends React.Component<Props, State> {
             <Row className='no-gutters'>
                 <OverlayTrigger rootClose
                     key={GUID()}
-                    placement="top"
+                    placement='top'
                     delay={{ show: 100, hide: 250 }}
                     overlay={RenderTooltip({
                         children: `${ actionPoints
@@ -281,7 +281,7 @@ export class Tavern extends React.Component<Props, State> {
                 </OverlayTrigger>
                 <OverlayTrigger
                     key={GUID()}
-                    placement="top"
+                    placement='top'
                     delay={{ show: 100, hide: 250 }}
                     overlay={RenderTooltip({
                         children: `${ actionPoints

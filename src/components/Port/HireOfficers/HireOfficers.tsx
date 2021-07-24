@@ -85,7 +85,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col className={ styles['stats-icon'] + ' col-6'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'Repair' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -96,7 +96,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col  className={ styles['stats-icon'] + ' col-6'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'DIY Medicine' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -141,7 +141,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col className={ styles['stats-icon'] + ' col-12'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'Medicine' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -183,7 +183,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col className={ styles['stats-icon'] + ' col-4'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'Cargo Distribution' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -194,7 +194,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col className={ styles['stats-icon'] + ' col-4'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'Human Resources' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -205,7 +205,7 @@ export class HireOfficers extends React.Component<Props, State> {
                 <Col className={ styles['stats-icon'] + ' col-4'}>
                     <OverlayTrigger
                         key={GUID()}
-                        placement="top"
+                        placement='top'
                         delay={{ show: 100, hide: 250 }}
                         overlay={RenderTooltip({ children: 'Morale Management' })}>
                         {({ ref, ...triggerHandler }) => (
@@ -366,15 +366,15 @@ export class HireOfficers extends React.Component<Props, State> {
                         ? <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: currRecruit?.avatar ?? `
-                                <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                         : <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: `
-                                <svg viewBox="0 0 360 369" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 369' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                     }

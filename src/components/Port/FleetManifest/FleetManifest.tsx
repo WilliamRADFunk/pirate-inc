@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, Col, Image, OverlayTrigger, Row, Table } from 'react-bootstrap';
-import { FaRegThumbsDown, FaSort, FaShieldAlt } from 'react-icons/fa';
-import { GiCannon, GiReceiveMoney, GiSailboat } from 'react-icons/gi';
+import { AiFillMedicineBox } from 'react-icons/ai';
+import { BiTargetLock } from 'react-icons/bi';
+import { FaBoxes, FaSort, FaShieldAlt } from 'react-icons/fa';
+import { GiCannon, GiReceiveMoney, GiSailboat, GiSinkingShip } from 'react-icons/gi';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import styles from './FleetManifest.module.scss';
@@ -10,6 +12,7 @@ import { GUID } from '../../../Helpers/GUID';
 import { RenderTooltip } from '../../../Helpers/Tooltip';
 import { Ship } from '../../../Objects/Ships/Ship';
 import { formatter } from '../../../Helpers/Format';
+import { Cargo } from '../../../Types/Cargo';
 
 interface Props {}
 
@@ -22,7 +25,7 @@ function renderFullscreenTableHeader(props: any): JSX.Element {
         { props.headerLabel }
         <OverlayTrigger
             key={GUID()}
-            placement="top"
+            placement='top'
             delay={{ show: 100, hide: 250 }}
             overlay={RenderTooltip({ children: `Sort ${props.headerLabel.toLowerCase() }` })}>
             {({ ref, ...triggerHandler }) => (
@@ -44,6 +47,13 @@ export class FleetManifest extends React.Component<Props, State> {
         };
     }
 
+    private _reduceCarriedCargo(cargo: Cargo[]): number {
+        const carriedQuantity = cargo.reduce((sum, cargo) => {
+            return sum += cargo.quantity;
+        }, 0);
+        return carriedQuantity;
+    }
+
     private _scuttleShip(ship: Ship): void {
         gameManager.scuttleShip(ship);
     }
@@ -60,6 +70,10 @@ export class FleetManifest extends React.Component<Props, State> {
         }
         this.lastSort.next([key, secondaryKey, dir]);
         gameManager.sortFleetManifest(key, secondaryKey, dir);
+    }
+
+    private _splitTripleScore(val: [number, number, number]): string {
+        return `(${val[0].toFixed(0)}, ${val[1].toFixed(0)}, ${val[2].toFixed(0)})`;
     }
 
     public componentDidMount() {
@@ -83,18 +97,18 @@ export class FleetManifest extends React.Component<Props, State> {
         return (<>
             <div className={ styles['scroll-top'] }>
                 <Image
-                    src="images/scroll-top.png"
+                    src='images/scroll-top.png'
                     width='100%'
                     height='auto'
-                    alt='Top of crew manifest scroll'
+                    alt='Top of fleet manifest scroll'
                     style={{ width: '100%', height: 'auto' }}/>
             </div>
             <div className={ styles['scroll-bottom'] }>
                 <Image
-                    src="images/scroll-bottom.png"
+                    src='images/scroll-bottom.png'
                     width='100%'
                     height='auto'
-                    alt='Bottom of crew manifest scroll'
+                    alt='Bottom of fleet manifest scroll'
                     style={{ width: '100%', height: 'auto' }}/>
             </div>
             <Row className='mb-2 mx-1' style={{ position: 'relative', zIndex: 3 }}>
@@ -116,11 +130,19 @@ export class FleetManifest extends React.Component<Props, State> {
                             </div>
                         </Col>
                     </Row>
-                    <Table className={ styles["manifest"] + ' table-striped px-5' }>
+                    <Table className={ styles['manifest'] + ' table-striped px-5' }>
                         <thead>
                             <tr>
-                                <th className="mr-3">Ship</th>
-                                <th className="mr-3">
+                                <th className='mr-3'>Ship</th>
+                                <th className='mr-3'>
+                                    {
+                                        renderFullscreenTableHeader({
+                                            headerLabel: 'Type',
+                                            sortBy: () => this._sortBy('type')
+                                        })
+                                    }
+                                </th>
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Name',
@@ -128,84 +150,103 @@ export class FleetManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3" style={{ minWidth: '172px', width: '160px' }}>
+                                <th className='mr-3'>
                                     <Row className='no-gutters'>
-                                        <Col xs='12'>Features</Col>
-                                    </Row>
-                                    <Row className='no-gutters'>
-                                        <Col xs='2' className='clickable' aria-label='armor'>
+                                        <Col className='clickable' aria-label='armor'>
                                             <span onClick={ () => this._sortBy('armor')}>
                                                 <FaShieldAlt />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='sailing'>
-                                            <span onClick={ () => this._sortBy('sailing')}>
+                                        <Col className='clickable' aria-label='speed'>
+                                            <span onClick={ () => this._sortBy('speed')}>
                                                 <GiSailboat />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='greed'>
-                                            <span onClick={ () => this._sortBy('greed')}>
+                                        <Col className='clickable' aria-label='cargo capacity'>
+                                            <span onClick={ () => this._sortBy('cargoCapacity')}>
+                                                <FaBoxes />
+                                            </span>
+                                        </Col>
+                                        <Col className='clickable' aria-label='health'>
+                                            <span onClick={ () => this._sortBy('health')}>
+                                                <AiFillMedicineBox />
+                                            </span>
+                                        </Col>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='first fire accuracy'>
+                                            <span onClick={ () => this._sortBy('firstFireAccuracy')}>
+                                                <BiTargetLock />
+                                            </span>
+                                        </Col>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='main gun accuracy'>
+                                            <span onClick={ () => this._sortBy('mainAccuracy')}>
+                                                <BiTargetLock />
+                                            </span>
+                                        </Col>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='first fire damage'>
+                                            <span onClick={ () => this._sortBy('firstFireDamage')}>
                                                 <GiCannon />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='hand2HandCombat'>
-                                            <span onClick={ () => this._sortBy('hand2HandCombat')}>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='main gun damage'>
+                                            <span onClick={ () => this._sortBy('mainDamage')}>
                                                 <GiCannon />
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='sailing'>
-                                            <span onClick={ () => this._sortBy('sailing')}>
-                                                <GiSailboat />
-                                            </span>
-                                        </Col>
-                                        <Col xs='2' className='clickable' aria-label='teamwork'>
-                                            <span onClick={ () => this._sortBy('teamwork')}>
+                                        <Col className='clickable' aria-label='value'>
+                                            <span onClick={ () => this._sortBy('value')}>
                                                 <GiReceiveMoney />
                                             </span>
                                         </Col>
                                     </Row>
                                     <Row className='no-gutters'>
-                                        <Col xs='2' className='clickable' aria-label='armor average'>
+                                        <Col className='clickable' aria-label='armor average'>
                                             <span onClick={ () => this._sortBy('armor')}>
                                                 { fleetStats.armor }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='speed average'>
+                                        <Col className='clickable' aria-label='speed average'>
                                             <span onClick={ () => this._sortBy('speed')}>
                                                 { fleetStats.speed }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='first fire damage average'>
-                                            <span onClick={ () => this._sortBy('firstFireDmg')}>
-                                                { fleetStats.firstFireDmg }
+                                        <Col className='clickable' aria-label='cargo capacity total'>
+                                            <span onClick={ () => this._sortBy('cargoCapacity')}>
+                                                { fleetStats.cargoCapacity }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='main damage average'>
-                                            <span onClick={ () => this._sortBy('mainDamage')}>
-                                                { fleetStats.mainDamage }
+                                        <Col className='clickable' aria-label='health average'>
+                                            <span onClick={ () => this._sortBy('health')}>
+                                                { fleetStats.health }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='first fire accuracy'>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='first fire accuracy'>
                                             <span onClick={ () => this._sortBy('firstFireAccuracy')}>
-                                                { fleetStats.firstFireAccuracy }
+                                                { this._splitTripleScore(fleetStats.firstFireAccuracy) }
                                             </span>
                                         </Col>
-                                        <Col xs='2' className='clickable' aria-label='main gun accuracy'>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='main gun accuracy'>
                                             <span onClick={ () => this._sortBy('mainFireAccuracy')}>
-                                                { fleetStats.mainAccuracy }
+                                                { this._splitTripleScore(fleetStats.mainAccuracy) }
+                                            </span>
+                                        </Col>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='first fire damage'>
+                                            <span onClick={ () => this._sortBy('firstFireDamage')}>
+                                                { this._splitTripleScore(fleetStats.firstFireDmg) }
+                                            </span>
+                                        </Col>
+                                        <Col className={ styles['no-break'] + ' clickable' } aria-label='main gun damage'>
+                                            <span onClick={ () => this._sortBy('mainFireDamage')}>
+                                                { this._splitTripleScore(fleetStats.mainDamage) }
+                                            </span>
+                                        </Col>
+                                        <Col className='clickable' aria-label='value total'>
+                                            <span onClick={ () => this._sortBy('value')}>
+                                                ${ fleetStats.value }
                                             </span>
                                         </Col>
                                     </Row>
                                 </th>
-                                <th className="mr-3">
-                                    {
-                                        renderFullscreenTableHeader({
-                                            headerLabel: 'Health',
-                                            sortBy: () => { this._sortBy('maxHealth'); this._sortBy('health') }
-                                        })
-                                    }
-                                </th>
-                                <th className="mr-3">
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
                                             headerLabel: 'Crew: Min/Max (Current)',
@@ -213,27 +254,11 @@ export class FleetManifest extends React.Component<Props, State> {
                                         })
                                     }
                                 </th>
-                                <th className="mr-3">
+                                <th className='mr-3'>
                                     {
                                         renderFullscreenTableHeader({
-                                            headerLabel: 'Cargo Capacity',
-                                            sortBy: () => this._sortBy('maxCargoCapacity')
-                                        })
-                                    }
-                                </th>
-                                <th className="mr-3">
-                                    {
-                                        renderFullscreenTableHeader({
-                                            headerLabel: 'Cargo Carried',
-                                            sortBy: () => this._sortBy('cargoCarried')
-                                        })
-                                    }
-                                </th>
-                                <th>
-                                    {
-                                        renderFullscreenTableHeader({
-                                            headerLabel: 'Value',
-                                            sortBy: () => this._sortBy('value')
+                                            headerLabel: 'Cargo',
+                                            sortBy: () => this._sortBy('cargoCarriedType')
                                         })
                                     }
                                 </th>
@@ -251,57 +276,62 @@ export class FleetManifest extends React.Component<Props, State> {
                                                 { f.getIcon() }
                                             </span>
                                         </td>
+                                        <td>
+                                            { f.getType() }
+                                        </td>
                                         <td className={ styles['middle'] }>
                                             { f.getName() }
                                         </td>
                                         <td>
                                             <Row className='no-gutters'>
-                                                <Col xs='2'>
+                                                <Col>
                                                     { f.getArmorLevel() }
                                                 </Col>
-                                                <Col xs='2'>
+                                                <Col>
                                                     { f.getTopSpeed() }
                                                 </Col>
-                                                <Col xs='2'>
-                                                    { () => {
-                                                        const dmg = f.getFirstFireDamageScore();
-                                                        return `${dmg[0]}, ${dmg[1]}, ${dmg[2]}`;
-                                                    }}
+                                                <Col>
+                                                    { 
+                                                        f.getCargoCapacity()
+                                                    }
                                                 </Col>
-                                                <Col xs='2'>
-                                                    { () => {
-                                                        const dmg = f.getMainFireDamageScore();
-                                                        return `${dmg[0]}, ${dmg[1]}, ${dmg[2]}`;
-                                                    }}
+                                                <Col>
+                                                    { Math.floor((f.getHealth() / f.getHealthMax()) * 100) } %
                                                 </Col>
-                                                <Col xs='2'>
-                                                    { () => {
-                                                        const acc = f.getFirstFireAccuracyScore();
-                                                        return `${acc[0]}, ${acc[1]}, ${acc[2]}`;
-                                                    }}
+                                                <Col>
+                                                    { 
+                                                        this._splitTripleScore(f.getFirstFireAccuracyScore())
+                                                    }
                                                 </Col>
-                                                <Col xs='2'>
-                                                    { () => {
-                                                        const acc = f.getMainFireAccuracyScore();
-                                                        return `${acc[0]}, ${acc[1]}, ${acc[2]}`;
-                                                    }}
+                                                <Col>
+                                                    { 
+                                                        this._splitTripleScore(f.getMainFireAccuracyScore())
+                                                    }
+                                                </Col>
+                                                <Col>
+                                                    { 
+                                                        this._splitTripleScore(f.getFirstFireDamageScore())
+                                                    }
+                                                </Col>
+                                                <Col>
+                                                    { 
+                                                        this._splitTripleScore(f.getMainFireDamageScore())
+                                                    }
+                                                </Col>
+                                                <Col>
+                                                    { 
+                                                        formatter.format(f.getValue())
+                                                    }
                                                 </Col>
                                             </Row>
-                                        </td>
-                                        <td className={ styles['no-break'] }>
-                                            { Math.floor((f.getHealth() / f.getHealthMax()) * 100) } %
                                         </td>
                                         <td>
                                             { f.getCrewMin() } / { f.getCrewMax() } ( { f.getCrewCount() } )
                                         </td>
                                         <td>
-                                            { formatter.format(f.getValue()) }
-                                        </td>
-                                        <td>
-                                            { f.getCargoCapacity() }
-                                        </td>
-                                        <td>
-                                            { f.getCargoCarried() }
+                                            { 
+                                                this._reduceCarriedCargo(f.getCargoCarried())
+                                            }
                                         </td>
                                         <td>
                                             {
@@ -310,7 +340,7 @@ export class FleetManifest extends React.Component<Props, State> {
                                                     variant='danger'
                                                     aria-label='Scuttle this ship'
                                                     onClick={ () => this._scuttleShip(f) }>
-                                                    <FaRegThumbsDown/>
+                                                    <GiSinkingShip size={35}/>
                                                 </Button>
                                             }
                                         </td>

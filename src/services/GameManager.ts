@@ -147,7 +147,7 @@ class GameManager {
     public async endTurn(): Promise<void> {
         this.canPlayTurn.next(false);
 
-        let currState = "";
+        let currState = '';
         stateManager.getSceneState().pipe(take(1)).subscribe(state => currState = state);
 
         switch(currState) {

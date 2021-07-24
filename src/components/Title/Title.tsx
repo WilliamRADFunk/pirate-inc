@@ -11,8 +11,8 @@ interface State {}
 export class Title extends React.Component<Props, State> {
     public render() {
         return (
-            <Col xs="12" lg={{ span: 10, offset: 1 }}>
-                <Image className={styles.banner} src={ `images/${this.props.url}.png` } alt="Pirates Incorporated logo" fluid/>
+            <Col xs='12' lg={{ span: 10, offset: 1 }}>
+                <Image className={styles.banner} src={ `images/${this.props.url}` } alt='Pirates Incorporated logo' fluid/>
             </Col>
         );
     }

@@ -120,15 +120,15 @@ export class Provisions extends React.Component<Props, State> {
                         ? <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: merchant?.avatar ?? `
-                                <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                         : <div
                             className={ styles['avatar-sizing'] }
                             dangerouslySetInnerHTML={{__html: `
-                                <svg viewBox="0 0 360 369" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="20vw" height="25vw" fill="transparent"/>
+                                <svg viewBox='0 0 360 369' xmlns='http://www.w3.org/2000/svg'>
+                                    <rect width='20vw' height='25vw' fill='transparent'/>
                                 </svg>`}}>
                           </div>
                     }
@@ -161,7 +161,7 @@ export class Provisions extends React.Component<Props, State> {
                                             <span className={ styles['provisions-quantity-help'] }>
                                             <OverlayTrigger rootClose
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({
                                                     children: 'Premium food and wine to keep your crew in high spirits'
@@ -188,7 +188,7 @@ export class Provisions extends React.Component<Props, State> {
                                             <span className={ styles['provisions-quantity-help'] }>
                                             <OverlayTrigger rootClose
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({
                                                     children: 'Enough food and beer to keep the crew from complaining'
@@ -215,7 +215,7 @@ export class Provisions extends React.Component<Props, State> {
                                             <span className={ styles['provisions-quantity-help'] }>
                                             <OverlayTrigger rootClose
                                                 key={GUID()}
-                                                placement="top"
+                                                placement='top'
                                                 delay={{ show: 100, hide: 250 }}
                                                 overlay={RenderTooltip({
                                                     children: 'The bare minimum food and water to keep the crew alive physically, but morale will suffer'

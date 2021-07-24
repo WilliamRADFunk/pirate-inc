@@ -1,9 +1,7 @@
-import { JsxEmit } from "typescript";
-
 /**
  * Available types of bow fixed cannon. There can be only one per ship, and is used for first attack volley.
  */
-export type BowCanonType = "Long Nine" | "Explosive Carronade" | "Chain Shot" | "Empty";
+export type BowCanonType = 'Long Nine' | 'Explosive Carronade' | 'Chain Shot' | 'Empty';
 
 /**
  * Available types of main cannons. The numerical type values also equate to their caliber in "poundage".
@@ -301,21 +299,21 @@ export enum ShipTargetRarityType {
  * Available types of ships.
  */
 export enum ShipType {
-    Barque = "Barque",
-    Brig = "Brig",
-    Brigantine = "Brigantine",
-    Caravel = "Caravel",
-    Carrack = "Carrack",
-    Corvette = "Corvette",
-    Cutter = "Cutter",
-    Dhow = "Dhow",
-    EastIndiaman = "East Indiaman",
-    Frigate = "Frigate",
-    Galleon = "Galleon",
-    Keltch = "Keltch",
-    ManOWar = "Man-O-War",
-    Pinnace = "Pinnace",
-    Schooner = "Schooner",
-    Slaver = "Slaver",
-    Sloop = "Sloop"
+    Barque = 'Barque',
+    Brig = 'Brig',
+    Brigantine = 'Brigantine',
+    Caravel = 'Caravel',
+    Carrack = 'Carrack',
+    Corvette = 'Corvette',
+    Cutter = 'Cutter',
+    Dhow = 'Dhow',
+    EastIndiaman = 'East Indiaman',
+    Frigate = 'Frigate',
+    Galleon = 'Galleon',
+    Keltch = 'Keltch',
+    ManOWar = 'Man-O-War',
+    Pinnace = 'Pinnace',
+    Schooner = 'Schooner',
+    Slaver = 'Slaver',
+    Sloop = 'Sloop'
 }

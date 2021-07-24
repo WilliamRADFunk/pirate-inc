@@ -1,14 +1,14 @@
 import { Image } from 'react-bootstrap';
 
-import { Cargo } from "../../Types/Cargo";
-import { BowCanonType, MainCanonType, ShipType } from "../../Types/ShipDefaults";
+import { Cargo } from '../../Types/Cargo';
+import { BowCanonType, MainCanonType, ShipType } from '../../Types/ShipDefaults';
 
 export class Ship {
     private armorLevel: number = 0;
 
     private cannonCount: number = 0;
 
-    private cannonTypeBow: BowCanonType = "Empty";
+    private cannonTypeBow: BowCanonType = 'Empty';
 
     private cannonTypeMain: MainCanonType = 0;
 
@@ -70,7 +70,7 @@ export class Ship {
         this.topSpeed = topSpeed;
         this.type = type;
         this.cannonCount = cannonCount ?? 0;
-        this.cannonTypeBow = cannonTypeBow ?? "Empty";
+        this.cannonTypeBow = cannonTypeBow ?? 'Empty';
         this.cannonTypeMain = cannonTypeMain ?? 0;
         this.cargoCarried = cargoCarried ?? [];
         this.health = health || this.maxHealth;
@@ -110,7 +110,7 @@ export class Ship {
     }
 
     public getCargoCarried(): Cargo[] {
-        return this.cargoCarried;
+        return JSON.parse(JSON.stringify(this.cargoCarried));
     }
 
     public getCostModifier(): number {
@@ -130,18 +130,18 @@ export class Ship {
     }
 
     public getFirstFireAccuracyScore(): [number, number, number] {
-        if (this.cannonTypeBow === "Long Nine") {
+        if (this.cannonTypeBow === 'Long Nine') {
             return [0.95, 0.85, 0.75];
-        } else if (this.cannonTypeBow === "Explosive Carronade") {
+        } else if (this.cannonTypeBow === 'Explosive Carronade') {
             return [0.9, 0.5, 0.25];
         }
         return [0, 0, 0];
     }
 
     public getFirstFireDamageScore(): [number, number, number] {
-        if (this.cannonTypeBow === "Long Nine") {
+        if (this.cannonTypeBow === 'Long Nine') {
             return [30, 20, 10];
-        } else if (this.cannonTypeBow === "Explosive Carronade") {
+        } else if (this.cannonTypeBow === 'Explosive Carronade') {
             return [80, 45, 35];
         }
         return  [0, 0, 0];
@@ -160,7 +160,7 @@ export class Ship {
     }
 
     public getMainCanonType(): string {
-        return this.cannonTypeMain === 0 ? "Empty" : `${this.cannonTypeMain}-pounders`;
+        return this.cannonTypeMain === 0 ? 'Empty' : `${this.cannonTypeMain}-pounders`;
     }
 
     public getMainFireAccuracyScore(): [number, number, number] {
@@ -180,7 +180,7 @@ export class Ship {
     public getTopSpeed(): number {
         const crewAvg = (this.crewMax + this.crewMin) / 2;
         const speed = (this.topSpeed * (this.cannonTypeMain / 100)) // The larger the cannon, the slower the ship
-            - (this.cannonTypeBow !== "Empty" ? 1 : 0) // Having a bow cannon will lose a knot
+            - (this.cannonTypeBow !== 'Empty' ? 1 : 0) // Having a bow cannon will lose a knot
             + (this.currentCrew >= crewAvg ? 1 : -1) // Having less than the middle possible crew will lose a know
             - ((this.maxHealth - this.health) / 100) // The greater the damage to the vessel, the slower it is
             - this.armorLevel; // The more armor plating the slower the vessel

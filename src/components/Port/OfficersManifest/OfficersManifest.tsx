@@ -140,8 +140,8 @@ export class OfficersManifest extends React.Component<Props, State> {
                                                 ? <div
                                                     className={ styles['avatar-sizing'] }
                                                     dangerouslySetInnerHTML={{__html: quartermaster?.avatar ?? ''}}></div>
-                                                : <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect width="360" height="360" fill='#5554'/>
+                                                : <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                                    <rect width='360' height='360' fill='#5554'/>
                                                   </svg>
                                             }
                                         </Col>
@@ -203,8 +203,8 @@ export class OfficersManifest extends React.Component<Props, State> {
                                                 ? <div
                                                     className={ styles['avatar-sizing'] }
                                                     dangerouslySetInnerHTML={{__html: doctor?.avatar ?? ''}}></div>
-                                                : <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect width="360" height="360" fill='#5554'/>
+                                                : <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                                    <rect width='360' height='360' fill='#5554'/>
                                                   </svg>
                                             }
                                         </Col>
@@ -258,8 +258,8 @@ export class OfficersManifest extends React.Component<Props, State> {
                                                 ? <div
                                                     className={ styles['avatar-sizing'] }
                                                     dangerouslySetInnerHTML={{__html: carpenter?.avatar ?? ''}}></div>
-                                                : <svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect width="360" height="360" fill='#5554'/>
+                                                : <svg viewBox='0 0 360 360' xmlns='http://www.w3.org/2000/svg'>
+                                                    <rect width='360' height='360' fill='#5554'/>
                                                   </svg>
                                             }
                                         </Col>

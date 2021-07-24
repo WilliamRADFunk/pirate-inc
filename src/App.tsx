@@ -58,9 +58,9 @@ class App extends React.Component<Props, State> {
   public render(): any {
     const { gameState, sceneState } = this.state;
     return (
-      <div className="App text-center port-bg-01 h-100 full-view-height">
+      <div className='App text-center port-bg-01 h-100 full-view-height'>
         <Row className='no-gutters'>
-          <Title url={ gameState !== GameState.Start && gameState !== GameState.Intro ? 'pirate-flag-with-mast' : 'pirate-flag' }></Title>
+          <Title url={ gameState !== GameState.Start && gameState !== GameState.Intro ? 'pirate-flag-with-mast.png' : 'pirate-flag.png' }></Title>
         </Row>
         { gameState !== GameState.Start ? null :
           <Row className='no-gutters'>

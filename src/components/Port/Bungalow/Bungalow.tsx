@@ -93,7 +93,7 @@ export class Bungalow extends React.Component<Props, State> {
                         <Button
                             aria-label='Open bungalow crew manifest section'
                             variant='link'
-                            size="lg"
+                            size='lg'
                             className='col-4 offset-1 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowCrewManifest)}>
                             Crew
@@ -101,7 +101,7 @@ export class Bungalow extends React.Component<Props, State> {
                         <Button
                             aria-label='Open bungalow intel section'
                             variant='link'
-                            size="lg"
+                            size='lg'
                             className='col-4 offset-2 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowGatherIntel)}>
                             Intel
@@ -109,7 +109,7 @@ export class Bungalow extends React.Component<Props, State> {
                         <Button
                             aria-label='Open bungalow purchase officers section'
                             variant='link'
-                            size="lg"
+                            size='lg'
                             className='col-4 offset-1 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowOfficerSummaries)}>
                             Officers
@@ -117,7 +117,7 @@ export class Bungalow extends React.Component<Props, State> {
                         <Button
                             aria-label='Open bungalow purchase fleet section'
                             variant='link'
-                            size="lg"
+                            size='lg'
                             className='col-4 offset-2 text-dark my-4 fs-md'
                             onClick={() => stateManager.changePortSceneState(PortSceneState.BungalowShipManifest)}>
                             Fleet
@@ -125,14 +125,14 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowCrewManifest ? null :
-                    <Row className="manifest no-gutters">
+                    <Row className='manifest no-gutters'>
                         <Col
                             aria-label='Bungalow crew manifest section'
                             className='fs-sm text-left'>
                             <CrewManifest>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Access help for this section'
@@ -145,13 +145,13 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Open help modal for deeper description of crew manifest section'
                                             className={ styles['help-icon'] + ' border-0 text-dark' }
                                             onClick={() => gameManager.openHelpModal('Crew Manifest - Port')}>
-                                            <MdHelpOutline></MdHelpOutline>
+                                            <MdHelpOutline />
                                         </Button>
                                      )}
                                 </OverlayTrigger>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Return to main port options'
@@ -164,7 +164,7 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Return to port options'
                                             className={ styles['exit-icon'] + ' border-0 text-dark' }
                                             onClick={() => this.toggleMode()}>
-                                            <ImExit></ImExit>
+                                            <ImExit />
                                         </Button>
                                      )}
                                 </OverlayTrigger>
@@ -189,7 +189,7 @@ export class Bungalow extends React.Component<Props, State> {
                             <OfficersManifest>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Access help for this section'
@@ -202,13 +202,13 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Open help modal for deeper description of officers manifest section'
                                             className={ styles['help-icon'] + ' border-0 text-dark' }
                                             onClick={() => gameManager.openHelpModal('Officers Manifest - Port')}>
-                                            <MdHelpOutline></MdHelpOutline>
+                                            <MdHelpOutline />
                                         </Button>
                                     )}
                                 </OverlayTrigger>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Return to main port options'
@@ -221,7 +221,7 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Return to port options'
                                             className={ styles['exit-icon'] + ' border-0 text-dark' }
                                             onClick={() => this.toggleMode()}>
-                                            <ImExit></ImExit>
+                                            <ImExit />
                                         </Button>
                                     )}
                                 </OverlayTrigger>
@@ -230,14 +230,14 @@ export class Bungalow extends React.Component<Props, State> {
                     </Row>
                 }
                 { portSceneState !== PortSceneState.BungalowShipManifest ? null :
-                    <Row className='no-gutters'>
+                    <Row className='manifest no-gutters'>
                         <Col
                             aria-label='Bungalow fleet manifest section description'
                             className='fs-sm text-left'>
                             <FleetManifest>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Access help for this section'
@@ -250,13 +250,13 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Open help modal for deeper description of fleet manifest section'
                                             className={ styles['help-icon'] + ' border-0 text-dark' }
                                             onClick={() => gameManager.openHelpModal('Fleet Manifest - Port')}>
-                                            <MdHelpOutline></MdHelpOutline>
+                                            <MdHelpOutline />
                                         </Button>
                                     )}
                                 </OverlayTrigger>
                                 <OverlayTrigger rootClose
                                     key={GUID()}
-                                    placement="top"
+                                    placement='top'
                                     delay={{ show: 100, hide: 250 }}
                                     overlay={RenderTooltip({
                                         children: 'Return to main port options'
@@ -269,7 +269,7 @@ export class Bungalow extends React.Component<Props, State> {
                                             aria-label='Return to port options'
                                             className={ styles['exit-icon'] + ' border-0 text-dark' }
                                             onClick={() => this.toggleMode()}>
-                                            <ImExit></ImExit>
+                                            <ImExit />
                                         </Button>
                                     )}
                                 </OverlayTrigger>

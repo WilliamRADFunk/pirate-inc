@@ -1,10 +1,10 @@
-import React from "react";
-import { Button, ButtonGroup, Row, ToggleButton } from "react-bootstrap";
+import React from 'react';
+import { Button, ButtonGroup, Row, ToggleButton } from 'react-bootstrap';
 
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 
-import { ListOption } from "../../../Types/ListOption";
-import { gameManager } from "../../../Services/GameManager";
+import { ListOption } from '../../../Types/ListOption';
+import { gameManager } from '../../../Services/GameManager';
 
 interface Props {
     toggleView: () => void
@@ -66,22 +66,22 @@ export class StartMenuDifficulty extends React.Component<Props, State> {
             <>
                 <Row className='no-gutters'>
                     <Button
-                        variant="primary"
-                        className="col-6 col-lg-2 offset-3 offset-lg-5 my-4"
+                        variant='primary'
+                        className='col-6 col-lg-2 offset-3 offset-lg-5 my-4'
                         onClick={toggleView}>Back to Menu
                     </Button>
                 </Row>
                 <Row className='no-gutters'>
                     <ButtonGroup toggle
-                        className="col-6 offset-3"
-                        aria-label="Choose game difficulty level">
+                        className='col-6 offset-3'
+                        aria-label='Choose game difficulty level'>
                         {this.radios.map((radio) => (
                             <ToggleButton
                                 key={radio.value}
-                                variant="info"
+                                variant='info'
                                 value={radio.value}
-                                name="DifficultyRadio"
-                                type="radio"
+                                name='DifficultyRadio'
+                                type='radio'
                                 checked={difficulty === radio.value}
                                 onChange={this.changeDifficulty}>{radio.label}
                             </ToggleButton>

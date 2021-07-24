@@ -1,7 +1,7 @@
-import { BehaviorSubject, Observable, Subscription, zip } from "rxjs";
+import { BehaviorSubject, Observable, Subscription, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Ship } from "./Ship";
+import { Ship } from './Ship';
 
 export interface FleetStats {
     armor: number;
@@ -20,11 +20,6 @@ export interface FleetStats {
 }
 
 export class Fleet {
-    /**
-     * The player chosen difficulty level.
-     */
-    private _difficulty: number = 2;
-
     /**
      * The overall health of the player's fleet (ship damage) in percentage.
      */
@@ -76,7 +71,7 @@ export class Fleet {
     public addShip(ship: Ship): boolean {
         const ships = this._ships.value;
         if (!~ships.findIndex(sh => sh.getName() === ship.getName())) {
-            console.log("SHIP!", ship);
+            console.log('SHIP!', ship);
             ships.push(ship);
             this._ships.next(ships);
             return true;

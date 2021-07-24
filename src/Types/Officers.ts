@@ -1,5 +1,5 @@
-import { OfficerType } from "../Objects/Officers/Officers";
-import { ConcernTypes, Features, MoodToMouth } from "./People";
+import { OfficerType } from '../Objects/Officers/Officers';
+import { ConcernTypes, Features, MoodToMouth } from './People';
 
 export interface OfficerSkill<T> {
     label: T;

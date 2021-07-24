@@ -1,7 +1,7 @@
-import { BehaviorSubject } from "rxjs";
-import { HireableCrew } from "../Objects/Crew/HireableCrew";
-import { HireableOfficers } from "../Objects/Officers/HireableOfficers";
-import { Features, MoodToMouth } from "./People";
+import { BehaviorSubject } from 'rxjs';
+import { HireableCrew } from '../Objects/Crew/HireableCrew';
+import { HireableOfficers } from '../Objects/Officers/HireableOfficers';
+import { Features, MoodToMouth } from './People';
 
 /**
  * All the attributes port colonial official must have.
@@ -36,13 +36,13 @@ import { Features, MoodToMouth } from "./People";
  * Available ports in the game.
  */
 export enum PortLocation {
-    AtSea = "AtSea",
-    Bath = "Bath",
-    CharlesTown = "Charles Town",
-    Nassau = "Nassau",
-    NormanIsland = "Norman Island",
-    PortRoyal = "Port Royal",
-    Tortuga = "Tortuga"
+    AtSea = 'AtSea',
+    Bath = 'Bath',
+    CharlesTown = 'Charles Town',
+    Nassau = 'Nassau',
+    NormanIsland = 'Norman Island',
+    PortRoyal = 'Port Royal',
+    Tortuga = 'Tortuga'
 }
 
 /**

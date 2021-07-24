@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * The main game status to control game flow from starting to playing to ending.
@@ -43,10 +43,10 @@ import { BehaviorSubject, Observable } from "rxjs";
  * Available types of scene state, or game location modes.
  */
  export enum SceneState {
-    AtSea = "At Sea",
-    Battle = "Battle",
-    Other = "Other",
-    Port = "Port"
+    AtSea = 'At Sea',
+    Battle = 'Battle',
+    Other = 'Other',
+    Port = 'Port'
 }
 
 // Singleton to control the various states of the game.
@@ -97,7 +97,7 @@ class StateManager {
     public changePortSceneState(newState: PortSceneState, leaving?: boolean): void {
         // TODO: Check if valid transition.
         this.portSceneState.next(newState);
-        // If optional leaving was set, SceneState should be updated as well to be "at sea".
+        // If optional leaving was set, SceneState should be updated as well to be 'at sea'.
         if (leaving) {
             this.sceneState.next(SceneState.AtSea);
         }
